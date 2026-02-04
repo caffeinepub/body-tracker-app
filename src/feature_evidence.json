@@ -1,0 +1,26 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-reduce-the-vertical-space-used-by-the-non-editing-day-details-overlay-in-the-full-screen-day-view-by-tightening-vertical-padding-and-line-height-across-all-sections-header-rows-and-measurements-subsection-while-keeping-existing-font-sizes-unchanged-and-ensure-the-result-looks-consistently-compact-on-both-mobile-and-desktop",
+      "featureTitle": "Reduce the vertical space used by the non-editing \"Day Details\" overlay in the full-screen day view by tightening vertical padding and line-height across all sections (header, rows, and measurements subsection) while keeping existing font sizes unchanged, and ensure the result looks consistently compact on both mobile and desktop.",
+      "files": [
+        "frontend/src/components/DayDetailView.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "camera@1.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

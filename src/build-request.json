@@ -1,0 +1,40 @@
+{
+  "kind": "build_request",
+  "title": "Make the Day Details overlay more vertically compact in the full-screen day view",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-3",
+      "text": "Reduce the vertical space used by the non-editing \"Day Details\" overlay in the full-screen day view by tightening vertical padding and line-height across all sections (header, rows, and measurements subsection) while keeping existing font sizes unchanged, and ensure the result looks consistently compact on both mobile and desktop.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-5"
+        ],
+        "quotes": [
+          "The day details block can be a bit more vertically compact",
+          "1. All of it\n2. Both\n3. Just less padding and line height"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In the full-screen day view (frontend/src/components/DayDetailView.tsx), when NOT editing, the Day Details overlay uses noticeably less vertical space than before.",
+        "No typography sizes are reduced (e.g., existing text-* size classes remain the same), and the compaction is achieved via reduced padding/margins/gaps and tighter line-height.",
+        "The compaction applies to: the overlay container padding, the \"Day Details\" title spacing, the detail rows spacing, and the Measurements subsection spacing (divider + section label + rows).",
+        "The overlay remains readable and does not overlap key controls (date overlay, edit/close buttons) on typical mobile and desktop viewport sizes."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change font sizes in the Day Details overlay; only adjust padding/spacing and line-height.",
+    "Keep changes scoped to the Day Details overlay in the full-screen day view (non-edit mode) and do not modify immutable frontend paths."
+  ],
+  "nonGoals": [
+    "Do not change the inline editor layout, form fields, or save behavior.",
+    "Do not change backend data models or APIs."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

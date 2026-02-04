@@ -1,0 +1,37 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-04T03:47:46.082Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 1,
+    "implemented": 1,
+    "items": [
+      {
+        "id": "REQ-3",
+        "summary": "Reduce the vertical space used by the non-editing \"Day Details\" overlay in the full-screen day view by tightening vertical padding and line-height across all sections (header, rows, and measurements subsection) while keeping existing font sizes unchanged, and ensure the result looks consistently compact on both mobile and desktop.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/DayDetailView.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/DayDetailView.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/components/DayDetailView.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

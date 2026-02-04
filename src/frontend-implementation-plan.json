@@ -1,0 +1,24 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Compact Day Details overlay spacing in full-screen day view",
+  "requirements": [
+    {
+      "id": "REQ-3",
+      "summary": "Tighten non-editing Day Details overlay padding, row spacing, and line-height in the full-screen day view without changing font sizes, keeping it consistently compact on mobile and desktop.",
+      "acceptanceCriteria": [
+        "In the full-screen day view (frontend/src/components/DayDetailView.tsx), when NOT editing, the Day Details overlay uses noticeably less vertical space than before.",
+        "No typography sizes are reduced (e.g., existing text-* size classes remain the same), and the compaction is achieved via reduced padding/margins/gaps and tighter line-height.",
+        "The compaction applies to: the overlay container padding, the \"Day Details\" title spacing, the detail rows spacing, and the Measurements subsection spacing (divider + section label + rows).",
+        "The overlay remains readable and does not overlap key controls (date overlay, edit/close buttons) on typical mobile and desktop viewport sizes."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/DayDetailView.tsx",
+          "operation": "modify",
+          "description": "Adjust Tailwind classes for the non-editing \"Day Details\" overlay only: reduce container padding and internal vertical gaps/margins (title spacing, row spacing, measurements divider/label/rows), and add tighter line-height utilities (e.g., leading-tight/leading-snug) while keeping all existing text-* font size classes unchanged; ensure the overlay stays readable and does not conflict with top overlays across common mobile/desktop viewports."
+        }
+      ]
+    }
+  ]
+}

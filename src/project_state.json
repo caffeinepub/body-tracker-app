@@ -1,0 +1,312 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 16,
+  "summary": "Body Tracker is a privacy-focused fitness journaling web app built on the Internet Computer (ICP). Users authenticate with Internet Identity, create a personal profile (including preferred units), and record per-day entries containing an optional progress photo (captured in-app or uploaded), optional weight and body measurements (chest/waist/hips), and optional workout details (muscle groups and duration). The app provides a calendar to browse entries, a full-screen day photo viewer with overlays and an inline editor, a Day 1/30/90 photo comparison modal, and an analytics dashboard with weight charts (including rolling averages) plus a 90‑day workout frequency heatmap. A Motoko backend canister stores data per principal, enforces role-based access control, and includes blob-storage maintenance/admin endpoints for gateway authorization, dead-blob pruning, and cashier cycle refills.",
+  "existing_features": [
+    {
+      "id": "IF-1",
+      "title": "Internet Identity authentication with persisted delegation",
+      "synonyms": [
+        "II auth",
+        "AuthClient login",
+        "Delegation persistence"
+      ],
+      "description": "Provides an InternetIdentityProvider based on @dfinity/auth-client that restores stored identities on load, supports login via a configured identity provider and derivation origin, exposes detailed login status flags, and supports logout that clears identity state.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-2",
+      "title": "Secret token retrieval from URL hash with session persistence and URL cleanup",
+      "synonyms": [
+        "Admin token extraction",
+        "Hash secret handling",
+        "getSecretParameter"
+      ],
+      "description": "Utilities read sensitive parameters from the URL hash fragment, persist them in sessionStorage, and remove them from the URL using history.replaceState to reduce leakage (used for admin initialization token).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-3",
+      "title": "Typed backend actor creation per identity with access-control initialization",
+      "synonyms": [
+        "useActor",
+        "Actor recreation on identity change"
+      ],
+      "description": "Creates a typed canister actor using the current identity (or anonymous actor when logged out). When authenticated, calls _initializeAccessControlWithSecret and then invalidates/refetches React Query caches to keep data consistent across identity changes.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-4",
+      "title": "Role-based access control (admin/user/guest) with admin bootstrap and role assignment",
+      "synonyms": [
+        "AccessControl",
+        "Authorization mixin",
+        "assign role"
+      ],
+      "description": "Backend enforces caller roles for protected APIs. First eligible caller can become admin by providing the correct token; other new callers become users. Exposes APIs to get caller role, check admin status, and assign roles (admin-only).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-5",
+      "title": "User profile storage with unit preferences (caller CRUD)",
+      "synonyms": [
+        "UserProfile",
+        "Units preferences",
+        "Profile settings"
+      ],
+      "description": "Backend supports fetching and saving the caller’s profile (name, age, gender, preferred units). Frontend uses profile unit preferences for entry editing labels and analytics chart labeling.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-6",
+      "title": "First-login profile onboarding modal",
+      "synonyms": [
+        "ProfileSetupModal",
+        "Onboarding"
+      ],
+      "description": "When an authenticated user has no stored profile, the UI shows a modal to collect required profile fields and unit preferences, saves the profile, and provides toast feedback.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-7",
+      "title": "React Query data layer for backend operations",
+      "synonyms": [
+        "useQueries hooks",
+        "Client-side caching",
+        "Query invalidation"
+      ],
+      "description": "Encapsulates backend calls in React Query hooks for profile fetch/save, entry CRUD, weight/workout lists, and comparison image selection. Mutations invalidate relevant query keys to refresh dependent views automatically.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-8",
+      "title": "Main authenticated layout with tab navigation and footer",
+      "synonyms": [
+        "MainLayout",
+        "Calendar/Analytics/Profile tabs"
+      ],
+      "description": "Authenticated app shell with header navigation switching between Calendar, Analytics, and Profile views, plus a consistent footer. Styled using Tailwind/shadcn design tokens.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-9",
+      "title": "Calendar view with entry highlighting and modal flows",
+      "synonyms": [
+        "CalendarView",
+        "Entry markers",
+        "Date selection"
+      ],
+      "description": "Displays a monthly calendar highlighting days with existing entries. Selecting a date opens the full-screen day detail view. Includes a button to open the progress photo comparison modal.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-10",
+      "title": "Full-screen day photo viewer with date overlay and inline editor",
+      "synonyms": [
+        "DayDetailView",
+        "Immersive entry editor",
+        "Bottom-sheet editor"
+      ],
+      "description": "Shows a photo-first full-screen view for a selected date, with a formatted date label including 'days ago', top-right Edit/Close controls, navigation arrows, and an inline editor overlay for updating entry fields.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-11",
+      "title": "Always-visible Day Details overlay with explicit empty state",
+      "synonyms": [
+        "Day details block",
+        "Empty state messaging"
+      ],
+      "description": "When the day editor is not open, the Day Details overlay is always rendered. If no fields are present, it displays an explicit empty-state message ('No details yet'); otherwise it shows weight, workout details, and measurements in a consistent layout.",
+      "reqIds": [
+        "REQ-1",
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-12",
+      "title": "Day navigation via buttons, swipe gestures, and keyboard shortcuts",
+      "synonyms": [
+        "Swipe navigation",
+        "Arrow key navigation"
+      ],
+      "description": "Within the day detail view, users can navigate to adjacent days using chevron buttons, horizontal touch swipes, and keyboard shortcuts (ArrowLeft/ArrowRight/Escape).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-13",
+      "title": "Progress photo capture and upload with preview and persistence",
+      "synonyms": [
+        "Camera capture",
+        "File upload",
+        "ExternalBlob preview"
+      ],
+      "description": "Allows users to capture a photo with an in-app camera modal or upload an image file, converts bytes into an ExternalBlob, previews via a direct blob URL, and saves it as part of the daily entry.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-14",
+      "title": "Hardened camera capture UX (zoom, lens preference, PWA recovery, normalized errors)",
+      "synonyms": [
+        "useCamera",
+        "CameraCapture modal",
+        "Android Chrome PWA hardening"
+      ],
+      "description": "Implements a robust camera flow managing stream lifecycle, switching cameras, capture-to-canvas, normalized camera errors (blocking vs non-blocking), zoom capability detection and zoom selection, best-effort standard rear-lens preference, and Android Chrome installed-PWA-specific clean restart strategies for retry and switch failures.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-15",
+      "title": "Progress photo comparison modal (Day 1/30/90) with side-by-side and overlay modes",
+      "synonyms": [
+        "Before/after comparison",
+        "PhotoComparisonView"
+      ],
+      "description": "Fetches up to three entries for comparison and displays their progress photos either in a three-column side-by-side layout or an overlay mode, with messaging when photos are missing.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-16",
+      "title": "Analytics dashboard (weight charts, rolling averages, workout heatmap)",
+      "synonyms": [
+        "AnalyticsView",
+        "Weight trends",
+        "Workout frequency heatmap"
+      ],
+      "description": "Renders summary stat cards, a weight progress line chart, 7/30-day rolling averages, and a 90-day workout frequency heatmap. Uses backend-provided weight/workout lists and labels weight axis using the user’s unit preference.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-17",
+      "title": "Profile settings page with update and logout",
+      "synonyms": [
+        "ProfileView",
+        "Account settings"
+      ],
+      "description": "Allows users to view/edit profile fields (name, age, gender, unit preferences), save updates via the backend, and logout (clearing the Internet Identity session and React Query cache).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-18",
+      "title": "Backend daily entry CRUD scoped to the caller",
+      "synonyms": [
+        "DailyEntry persistence",
+        "Journal entries"
+      ],
+      "description": "Motoko canister stores daily entries per principal and supports create/update by date, fetch by date, delete by date, and list all entries (sorted by date). Entries can include optional image blobs, optional measurements, and workouts.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-19",
+      "title": "Backend analytics helper endpoints",
+      "synonyms": [
+        "getWeightEntries",
+        "getWorkoutEntries"
+      ],
+      "description": "Backend provides derived lists of weight measurements and workouts (sorted by date) for analytics visualizations in the frontend.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-20",
+      "title": "Blob-storage maintenance/admin endpoints for stored image blobs",
+      "synonyms": [
+        "Storage mixin",
+        "Dead blob pruning",
+        "Gateway authorization",
+        "Cashier refill"
+      ],
+      "description": "Backend includes blob-storage endpoints to update authorized gateway principals (via a cashier canister), check blob liveness, list dead blobs (authorized callers only), confirm deletion and trigger GC, create an upload certificate stub, and allow the cashier canister to top up cycles.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-21",
+      "title": "Forced dark theme and CSS-variable design system",
+      "synonyms": [
+        "Always-dark mode",
+        "OKLCH theme tokens",
+        "next-themes forcedTheme"
+      ],
+      "description": "Forces dark mode from initial HTML load (html class='dark') and throughout the app via next-themes ThemeProvider forcedTheme='dark'. Uses Tailwind + CSS variables (OKLCH) for consistent theming across components and charts.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-22",
+      "title": "Calendar day content dot indicator (photo and/or details)",
+      "synonyms": [
+        "Calendar dot indicator",
+        "Day tile content marker"
+      ],
+      "description": "Calendar day tiles render a consistent small dot indicator whenever that day has any saved content (progress photo and/or any non-empty day details), providing an always-visible visual cue across day states.",
+      "reqIds": [
+        "AR-1",
+        "AR-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-reduce-the-vertical-space-used-by-the-non-editing-day-details-overlay-in-the-full-screen-day-view-by-tightening-vertical-padding-and-line-height-across-all-sections-header-rows-and-measurements-subsection-while-keeping-existing-font-sizes-unchanged-and-ensure-the-result-looks-consistently-compact-on-both-mobile-and-desktop",
+      "title": "Reduce the vertical space used by the non-editing \"Day Details\" overlay in the full-screen day view by tightening vertical padding and line-height across all sections (header, rows, and measurements subsection) while keeping existing font sizes unchanged, and ensure the result looks consistently compact on both mobile and desktop.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Make the Day Details block in the full-screen day view more vertically compact (reduce vertical spacing/padding).",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "architectural_notes": [
+    "Frontend is a React SPA (Vite-style) bootstrapped in frontend/src/main.tsx using QueryClientProvider (@tanstack/react-query) and a custom InternetIdentityProvider.",
+    "Authentication uses @dfinity/auth-client with delegation persistence; the app restores identities on load and exposes granular login status flags.",
+    "Backend access is via a typed ICP canister actor created per-identity (useActor). On authenticated actor creation, the frontend calls a backend access-control initialization method that bootstraps user/admin roles.",
+    "Data access is centralized in custom React Query hooks (frontend/src/hooks/useQueries.ts) with explicit query keys and targeted invalidation on mutations.",
+    "UI is TailwindCSS + shadcn/ui components with lucide-react icons; theming uses next-themes with forced dark mode and CSS-variable (OKLCH) design tokens.",
+    "Camera capture is implemented with a custom useCamera hook wrapping getUserMedia plus a CameraCapture modal that adds normalized error mapping, zoom capability detection, lens preference heuristics, and Android Chrome PWA-specific recovery behavior.",
+    "Motoko backend composes functionality via mixins: authorization (role management) and blob-storage maintenance endpoints. Core app state is held in in-memory maps keyed by Principal.",
+    "CalendarView computes a per-day 'has content' flag (photo and/or any day details) and renders a uniform dot indicator on the corresponding calendar tiles.",
+    "Day Details compactness requirements (refining AR-1): apply to the entire Day Details block uniformly (all sub-sections/rows), affect both mobile and desktop, and achieve compactness by reducing padding and line-height (no typography size changes requested)."
+  ],
+  "known_issues": [
+    "Motoko canister state (userProfiles, userEntries, access control state, and blob-storage authorization registry) is not stored in stable variables and there are no preupgrade/postupgrade hooks; data and roles can be lost on canister upgrade.",
+    "Time conversions in the frontend are precision-risky: several places convert BigInt nanosecond timestamps to Number (e.g., Number(entry.date) / 1_000_000) and compute nanoseconds using number arithmetic (BigInt(date.getTime() * 1_000_000)), which can lose precision beyond 2^53. Prefer BigInt math (BigInt(ms) * 1_000_000n) and divide before converting to Number only when safe.",
+    "Unit modeling mismatch: backend Measurement.unit supports only #cm/#inches but is used for weight as well as body measurements. DayDetailView currently saves weight using the profile's measurement unit (cm/inches) while displaying kg/lbs, which is semantically incorrect.",
+    "ProfileView initializes local form state from userProfile only on first render; when the profile query resolves after mount, the form fields may not reflect fetched values without a synchronization effect.",
+    "Workout duration is parsed via BigInt(duration) from a text input; non-integer or malformed values can throw at runtime.",
+    "Access-control initialization traps if CAFFEINE_ADMIN_TOKEN is unset, preventing normal operation in misconfigured environments.",
+    "Blob-storage cashier principal lookup traps if CAFFFEINE_STORAGE_CASHIER_PRINCIPAL is unset; the env var name appears to have a likely typo (three 'F's) which can cause deployment/config failures.",
+    "Storage.refillCashier computes Nat.sub(currentBalance, reservedCycles); if the canister balance is below the reserved amount, this may trap (underflow) instead of gracefully topping up zero cycles.",
+    "getComparisonImages selects the first entry found within 1/30/90-day windows (and list order may be insertion-biased), rather than selecting the closest entry to the target day, which can yield unexpected comparisons.",
+    "Duplicate global CSS files exist (frontend/index.css and frontend/src/index.css); only frontend/src/index.css is imported in main.tsx, which can cause confusion or styling drift."
+  ],
+  "isFixRequest": false,
+  "gameProjectType": "none",
+  "projectName": "Body Tracker",
+  "clarification_mode": "pro",
+  "clarification_rounds": 0
+}
