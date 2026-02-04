@@ -1,37 +1,32 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T03:47:46.037Z",
-  "summary": "REQ-3 appears to be implemented (at least per the provided file summary) by making the non-edit Day Details overlay in the full-screen day view more vertically compact via spacing/line-height adjustments. However, the diff for DayDetailView.tsx is truncated before any relevant styling/markup changes are shown, so verification from direct code evidence is limited. The diff summary also indicates additional unrelated UI/behavior changes that were not requested.",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-04T10:14:03.749Z",
+  "summary": "CompareSlotHeader was redesigned with a top “Option {slotNumber}” outlined banner using distinct border colors per slot, and the second line now lays out date + clock-icon variance badge + inline “Change” button with wrapping support. Two non-requested metadata/state files were also modified.",
+  "missing_requirements": [
     {
-      "description": "CameraCapture modal: added/changed extensive PWA-specific camera permission recovery, hardened restart/switch logic, zoom initialization, lens preference detection, and additional messaging/handlers.",
-      "reason": "Not requested by the BuildRequest (which is scoped to Day Details overlay vertical compaction in non-edit mode).",
+      "id": "REQ-2",
+      "requirement": "Always show a compact clock-icon day-variance indicator inline next to the date (with the variance value secondary/tooltip), for each compare slot header.",
+      "reason": "In the updated header, the variance indicator only renders when `variance !== null`. If `variance` can be null for any slot state, the UI would omit the variance indicator entirely, which may violate the requirement/AC that the second line shows the variance indicator inline next to the date.",
       "evidence": [
-        "frontend/src/components/CameraCapture.tsx (mentioned as modified in diff summary and described in frontend-file-summaries.txt)",
-        "frontend-file-summaries.txt"
-      ]
-    },
-    {
-      "description": "DayDetailView: swapped top-right overlay buttons (Edit on left, Close on right).",
-      "reason": "Not requested; BuildRequest only asks to reduce vertical space in the non-edit Day Details overlay.",
-      "evidence": [
-        "frontend-file-summaries.txt (DayDetailView description)"
-      ]
-    },
-    {
-      "description": "DayDetailView: added/changed empty-state messaging to show \"No details yet\" when empty.",
-      "reason": "Not requested; outside the stated goal of padding/spacing/line-height compaction.",
-      "evidence": [
-        "frontend-file-summaries.txt (DayDetailView description)"
+        "frontend/src/components/compare/CompareSlotHeader.tsx (conditional render: `{variance !== null && ( ... )}`)"
       ]
     }
   ],
-  "confidence": 0.55,
+  "hallucinated_features": [
+    {
+      "description": "Updated/maintained repository metadata/state summaries unrelated to the requested header UI change.",
+      "reason": "The BuildRequest only asks for a header presentation redesign; it does not request updates to project summary/state files.",
+      "evidence": [
+        "frontend-file-summaries.txt",
+        "project_state.json"
+      ]
+    }
+  ],
+  "confidence": 0.62,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/DayDetailView.tsx",
+    "frontend/src/components/compare/CompareSlotHeader.tsx",
     "project_state.json"
   ]
 }

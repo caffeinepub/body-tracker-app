@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Camera, Upload, Save, X, Pencil } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Camera, Upload, Save, X, Pencil, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,7 @@ import type { DailyEntry, Workout } from '../backend';
 import { ExternalBlob, Variant_kg_lbs, Variant_cm_inches } from '../backend';
 import { toast } from 'sonner';
 import CameraCapture from './CameraCapture';
+import { dateToTime, resetToStartOfDay } from '../utils/time';
 
 interface DayDetailViewProps {
   date: Date;
@@ -34,7 +35,9 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  const dateTimestamp = BigInt(date.getTime() * 1000000);
+  // Normalize date to local start of day and convert to Time
+  const normalizedDate = resetToStartOfDay(date);
+  const dateTimestamp = dateToTime(normalizedDate);
   const existingEntry = entries.find((e) => e.date === dateTimestamp);
 
   useEffect(() => {
@@ -196,33 +199,40 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
   // Check if there's any data to display
   const hasData = weight || chest || waist || hips || muscleGroups || duration;
 
-  // Format date with days ago calculation
-  const formatDateWithDaysAgo = (date: Date): string => {
+  // Calculate day variance using local time
+  const getDayVariance = (date: Date): { diffDays: number; label: string } => {
     const now = new Date();
     const entryDate = new Date(date);
     
-    // Reset time to midnight for accurate day comparison
+    // Reset time to midnight for accurate day comparison (local time)
     now.setHours(0, 0, 0, 0);
     entryDate.setHours(0, 0, 0, 0);
     
     const diffTime = now.getTime() - entryDate.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
     
-    // Format date as "d MMM yyyy"
-    const formattedDate = date.toLocaleDateString('en-GB', {
+    // Format as signed day variance
+    let label: string;
+    if (diffDays === 0) {
+      label = '0d';
+    } else if (diffDays > 0) {
+      label = `-${diffDays}d`;
+    } else {
+      label = `+${Math.abs(diffDays)}d`;
+    }
+    
+    return { diffDays, label };
+  };
+
+  const { label: dayVarianceLabel } = getDayVariance(date);
+
+  // Format date without suffix
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
     });
-    
-    // Add days ago or "Today"
-    if (diffDays === 0) {
-      return `${formattedDate} (Today)`;
-    } else if (diffDays === 1) {
-      return `${formattedDate} (1 day ago)`;
-    } else {
-      return `${formattedDate} (${diffDays} days ago)`;
-    }
   };
 
   return (
@@ -250,11 +260,17 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
           </div>
         )}
 
-        {/* Date overlay - top-left */}
+        {/* Date overlay - top-left with icon and day variance */}
         <div className="absolute left-4 top-4 rounded-lg bg-black/70 px-4 py-2 text-white backdrop-blur-md">
-          <p className="text-lg font-semibold">
-            {formatDateWithDaysAgo(date)}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-semibold">
+              {formatDate(date)}
+            </p>
+            <div className="flex items-center gap-1 text-sm text-white/70">
+              <Clock className="h-3.5 w-3.5" />
+              <span className="font-medium">{dayVarianceLabel}</span>
+            </div>
+          </div>
         </div>
 
         {/* Top-right overlay buttons: Edit (left) and Close (right) */}

@@ -79,7 +79,7 @@ actor {
 
   public type Workout = {
     muscleGroups : Text;
-    duration : Nat; // minutes
+    duration : Nat;
     date : Time.Time;
   };
 
@@ -97,7 +97,7 @@ actor {
   let userProfiles = Map.empty<Principal, UserProfile>();
   let userEntries = Map.empty<Principal, List.List<DailyEntry>>();
 
-  // User profile management - Required by frontend
+  // User profile management
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can access profiles");
@@ -119,14 +119,6 @@ actor {
     userProfiles.get(user);
   };
 
-  // Legacy function for backward compatibility
-  public shared ({ caller }) func saveUserProfile(profile : UserProfile) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can save profiles");
-    };
-    userProfiles.add(caller, profile);
-  };
-
   // Daily entry CRUD operations
   public shared ({ caller }) func createOrUpdateEntry(entry : DailyEntry) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
@@ -138,7 +130,6 @@ actor {
       case (?entries) { entries };
     };
 
-    // Remove existing entry for the same date if present
     let filteredEntries = existingEntries.filter(
       func(e) {
         e.date != entry.date;
@@ -179,34 +170,55 @@ actor {
     };
   };
 
-  // Photo comparison setup (Day 1, 30, 90)
-  public query ({ caller }) func getComparisonImages() : async {
-    day1 : ?DailyEntry;
-    day30 : ?DailyEntry;
-    day90 : ?DailyEntry;
+  // New comparison logic supporting 3 arbitrary targets
+  public query ({ caller }) func getComparisonEntries(target1 : Time.Time, target2 : Time.Time, target3 : Time.Time) : async {
+    entry1 : ?DailyEntry;
+    entry2 : ?DailyEntry;
+    entry3 : ?DailyEntry;
   } {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access comparison images");
+      Runtime.trap("Unauthorized: Only users can access comparison entries");
     };
 
     switch (userEntries.get(caller)) {
       case (null) {
         {
-          day1 = null;
-          day30 = null;
-          day90 = null;
+          entry1 = null;
+          entry2 = null;
+          entry3 = null;
         };
       };
       case (?entries) {
-        let now = Time.now();
-        let day1 = entries.find(func(e) { e.date <= now and e.date > (now - 1 * 24 * 60 * 60 * 1000000000) });
-        let day30 = entries.find(func(e) { e.date <= now and e.date > (now - 30 * 24 * 60 * 60 * 1000000000) });
-        let day90 = entries.find(func(e) { e.date <= now and e.date > (now - 90 * 24 * 60 * 60 * 1000000000) });
+        let findClosest = func(target : Time.Time) : ?DailyEntry {
+          var closest : ?DailyEntry = null;
+          var closestDiff : Int = 0;
+
+          entries.forEach(
+            func(entry) {
+              if (entry.date <= target) {
+                let diff = target - entry.date;
+                switch (closest) {
+                  case (null) {
+                    closest := ?entry;
+                    closestDiff := diff;
+                  };
+                  case (?current) {
+                    if (diff < closestDiff) {
+                      closest := ?entry;
+                      closestDiff := diff;
+                    };
+                  };
+                };
+              };
+            }
+          );
+          closest;
+        };
 
         {
-          day1;
-          day30;
-          day90;
+          entry1 = findClosest(target1);
+          entry2 = findClosest(target2);
+          entry3 = findClosest(target3);
         };
       };
     };

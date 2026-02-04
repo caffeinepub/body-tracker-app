@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ImageIcon } from 'lucide-react';
 import DayDetailView from './DayDetailView';
 import PhotoComparisonView from './PhotoComparisonView';
+import { timeToDate } from '../utils/time';
 
 export default function CalendarView() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
@@ -14,7 +15,7 @@ export default function CalendarView() {
 
   const entriesMap = new Map(
     entries.map((entry) => [
-      new Date(Number(entry.date) / 1000000).toDateString(),
+      timeToDate(entry.date).toDateString(),
       entry,
     ])
   );

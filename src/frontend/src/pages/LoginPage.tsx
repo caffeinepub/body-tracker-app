@@ -20,7 +20,7 @@ export default function LoginPage() {
                   <TrendingUp className="h-10 w-10 text-white" />
                 </div>
                 <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Body Tracker
+                  physiq
                 </h1>
               </div>
 

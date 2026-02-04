@@ -30,7 +30,16 @@ export default function App() {
     return (
       <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
         <LoginPage />
-        <Toaster />
+        <Toaster 
+          theme="dark"
+          toastOptions={{
+            style: {
+              background: 'oklch(var(--card))',
+              color: 'oklch(var(--card-foreground))',
+              border: '1px solid oklch(var(--border))',
+            },
+          }}
+        />
       </ThemeProvider>
     );
   }
@@ -39,7 +48,16 @@ export default function App() {
     <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
       {showProfileSetup && <ProfileSetupModal />}
       <MainLayout />
-      <Toaster />
+      <Toaster 
+        theme="dark"
+        toastOptions={{
+          style: {
+            background: 'oklch(var(--card))',
+            color: 'oklch(var(--card-foreground))',
+            border: '1px solid oklch(var(--border))',
+          },
+        }}
+      />
     </ThemeProvider>
   );
 }

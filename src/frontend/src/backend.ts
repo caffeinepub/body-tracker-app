@@ -167,10 +167,10 @@ export interface backendInterface {
     getAllEntries(): Promise<Array<DailyEntry>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
-    getComparisonImages(): Promise<{
-        day1?: DailyEntry;
-        day30?: DailyEntry;
-        day90?: DailyEntry;
+    getComparisonEntries(target1: Time, target2: Time, target3: Time): Promise<{
+        entry1?: DailyEntry;
+        entry2?: DailyEntry;
+        entry3?: DailyEntry;
     }>;
     getEntryByDate(date: Time): Promise<DailyEntry | null>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
@@ -178,7 +178,6 @@ export interface backendInterface {
     getWorkoutEntries(): Promise<Array<Workout>>;
     isCallerAdmin(): Promise<boolean>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
-    saveUserProfile(profile: UserProfile): Promise<void>;
 }
 import type { DailyEntry as _DailyEntry, ExternalBlob as _ExternalBlob, Gender as _Gender, Measurement as _Measurement, Time as _Time, Units as _Units, UserProfile as _UserProfile, UserRole as _UserRole, Workout as _Workout, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
@@ -365,21 +364,21 @@ export class Backend implements backendInterface {
             return from_candid_UserRole_n33(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getComparisonImages(): Promise<{
-        day1?: DailyEntry;
-        day30?: DailyEntry;
-        day90?: DailyEntry;
+    async getComparisonEntries(arg0: Time, arg1: Time, arg2: Time): Promise<{
+        entry1?: DailyEntry;
+        entry2?: DailyEntry;
+        entry3?: DailyEntry;
     }> {
         if (this.processError) {
             try {
-                const result = await this.actor.getComparisonImages();
+                const result = await this.actor.getComparisonEntries(arg0, arg1, arg2);
                 return from_candid_record_n35(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getComparisonImages();
+            const result = await this.actor.getComparisonEntries(arg0, arg1, arg2);
             return from_candid_record_n35(this._uploadFile, this._downloadFile, result);
         }
     }
@@ -464,20 +463,6 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.saveCallerUserProfile(to_candid_UserProfile_n38(this._uploadFile, this._downloadFile, arg0));
-            return result;
-        }
-    }
-    async saveUserProfile(arg0: UserProfile): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.saveUserProfile(to_candid_UserProfile_n38(this._uploadFile, this._downloadFile, arg0));
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.saveUserProfile(to_candid_UserProfile_n38(this._uploadFile, this._downloadFile, arg0));
             return result;
         }
     }
@@ -609,18 +594,18 @@ function from_candid_record_n31(_uploadFile: (file: ExternalBlob) => Promise<Uin
     };
 }
 async function from_candid_record_n35(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    day1: [] | [_DailyEntry];
-    day30: [] | [_DailyEntry];
-    day90: [] | [_DailyEntry];
+    entry1: [] | [_DailyEntry];
+    entry2: [] | [_DailyEntry];
+    entry3: [] | [_DailyEntry];
 }): Promise<{
-    day1?: DailyEntry;
-    day30?: DailyEntry;
-    day90?: DailyEntry;
+    entry1?: DailyEntry;
+    entry2?: DailyEntry;
+    entry3?: DailyEntry;
 }> {
     return {
-        day1: record_opt_to_undefined(await from_candid_opt_n36(_uploadFile, _downloadFile, value.day1)),
-        day30: record_opt_to_undefined(await from_candid_opt_n36(_uploadFile, _downloadFile, value.day30)),
-        day90: record_opt_to_undefined(await from_candid_opt_n36(_uploadFile, _downloadFile, value.day90))
+        entry1: record_opt_to_undefined(await from_candid_opt_n36(_uploadFile, _downloadFile, value.entry1)),
+        entry2: record_opt_to_undefined(await from_candid_opt_n36(_uploadFile, _downloadFile, value.entry2)),
+        entry3: record_opt_to_undefined(await from_candid_opt_n36(_uploadFile, _downloadFile, value.entry3))
     };
 }
 function from_candid_record_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {

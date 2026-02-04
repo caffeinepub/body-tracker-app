@@ -56,7 +56,7 @@ export default function ProfileSetupModal() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <Card className="w-full max-w-md p-6">
         <h2 className="mb-6 text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Welcome to Body Tracker!
+          Welcome to physiq!
         </h2>
         <p className="mb-6 text-center text-muted-foreground">
           Let's set up your profile to get started

@@ -1,37 +1,75 @@
 {
   "kind": "build_request",
-  "title": "Make the Day Details overlay more vertically compact in the full-screen day view",
+  "title": "Redesign Progress Comparison slot headers (Option banner + inline date/variance + Change button)",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-3",
-      "text": "Reduce the vertical space used by the non-editing \"Day Details\" overlay in the full-screen day view by tightening vertical padding and line-height across all sections (header, rows, and measurements subsection) while keeping existing font sizes unchanged, and ensure the result looks consistently compact on both mobile and desktop.",
+      "id": "REQ-1",
+      "text": "Update the Progress Comparison slot header UI (the component used for each of the three compare slots) so the first element is a full-width top banner that reads “Option 1”, “Option 2”, or “Option 3” (matching the slot number), with each option having a harmonious but distinct outline color; keep the design aligned with the existing forced dark theme and design tokens.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4",
-          "msg-5"
+          "msg-5",
+          "msg-7"
         ],
         "quotes": [
-          "The day details block can be a bit more vertically compact",
-          "1. All of it\n2. Both\n3. Just less padding and line height"
+          "The option number (1,2,3) should be first with words e.g. Option 1, Option 2, Option 3, it must be a banner at the top of the header each with a unique outline colour",
+          "1. Harmonious"
         ]
       },
       "acceptanceCriteria": [
-        "In the full-screen day view (frontend/src/components/DayDetailView.tsx), when NOT editing, the Day Details overlay uses noticeably less vertical space than before.",
-        "No typography sizes are reduced (e.g., existing text-* size classes remain the same), and the compaction is achieved via reduced padding/margins/gaps and tighter line-height.",
-        "The compaction applies to: the overlay container padding, the \"Day Details\" title spacing, the detail rows spacing, and the Measurements subsection spacing (divider + section label + rows).",
-        "The overlay remains readable and does not overlap key controls (date overlay, edit/close buttons) on typical mobile and desktop viewport sizes."
+        "Each compare slot header displays a full-width banner at the top that says exactly “Option 1”, “Option 2”, or “Option 3”.",
+        "The banner uses an outline (not fill) and Option 1/2/3 each has a distinct, visually harmonious outline color.",
+        "The updated banner styling does not break readability/contrast in the app’s forced dark theme."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Redesign the second line of each compare slot header to show the selected date and an auto-calculated day-variance indicator inline next to the date; the day-variance indicator must be icon-first with a clock icon and presented primarily as an icon/badge (option b), with the variance value revealed via tooltip or secondary text styling rather than being the primary large label.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5",
+          "msg-7"
+        ],
+        "quotes": [
+          "next line should be the date, next to it should be the auto calc value in a different colour or maybe as an icon with a background and also include a clock icon infront of it.",
+          "2. b"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The second line shows the formatted selected date and a compact clock-icon variance indicator inline next to it.",
+        "The variance indicator is styled as a badge/pill with its own background or contrasting styling consistent with existing tokens.",
+        "The variance value is not presented as the primary large text; it is revealed via a tooltip or clearly secondary text styling."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Place the “Change” button on the same row as the date + variance indicator within each compare slot header, aligned inline (not on a separate line).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5",
+          "msg-7"
+        ],
+        "quotes": [
+          "Inline then should be the Change Button",
+          "3. Same row"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The “Change” button is on the same row as the date and variance indicator in each slot header.",
+        "The layout remains stable and readable across common viewport sizes (no overlapping; sensible wrapping if needed)."
       ]
     }
   ],
   "constraints": [
-    "Do not change font sizes in the Day Details overlay; only adjust padding/spacing and line-height.",
-    "Keep changes scoped to the Day Details overlay in the full-screen day view (non-edit mode) and do not modify immutable frontend paths."
+    "Do not modify any files under frontend/src/components/ui (Shadcn components must be composed, not edited).",
+    "Do not modify files in frontend.immutablePaths as defined by SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Do not change the inline editor layout, form fields, or save behavior.",
-    "Do not change backend data models or APIs."
+    "No backend/canister API changes.",
+    "No changes to comparison slot selection logic or how variance is computed; only update the header presentation."
   ],
   "imageRequirements": {
     "required": [],

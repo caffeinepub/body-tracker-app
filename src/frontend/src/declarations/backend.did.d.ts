@@ -84,12 +84,12 @@ export interface _SERVICE {
   'getAllEntries' : ActorMethod<[], Array<DailyEntry>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
-  'getComparisonImages' : ActorMethod<
-    [],
+  'getComparisonEntries' : ActorMethod<
+    [Time, Time, Time],
     {
-      'day1' : [] | [DailyEntry],
-      'day30' : [] | [DailyEntry],
-      'day90' : [] | [DailyEntry],
+      'entry1' : [] | [DailyEntry],
+      'entry2' : [] | [DailyEntry],
+      'entry3' : [] | [DailyEntry],
     }
   >,
   'getEntryByDate' : ActorMethod<[Time], [] | [DailyEntry]>,
@@ -98,7 +98,6 @@ export interface _SERVICE {
   'getWorkoutEntries' : ActorMethod<[], Array<Workout>>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
-  'saveUserProfile' : ActorMethod<[UserProfile], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

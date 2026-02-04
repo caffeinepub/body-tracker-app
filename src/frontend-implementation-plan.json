@@ -1,22 +1,52 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Compact Day Details overlay spacing in full-screen day view",
+  "title": "Progress Comparison slot header redesign (Option banner + inline date/variance + Change button)",
   "requirements": [
     {
-      "id": "REQ-3",
-      "summary": "Tighten non-editing Day Details overlay padding, row spacing, and line-height in the full-screen day view without changing font sizes, keeping it consistently compact on mobile and desktop.",
+      "id": "REQ-1",
+      "summary": "Redesign each compare slot header to start with a full-width top banner reading “Option 1/2/3”, using harmonious but distinct outline colors aligned to existing dark theme tokens.",
       "acceptanceCriteria": [
-        "In the full-screen day view (frontend/src/components/DayDetailView.tsx), when NOT editing, the Day Details overlay uses noticeably less vertical space than before.",
-        "No typography sizes are reduced (e.g., existing text-* size classes remain the same), and the compaction is achieved via reduced padding/margins/gaps and tighter line-height.",
-        "The compaction applies to: the overlay container padding, the \"Day Details\" title spacing, the detail rows spacing, and the Measurements subsection spacing (divider + section label + rows).",
-        "The overlay remains readable and does not overlap key controls (date overlay, edit/close buttons) on typical mobile and desktop viewport sizes."
+        "Each compare slot header displays a full-width banner at the top that says exactly “Option 1”, “Option 2”, or “Option 3”.",
+        "The banner uses an outline (not fill) and Option 1/2/3 each has a distinct, visually harmonious outline color.",
+        "The updated banner styling does not break readability/contrast in the app’s forced dark theme."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/DayDetailView.tsx",
+          "path": "frontend/src/components/compare/CompareSlotHeader.tsx",
           "operation": "modify",
-          "description": "Adjust Tailwind classes for the non-editing \"Day Details\" overlay only: reduce container padding and internal vertical gaps/margins (title spacing, row spacing, measurements divider/label/rows), and add tighter line-height utilities (e.g., leading-tight/leading-snug) while keeping all existing text-* font size classes unchanged; ensure the overlay stays readable and does not conflict with top overlays across common mobile/desktop viewports."
+          "description": "Update the header layout so the first element is a full-width top banner labeled exactly “Option {slotNumber}”. Use existing design tokens and Tailwind theme colors for outline-only styling (e.g., distinct border colors per slot using token-backed classes). Compose with existing shadcn-ui Button/Badge components (do not edit any files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Redesign the second line to show selected date with an inline, icon-first variance badge; variance value should be secondary and revealed via tooltip or secondary styling.",
+      "acceptanceCriteria": [
+        "The second line shows the formatted selected date and a compact clock-icon variance indicator inline next to it.",
+        "The variance indicator is styled as a badge/pill with its own background or contrasting styling consistent with existing tokens.",
+        "The variance value is not presented as the primary large text; it is revealed via a tooltip or clearly secondary text styling."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/compare/CompareSlotHeader.tsx",
+          "operation": "modify",
+          "description": "Change the date/variance presentation to a single inline row where the date is primary and the variance indicator is a compact pill/badge that is icon-first (Clock). Make the variance value visually secondary (e.g., smaller, muted) and reveal the full variance meaning via a tooltip mechanism (native title attribute or an existing shadcn tooltip component if already available—without modifying ui components). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Place the “Change” button inline on the same row as the date and variance indicator within each compare slot header.",
+      "acceptanceCriteria": [
+        "The “Change” button is on the same row as the date and variance indicator in each slot header.",
+        "The layout remains stable and readable across common viewport sizes (no overlapping; sensible wrapping if needed)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/compare/CompareSlotHeader.tsx",
+          "operation": "modify",
+          "description": "Adjust the header’s flex layout so the “Change” button is inline on the same row as the date + variance indicator (not on a separate line), with responsive wrapping behavior that avoids overlap at narrow widths. Keep using composed shadcn-ui Button styles and avoid editing frontend/src/components/ui. Verify the component's usage instructions before implementing."
         }
       ]
     }

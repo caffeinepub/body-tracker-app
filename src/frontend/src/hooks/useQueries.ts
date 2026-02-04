@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import type { UserProfile, DailyEntry, Measurement, Workout } from '../backend';
+import type { UserProfile, DailyEntry, Measurement, Workout, Time } from '../backend';
 
 export function useGetCallerUserProfile() {
   const { actor, isFetching: actorFetching } = useActor();
@@ -123,18 +123,21 @@ export function useGetWorkoutEntries() {
   });
 }
 
-export function useGetComparisonImages() {
+/**
+ * Parameterized comparison query that accepts three target dates
+ */
+export function useGetComparisonEntries(target1: Time, target2: Time, target3: Time) {
   const { actor, isFetching } = useActor();
 
   return useQuery<{
-    day1?: DailyEntry;
-    day30?: DailyEntry;
-    day90?: DailyEntry;
+    entry1?: DailyEntry;
+    entry2?: DailyEntry;
+    entry3?: DailyEntry;
   }>({
-    queryKey: ['comparisonImages'],
+    queryKey: ['comparisonImages', target1.toString(), target2.toString(), target3.toString()],
     queryFn: async () => {
-      if (!actor) return { day1: undefined, day30: undefined, day90: undefined };
-      return actor.getComparisonImages();
+      if (!actor) return { entry1: undefined, entry2: undefined, entry3: undefined };
+      return actor.getComparisonEntries(target1, target2, target3);
     },
     enabled: !!actor && !isFetching,
   });

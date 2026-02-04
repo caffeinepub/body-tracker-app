@@ -95,13 +95,13 @@ export const idlService = IDL.Service({
   'getAllEntries' : IDL.Func([], [IDL.Vec(DailyEntry)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
-  'getComparisonImages' : IDL.Func(
-      [],
+  'getComparisonEntries' : IDL.Func(
+      [Time, Time, Time],
       [
         IDL.Record({
-          'day1' : IDL.Opt(DailyEntry),
-          'day30' : IDL.Opt(DailyEntry),
-          'day90' : IDL.Opt(DailyEntry),
+          'entry1' : IDL.Opt(DailyEntry),
+          'entry2' : IDL.Opt(DailyEntry),
+          'entry3' : IDL.Opt(DailyEntry),
         }),
       ],
       ['query'],
@@ -116,7 +116,6 @@ export const idlService = IDL.Service({
   'getWorkoutEntries' : IDL.Func([], [IDL.Vec(Workout)], ['query']),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
-  'saveUserProfile' : IDL.Func([UserProfile], [], []),
 });
 
 export const idlInitArgs = [];
@@ -209,13 +208,13 @@ export const idlFactory = ({ IDL }) => {
     'getAllEntries' : IDL.Func([], [IDL.Vec(DailyEntry)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
-    'getComparisonImages' : IDL.Func(
-        [],
+    'getComparisonEntries' : IDL.Func(
+        [Time, Time, Time],
         [
           IDL.Record({
-            'day1' : IDL.Opt(DailyEntry),
-            'day30' : IDL.Opt(DailyEntry),
-            'day90' : IDL.Opt(DailyEntry),
+            'entry1' : IDL.Opt(DailyEntry),
+            'entry2' : IDL.Opt(DailyEntry),
+            'entry3' : IDL.Opt(DailyEntry),
           }),
         ],
         ['query'],
@@ -230,7 +229,6 @@ export const idlFactory = ({ IDL }) => {
     'getWorkoutEntries' : IDL.Func([], [IDL.Vec(Workout)], ['query']),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
-    'saveUserProfile' : IDL.Func([UserProfile], [], []),
   });
 };
 

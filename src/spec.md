@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Make the non-editing “Day Details” overlay in the full-screen day view more vertically compact without changing any font sizes.
+**Goal:** Refresh the Progress Comparison compare-slot header UI to use an “Option X” top banner and a more compact inline date + variance + Change layout that fits the forced dark theme.
 
 **Planned changes:**
-- Tighten vertical padding/margins/gaps in the Day Details overlay container, title area, and detail rows in the full-screen day view when not editing.
-- Reduce line-height in Day Details overlay text to achieve a denser layout while keeping existing text size classes unchanged.
-- Compact the Measurements subsection spacing (divider, section label, and rows) while ensuring the overlay remains readable and does not overlap key controls on mobile or desktop.
+- Update each compare slot header to start with a full-width top banner reading exactly “Option 1”, “Option 2”, or “Option 3”, using an outline-only style with distinct but harmonious outline colors per option, aligned to existing dark-theme tokens.
+- Redesign the header’s second line to show the selected date with an inline, clock-icon-first variance indicator styled as a compact badge/pill; keep the variance value secondary (via tooltip or clearly secondary text styling).
+- Move the “Change” button onto the same row as the date and variance indicator, ensuring stable, readable layout with sensible wrapping across common viewport sizes.
 
-**User-visible outcome:** In the full-screen day view (non-edit mode), the Day Details overlay takes up noticeably less vertical space and looks consistently compact on both mobile and desktop, without smaller text.
+**User-visible outcome:** Each of the three comparison slots shows a clear “Option 1/2/3” banner at the top, with the date, a compact clock variance badge, and the Change button aligned inline on the next row without hurting dark-theme readability.

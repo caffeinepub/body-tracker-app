@@ -74,10 +74,10 @@ export interface backendInterface {
     getAllEntries(): Promise<Array<DailyEntry>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
-    getComparisonImages(): Promise<{
-        day1?: DailyEntry;
-        day30?: DailyEntry;
-        day90?: DailyEntry;
+    getComparisonEntries(target1: Time, target2: Time, target3: Time): Promise<{
+        entry1?: DailyEntry;
+        entry2?: DailyEntry;
+        entry3?: DailyEntry;
     }>;
     getEntryByDate(date: Time): Promise<DailyEntry | null>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
@@ -85,5 +85,4 @@ export interface backendInterface {
     getWorkoutEntries(): Promise<Array<Workout>>;
     isCallerAdmin(): Promise<boolean>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
-    saveUserProfile(profile: UserProfile): Promise<void>;
 }
