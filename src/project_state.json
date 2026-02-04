@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 12,
-  "summary": "physiq is a privacy-focused body transformation tracker built as a React single-page app backed by a Motoko canister on the Internet Computer (ICP). Users authenticate with Internet Identity, set up a personal profile (including preferred units), and record per-day entries containing an optional progress photo (captured in-app or uploaded), optional weight and body measurements (chest/waist/hips), and optional workout logging (muscle groups + duration). The UI is calendar-driven (with indicators for days that have saved content), supports an immersive full-screen day viewer/editor with swipe/keyboard navigation, provides a three-slot progress photo comparison modal with selectable dates and day-variance indicators, and includes an analytics dashboard with weight trend charts (including rolling averages) and a 90-day workout frequency heatmap. The backend enforces role-based access control bootstrapped by an admin token and includes Caffeine blob-storage maintenance/admin endpoints.",
+  "projectStateVersion": 11,
+  "summary": "physiq is a privacy-focused body transformation tracker built as a React + TypeScript single-page app backed by a Motoko canister on the Internet Computer (ICP). Users authenticate with Internet Identity, create and manage a personal profile (including unit preferences), and record per-day entries containing an optional progress photo (captured in-app or uploaded), optional weight and body measurements (chest/waist/hips), and optional workout logs (muscle groups + duration). The UI is calendar-driven with indicators for days that have saved content, includes an immersive full-screen day viewer/editor with swipe/keyboard navigation and Today-relative day variance, provides a three-slot progress photo comparison experience with per-slot date pickers and defaults (60 days back, 90 days back, today), and includes an analytics dashboard with weight trend charts (plus 7/30-day rolling averages) and a 90-day workout frequency heatmap. The backend enforces role-based access control bootstrapped via an admin token and includes Caffeine blob-storage maintenance/admin endpoints.",
   "existing_features": [
     {
       "id": "IF-1",
@@ -17,12 +17,12 @@
     },
     {
       "id": "IF-2",
-      "title": "Authenticated app gating with loading states",
+      "title": "Branded login/landing page with secure sign-in CTA",
       "synonyms": [
-        "Auth gate",
-        "Initialization spinner"
+        "LoginPage",
+        "Sign in screen"
       ],
-      "description": "Root App gates rendering based on authentication/initialization and profile fetch readiness, showing a loading spinner during initialization and a dedicated login page when unauthenticated.",
+      "description": "Displays a marketing-style landing page with feature highlights and a single Internet Identity login button with loading state.",
       "reqIds": [],
       "version": 1
     },
@@ -45,7 +45,7 @@
         "useActor",
         "Actor recreation on identity change"
       ],
-      "description": "Creates a typed ICP canister actor using the current identity (or an anonymous actor when logged out). On authenticated actor creation, initializes backend access control with the provided secret and then invalidates/refetches React Query caches.",
+      "description": "Creates a typed ICP canister actor using the current identity (or an anonymous actor when logged out). On authenticated actor creation, calls backend access-control initialization using a provided secret and then invalidates/refetches React Query caches.",
       "reqIds": [],
       "version": 1
     },
@@ -57,199 +57,172 @@
         "Client-side caching",
         "Query invalidation"
       ],
-      "description": "Encapsulates backend calls in React Query hooks for profile fetch/save, daily entry CRUD/listing, weight/workout lists for analytics, and a parameterized 3-target comparison query. Mutations invalidate relevant query keys to keep views consistent.",
+      "description": "Encapsulates backend calls in React Query hooks for profile fetch/save, daily entry CRUD/listing, derived weight/workout lists for analytics, and a parameterized three-target comparison query. Mutations invalidate relevant query keys to keep views consistent.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-6",
-      "title": "First-login profile onboarding modal",
+      "title": "Forced dark theme with global toast notifications",
       "synonyms": [
-        "ProfileSetupModal",
-        "Onboarding"
+        "ThemeProvider dark",
+        "Sonner toaster"
       ],
-      "description": "When an authenticated user has no stored profile, shows a modal to collect basic info and unit preferences, validates required fields, saves the profile, and provides toast feedback.",
+      "description": "Forces dark mode via next-themes across all app states and configures Sonner toasts with OKLCH token-based styling.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-7",
-      "title": "Profile settings view (edit + save + logout)",
+      "title": "First-login profile onboarding modal",
       "synonyms": [
-        "ProfileView",
-        "Account settings"
+        "ProfileSetupModal",
+        "Onboarding"
       ],
-      "description": "Allows users to view/edit profile fields and unit preferences, save updates via the backend, and logout (clearing Internet Identity session and React Query cache) with toast feedback.",
+      "description": "When an authenticated user has no stored profile, displays a modal to collect name/age/gender and unit preferences, then persists the profile via the backend with toast feedback.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-8",
-      "title": "Main layout with header navigation and About back-stack",
+      "title": "Profile settings view (edit + save + logout)",
       "synonyms": [
-        "MainLayout",
-        "View switching"
+        "ProfileView",
+        "Account settings"
       ],
-      "description": "Provides a consistent authenticated layout with header navigation between calendar, analytics, profile, and about views, preserving the previous view when entering/exiting About.",
+      "description": "Allows users to edit profile fields and unit preferences, save updates, and logout (clearing the Internet Identity session and React Query cache) with toast feedback.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-9",
-      "title": "About view",
+      "title": "Main layout with header navigation and About back-stack behavior",
       "synonyms": [
-        "AboutView",
-        "Info page"
+        "MainLayout",
+        "View switching"
       ],
-      "description": "Displays an in-app About page describing physiq’s purpose and key features, with a Back action to return to the previous view.",
+      "description": "Provides an authenticated layout with header navigation between calendar, analytics, profile, and about views, preserving the prior view when entering/exiting About.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-10",
-      "title": "Calendar view with saved-content indicators and day selection",
+      "title": "About view",
       "synonyms": [
-        "CalendarView",
-        "Entry markers",
-        "Day tile dot indicator"
+        "AboutView",
+        "Info page"
       ],
-      "description": "Shows a monthly calendar, marks days with any saved content (photo, measurements, workouts), opens the full-screen Day Detail view on date selection, and can launch the Compare Progress modal.",
+      "description": "Displays in-app informational content describing the app’s purpose and key capabilities, with a Back action to return to the previous view.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-11",
-      "title": "Full-screen day photo viewer with overlays and inline editor",
+      "title": "Calendar journey view with saved-content indicators and day selection",
       "synonyms": [
-        "DayDetailView",
-        "Immersive entry editor",
-        "Bottom-sheet editor"
+        "CalendarView",
+        "Entry markers",
+        "Day tile dot indicator"
       ],
-      "description": "Displays a photo-first full-screen view for a selected date with date + compact day-variance indicator overlay, Edit/Close controls, navigation arrows, and an inline editor for updating entry fields.",
+      "description": "Shows a monthly calendar, marks days with any saved content (photo/measurements/workouts), opens a day detail view on selection, and can launch the progress comparison modal.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-12",
-      "title": "Day navigation via buttons, swipe gestures, and keyboard shortcuts",
+      "title": "Full-screen day photo viewer with overlays and compact day details",
       "synonyms": [
-        "Swipe navigation",
-        "Arrow key navigation"
+        "DayDetailView",
+        "Immersive entry viewer"
       ],
-      "description": "Within the day detail view, users can navigate adjacent days using chevrons, horizontal touch swipes, and keyboard shortcuts (ArrowLeft/ArrowRight/Escape).",
+      "description": "Displays a photo-first full-screen view for a selected date with overlays (formatted date plus Today-relative day variance label) and a compact details panel showing logged measurements and workout info.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-13",
-      "title": "Daily entry editing for measurements and workouts",
+      "title": "Day navigation via buttons, swipe gestures, and keyboard shortcuts",
       "synonyms": [
-        "Entry editor",
-        "Measurements logging",
-        "Workout logging"
+        "Swipe navigation",
+        "Arrow key navigation"
       ],
-      "description": "Supports setting optional weight, chest/waist/hips measurements, and workout info (muscle groups and duration) for a selected date and persists them as a daily entry record.",
+      "description": "Within the day detail view, users can navigate adjacent days via chevrons, horizontal touch swipes, and keyboard shortcuts (ArrowLeft/ArrowRight/Escape).",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-14",
-      "title": "Progress photo capture for daily entries",
+      "title": "Inline day entry editor for measurements, workouts, and photos",
       "synonyms": [
-        "Camera capture",
-        "In-app camera",
-        "ExternalBlob preview"
+        "Entry editor",
+        "Bottom-sheet editor"
       ],
-      "description": "Allows capturing a photo in-app, converts it into an ExternalBlob, previews via a direct blob URL, and saves it as part of the daily entry.",
+      "description": "Provides an inline editor overlay for setting optional weight/chest/waist/hips measurements, optional workout info, and photo actions; persists as a daily entry via createOrUpdateEntry.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-15",
-      "title": "Progress photo upload for daily entries",
+      "title": "In-app camera capture modal with zoom, lens preference, and PWA recovery handling",
       "synonyms": [
-        "File upload",
-        "Image import"
+        "CameraCapture",
+        "useCamera",
+        "Hardened camera UX"
       ],
-      "description": "Allows uploading an image file, converts it into an ExternalBlob, previews via a direct blob URL, and saves it as part of the daily entry.",
+      "description": "Implements camera start/stop lifecycle with cleanup, capture-to-canvas, facing-mode switching, retry flows, defensive zoom initialization, lens preference heuristics, normalized errors, and Android Chrome PWA-specific recovery guidance/restarts.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-16",
-      "title": "Reusable camera hook (stream lifecycle, capture, switching, retry)",
+      "title": "Progress photo upload for daily entries",
       "synonyms": [
-        "useCamera",
-        "getUserMedia wrapper"
+        "File upload",
+        "Image import"
       ],
-      "description": "Implements camera start/stop with cleanup, facing-mode switching, retry flow, and capture-to-canvas producing an image File with configurable size/quality/format.",
+      "description": "Allows uploading an image file, converts it to an ExternalBlob from bytes, previews via a direct blob URL, and saves it as part of the daily entry.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-17",
-      "title": "Hardened camera capture UX (zoom, lens preference, PWA recovery, error normalization)",
-      "synonyms": [
-        "CameraCapture modal",
-        "normalizeCameraError",
-        "applyStandardLensPreference",
-        "Android Chrome PWA handling"
-      ],
-      "description": "Adds robust camera UX including zoom capability detection/selection, best-effort rear-lens preference heuristics, normalized error messages with blocking/non-blocking behavior, and Android Chrome installed-PWA-specific cleanup/restart strategies with permission guidance.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-18",
-      "title": "Time/date utilities for nanosecond timestamps and day variance/offset formatting",
-      "synonyms": [
-        "dateToTime",
-        "timeToDate",
-        "resetToStartOfDay",
-        "calculateDayVariance",
-        "calculateDayOffsetFromToday"
-      ],
-      "description": "Provides BigInt-safe Date↔Time (ns) conversion, local start-of-day normalization, day-variance computation, and compact signed formatting for variances and offsets used across the UI.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-19",
-      "title": "Progress comparison modal with 3 slots and side-by-side/overlay modes",
+      "title": "Progress comparison modal with three selectable targets and side-by-side/overlay modes",
       "synonyms": [
         "PhotoComparisonView",
         "Milestone comparison",
         "Overlay comparison"
       ],
-      "description": "Compares up to three progress photos using three independently selectable target dates, supporting a three-column side-by-side view and an overlay mode for visual comparison.",
+      "description": "Compares up to three progress photos using three independently selectable target dates, supporting a three-column side-by-side view, an overlay mode, and an inline calendar picker flow for selecting slot dates.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-18",
+      "title": "Default Compare Progress slot dates (60d back / 90d back / today) with per-slot overrides",
+      "synonyms": [
+        "Compare defaults",
+        "Three-slot default targets"
+      ],
+      "description": "On first opening the comparison view, initializes slot targets to 60 days back (Option 1), 90 days back (Option 2), and today (Option 3), while preserving the existing per-slot date override behavior via the date picker.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-19",
+      "title": "Comparison slot header UI with visible Today-relative variance indicator",
+      "synonyms": [
+        "CompareSlotHeader",
+        "Option banner",
+        "Variance badge"
+      ],
+      "description": "Renders each comparison slot header with an 'Option N' banner, selected date text, and an always-visible clock-icon variance badge (e.g. “-30d”, “0d”, “+5d”) computed relative to Today, plus an inline Change button to open a calendar.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-20",
-      "title": "Comparison slot headers with numbered badge and dynamic day-offset labels",
-      "synonyms": [
-        "CompareSlotHeader",
-        "Slot 1/2/3 labels",
-        "Dynamic offset label"
-      ],
-      "description": "Renders each comparison slot header with a numeric badge (1/2/3), a compact day-offset label relative to today (e.g., -30d/0d/+5d), a prominent variance indicator (relative to the closest actual entry), selected date text, and an inline calendar button.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-21",
-      "title": "In-modal date selection for comparison slots (single-frame calendar picker)",
-      "synonyms": [
-        "Inline calendar picker",
-        "No nested modal date picker"
-      ],
-      "description": "Slot date changes are handled by switching the comparison modal content into a calendar picker view with back navigation (activeCalendarSlot) rather than opening nested dialogs.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-22",
       "title": "Analytics dashboard with weight charts, rolling averages, and workout heatmap",
       "synonyms": [
         "AnalyticsView",
@@ -261,63 +234,76 @@
       "version": 1
     },
     {
-      "id": "IF-23",
-      "title": "Role-based access control with admin bootstrap token",
+      "id": "IF-21",
+      "title": "Time/date utilities for nanosecond timestamps and day offset/variance formatting",
+      "synonyms": [
+        "dateToTime",
+        "timeToDate",
+        "resetToStartOfDay",
+        "calculateDayOffsetFromToday"
+      ],
+      "description": "Provides BigInt-safe Date↔Time (ns) conversion, local start-of-day normalization, and day variance/offset computations and compact formatting used across calendar, day detail, and comparison views.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-22",
+      "title": "Backend role-based access control with admin bootstrap token",
       "synonyms": [
         "AccessControl",
         "Authorization mixin",
         "Admin bootstrap"
       ],
-      "description": "Backend assigns roles per principal; the first eligible caller can become admin by providing the correct token, others become users. Exposes APIs to query role, check admin status, and assign roles (admin-only).",
+      "description": "Motoko access-control layer assigns roles per principal; the first eligible caller can become admin by providing the correct token, others become users. Exposes APIs to query role, check admin status, and assign roles (admin-only).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-23",
+      "title": "Backend caller-scoped user profile storage",
+      "synonyms": [
+        "UserProfile CRUD",
+        "Units preferences"
+      ],
+      "description": "Motoko backend supports fetching and saving the caller’s profile with permission checks; admins can query other users’ profiles via a dedicated endpoint.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-24",
-      "title": "Caller-scoped user profile storage with permission checks",
+      "title": "Backend caller-scoped daily entry CRUD and listing",
       "synonyms": [
-        "UserProfile CRUD",
-        "Units preferences"
+        "DailyEntry persistence",
+        "Journal entries"
       ],
-      "description": "Backend supports fetching and saving the caller’s profile (name, age, gender, units) with role-based permission checks; also supports admin/self reads of arbitrary principals.",
+      "description": "Motoko backend stores daily entries per principal and supports create/update by date, fetch by date, delete by date, and list all entries sorted by date. Entries include optional image, measurements, and workouts.",
       "reqIds": [],
       "version": 1
     },
     {
       "id": "IF-25",
-      "title": "Caller-scoped daily entry CRUD and listing",
-      "synonyms": [
-        "DailyEntry persistence",
-        "Journal entries"
-      ],
-      "description": "Backend stores daily entries per principal and supports create/update by date, fetch by date, delete by date, and list all entries sorted by date. Entries include optional image blob, optional measurements, and workouts.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-26",
       "title": "Backend comparison selection for three arbitrary targets (closest on-or-before target)",
       "synonyms": [
         "getComparisonEntries",
         "Closest entry selection"
       ],
-      "description": "Backend selects, for each target timestamp, the closest available entry on or before the target date (never after), enabling deterministic milestone comparisons.",
+      "description": "For each target timestamp, selects the closest available entry on or before the target date (never after), enabling deterministic milestone comparisons.",
       "reqIds": [],
       "version": 1
     },
     {
-      "id": "IF-27",
+      "id": "IF-26",
       "title": "Backend analytics helper endpoints for weights and workouts",
       "synonyms": [
         "getWeightEntries",
         "getWorkoutEntries"
       ],
-      "description": "Backend provides derived lists of weight measurements and workouts sorted by date for analytics visualizations in the frontend.",
+      "description": "Provides derived lists of weight measurements and workouts sorted by date for analytics visualizations in the frontend.",
       "reqIds": [],
       "version": 1
     },
     {
-      "id": "IF-28",
+      "id": "IF-27",
       "title": "Caffeine blob-storage maintenance/admin endpoints",
       "synonyms": [
         "Storage mixin",
@@ -325,77 +311,50 @@
         "Gateway authorization refresh",
         "Cashier cycle refill"
       ],
-      "description": "Backend exposes Caffeine blob-storage endpoints to update authorized gateway principals, check blob liveness, list dead blobs (authorized callers only), confirm deletion + trigger GC, create an upload certificate stub, and allow the cashier canister to top up cycles.",
+      "description": "Exposes blob-storage operations to refresh authorized gateway principals, check blob liveness, list dead blobs for authorized callers, confirm deletion and trigger GC, create an upload certificate stub, and allow the cashier canister to top up cycles.",
       "reqIds": [],
       "version": 1
     },
     {
-      "id": "IF-29",
-      "title": "Forced dark theme, OKLCH design tokens, and global UI styling",
-      "synonyms": [
-        "Always-dark mode",
-        "OKLCH theme tokens",
-        "Sonner toast styling",
-        "Calendar dot indicator"
-      ],
-      "description": "Forces dark mode at the app/document level, defines OKLCH-based token system via CSS variables, styles calendar saved-content indicators, provides dark-theme toast overrides, and expands sizing for the Compare Progress calendar picker via scoped CSS.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-progress-comparison-slot-header-ui-the-component-used-for-each-of-the-three-compare-slots-so-the-first-element-is-a-full-width-top-banner-that-reads-option-1-option-2-or-option-3-matching-the-slot-number-with-each-option-having-a-harmonious-but-distinct-outline-color-keep-the-design-aligned-with-the-existing-forced-dark-theme-and-design-tokens",
-      "title": "Update the Progress Comparison slot header UI (the component used for each of the three compare slots) so the first element is a full-width top banner that reads “Option 1”, “Option 2”, or “Option 3” (matching the slot number), with each option having a harmonious but distinct outline color; keep the design aligned with the existing forced dark theme and design tokens.",
+      "id": "feature-update-the-default-compare-progress-slot-targets-so-that-when-the-progress-comparison-modal-opens-slot-1-defaults-to-60-days-back-slot-2-defaults-to-30-days-back-replacing-the-prior-90-days-back-default-and-slot-3-defaults-to-today",
+      "title": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
       "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-redesign-the-second-line-of-each-compare-slot-header-to-show-the-selected-date-and-an-auto-calculated-day-variance-indicator-inline-next-to-the-date-the-day-variance-indicator-must-be-icon-first-with-a-clock-icon-and-presented-primarily-as-an-icon-badge-option-b-with-the-variance-value-revealed-via-tooltip-or-secondary-text-styling-rather-than-being-the-primary-large-label",
-      "title": "Redesign the second line of each compare slot header to show the selected date and an auto-calculated day-variance indicator inline next to the date; the day-variance indicator must be icon-first with a clock icon and presented primarily as an icon/badge (option b), with the variance value revealed via tooltip or secondary text styling rather than being the primary large label.",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-place-the-change-button-on-the-same-row-as-the-date-variance-indicator-within-each-compare-slot-header-aligned-inline-not-on-a-separate-line",
-      "title": "Place the “Change” button on the same row as the date + variance indicator within each compare slot header, aligned inline (not on a separate line).",
-      "reqIds": [
-        "REQ-3"
+        "REQ-4"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [
     {
-      "id": "AR-3",
-      "summary": "Compare Progress slot header redesign (final spec): add top banner 'Option 1/2/3' with harmonious distinct outline colors; second line shows date inline with an icon-first (clock) compact day-variance indicator (option b) with emphasized color/background; 'Change' button inline on same row as date/variance; aligned with dark theme tokens.",
+      "id": "AR-1",
+      "summary": "Update default Compare Progress slot targets/labels to: Option 1 = 60 days back, Option 2 = 30 days back, Option 3 = Today (replace prior 90-days-back default).",
       "reqIds": [],
-      "status": "in_progress"
+      "status": "pending"
     }
   ],
   "architectural_notes": [
     "Frontend is a React SPA using @tanstack/react-query for server-state caching, mutations, and targeted query invalidation.",
-    "Authentication is provided via a React context wrapping @dfinity/auth-client, restoring persisted delegations and exposing granular login status flags.",
-    "Backend access is encapsulated via a typed canister actor created per-identity (useActor). Actor creation initializes backend access control using a secret token extracted from the URL hash and persisted in sessionStorage.",
-    "Domain operations are wrapped in dedicated React Query hooks (useQueries.ts) with stable query keys and post-mutation invalidation to keep dependent views consistent.",
-    "UI is built with Tailwind + shadcn/ui components and lucide-react icons; the app forces dark theme and uses OKLCH CSS variables as design tokens.",
-    "Camera functionality is modularized into a reusable useCamera hook and a CameraCapture modal with zoom detection, lens preference heuristics, error normalization, and Android Chrome PWA recovery paths.",
-    "Motoko backend composes functionality via mixins (authorization + blob-storage). Caller-scoped data is stored in in-memory Maps keyed by Principal; daily entries are stored in Lists and sorted on read.",
-    "Time is modeled as nanoseconds (Time.Time) on the backend; frontend utilities provide BigInt-safe Date↔Time conversion, local start-of-day normalization, and variance/offset formatting shared across calendar, day detail, and comparison views."
+    "Authentication is implemented as a React context provider wrapping @dfinity/auth-client, restoring persisted delegations and exposing granular login status flags.",
+    "Backend access is encapsulated in a typed canister actor created per identity (useActor); on actor creation it calls an access-control initialization endpoint and refreshes React Query caches.",
+    "UI styling is Tailwind CSS + shadcn/ui components with OKLCH design tokens; the app forces dark theme via next-themes.",
+    "Camera functionality is modularized via a reusable useCamera hook and a CameraCapture modal with zoom detection, lens preference heuristics, normalized error mapping, and Android Chrome PWA-specific recovery paths.",
+    "Motoko backend composes behavior via mixins (authorization + blob-storage) and stores caller-scoped domain data keyed by Principal.",
+    "Time is modeled as nanoseconds (Time.Time) in Motoko; the frontend uses BigInt-safe Date↔Time utilities with local start-of-day normalization and day offset/variance helpers.",
+    "Analytics visualizations are rendered client-side using Recharts for line charts and a computed 90-day heatmap grid.",
+    "Comparison flow fetches up to three entries in a single parameterized query keyed by the three target timestamps.",
+    "Environment variables are used for admin bootstrap (CAFFEINE_ADMIN_TOKEN) and blob-storage cashier principal configuration."
   ],
   "known_issues": [
-    "Backend state (profiles, entries, role registry, and blob-storage authorized principals) is not stored in stable variables and there are no preupgrade/postupgrade hooks; canister upgrades will lose data/roles.",
-    "Weight unit modeling is inconsistent: backend Measurement.unit supports only #cm/#inches, but the profile also tracks weight units (#kg/#lbs). DayDetailView saves weight using the measurements unit (cm/inches) while displaying kg/lbs, risking semantically incorrect stored weight data.",
-    "AnalyticsView converts nanosecond timestamps using `Number(bigint) / 1000000`, which can lose precision because Number conversion happens before downscaling; prefer `Number(time / 1_000_000n)` or reuse timeToDate().",
-    "ProfileView initializes local form state from `userProfile` only on initial render; if the profile query resolves after mount, inputs may not reflect fetched values without a synchronization effect.",
-    "DayDetailView uses `BigInt(duration)` for workout duration; non-integer input (decimals/empty/invalid) will throw at runtime and should be validated/coerced.",
-    "Authorization initialization traps if CAFFEINE_ADMIN_TOKEN is not set, preventing canister startup in misconfigured deployments.",
-    "Blob-storage cashier env var appears misspelled as `CAFFFEINE_STORAGE_CASHIER_PRINCIPAL` (triple 'F'); configuration may fail if the intended variable name differs.",
-    "Storage.refillCashier uses `Nat.sub(currentBalance, reservedCycles)` which can trap on Nat underflow when balance is below the reserved threshold.",
-    "frontend/src/components/compare/CompareDatePickerModal.tsx exists but is empty (likely leftover/legacy) and may confuse maintainers.",
-    "There appear to be two index.css files (frontend/index.css and frontend/src/index.css) with different token sets; only src/index.css is imported by the app, so the other may be stale/unused."
+    "Motoko state (profiles, entries, roles, and blob-storage authorized principals) is not stored in stable variables and there are no preupgrade/postupgrade hooks; canister upgrades will lose data/roles.",
+    "Weight unit modeling is inconsistent: backend Measurement.unit supports only #cm/#inches, but the profile also tracks weight units (#kg/#lbs). Frontend currently saves weight measurements using the measurements unit instead of the weight unit.",
+    "useGetCallerUserProfile runs even when logged out because an anonymous actor is still created; this can trigger backend traps/authorization errors in React Query while on the login screen.",
+    "AnalyticsView converts nanosecond timestamps using Number(bigint) arithmetic (e.g., Number(entry.date) / 1_000_000), risking precision loss/overflow; should convert via BigInt division first or reuse timeToDate().",
+    "ProfileView initializes form state from userProfile only on initial render; if the profile query resolves after mount, inputs may not reflect fetched values without synchronization.",
+    "frontend/src/components/compare/CompareDatePickerModal.tsx is empty/placeholder while other code uses an inline calendar; this may confuse maintainers or indicate an incomplete refactor.",
+    "CompareSlotHeader accepts a dayOffsetLabel prop but does not render it (unused prop / dead wiring).",
+    "backend/blob-storage/Storage.mo uses env var key \"CAFFFEINE_STORAGE_CASHIER_PRINCIPAL\" (triple 'F'); misconfiguration will trap at runtime.",
+    "Storage.refillCashier computes Nat.sub(currentBalance, reservedCycles), which can trap on Nat underflow if canister balance is below the reserved threshold.",
+    "Two different global CSS files exist (frontend/index.css and frontend/src/index.css); only src/index.css is imported, but the duplicate file may cause confusion or divergence."
   ],
   "isFixRequest": false,
   "gameProjectType": "none",

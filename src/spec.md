@@ -1,11 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Refresh the Progress Comparison compare-slot header UI to use an “Option X” top banner and a more compact inline date + variance + Change layout that fits the forced dark theme.
+**Goal:** Update the default date targets in the Compare Progress modal so Slot 2 defaults to 30 days back (instead of 90 days back).
 
 **Planned changes:**
-- Update each compare slot header to start with a full-width top banner reading exactly “Option 1”, “Option 2”, or “Option 3”, using an outline-only style with distinct but harmonious outline colors per option, aligned to existing dark-theme tokens.
-- Redesign the header’s second line to show the selected date with an inline, clock-icon-first variance indicator styled as a compact badge/pill; keep the variance value secondary (via tooltip or clearly secondary text styling).
-- Move the “Change” button onto the same row as the date and variance indicator, ensuring stable, readable layout with sensible wrapping across common viewport sizes.
+- Change Compare Progress modal initialization defaults to Slot 1 = 60 days back, Slot 2 = 30 days back, Slot 3 = Today.
+- Ensure the comparison query runs with target dates matching those defaults (using local start-of-day) unless the user changes a slot via the calendar.
 
-**User-visible outcome:** Each of the three comparison slots shows a clear “Option 1/2/3” banner at the top, with the date, a compact clock variance badge, and the Change button aligned inline on the next row without hurting dark-theme readability.
+**User-visible outcome:** Opening “Compare Progress” now pre-fills the three slots as 60 days back, 30 days back, and today, and the comparison runs against those dates by default.

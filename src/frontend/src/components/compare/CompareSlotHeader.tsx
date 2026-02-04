@@ -2,13 +2,12 @@ import { Clock, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { formatDateDayMonth, formatDayVarianceCompact } from '../../utils/time';
+import { formatDateDayMonth, calculateDayOffsetFromToday, formatDayOffsetFromToday } from '../../utils/time';
 
 interface CompareSlotHeaderProps {
   slotNumber: 1 | 2 | 3;
   dayOffsetLabel: string;
   selectedDate: Date;
-  variance: number | null;
   onOpenCalendar: () => void;
 }
 
@@ -16,9 +15,11 @@ export default function CompareSlotHeader({
   slotNumber,
   dayOffsetLabel,
   selectedDate,
-  variance,
   onOpenCalendar,
 }: CompareSlotHeaderProps) {
+  // Calculate Today-relative variance (always visible)
+  const todayVariance = calculateDayOffsetFromToday(selectedDate);
+  
   // Harmonious outline colors for each option
   const getOptionBorderClass = (slot: 1 | 2 | 3): string => {
     switch (slot) {
@@ -42,25 +43,23 @@ export default function CompareSlotHeader({
     }
   };
 
-  // Variance badge styling
-  const getVarianceBgClass = (v: number | null): string => {
-    if (v === null) return 'bg-muted';
-    if (v === 0) return 'bg-muted';
-    if (v > 0) return 'bg-destructive/20'; // Further back
-    return 'bg-primary/20'; // Closer to target
+  // Variance badge styling based on Today-relative offset
+  const getVarianceBgClass = (offset: number): string => {
+    if (offset === 0) return 'bg-muted';
+    if (offset < 0) return 'bg-primary/20'; // Past
+    return 'bg-accent/20'; // Future
   };
 
-  const getVarianceTextClass = (v: number | null): string => {
-    if (v === null) return 'text-muted-foreground';
-    if (v === 0) return 'text-muted-foreground';
-    if (v > 0) return 'text-destructive';
-    return 'text-primary';
+  const getVarianceTextClass = (offset: number): string => {
+    if (offset === 0) return 'text-muted-foreground';
+    if (offset < 0) return 'text-primary';
+    return 'text-accent-foreground';
   };
 
   const borderClass = getOptionBorderClass(slotNumber);
   const textClass = getOptionTextClass(slotNumber);
-  const varianceBgClass = getVarianceBgClass(variance);
-  const varianceTextClass = getVarianceTextClass(variance);
+  const varianceBgClass = getVarianceBgClass(todayVariance);
+  const varianceTextClass = getVarianceTextClass(todayVariance);
 
   return (
     <div className="bg-card">
@@ -78,33 +77,31 @@ export default function CompareSlotHeader({
             {formatDateDayMonth(selectedDate)}
           </span>
 
-          {/* Variance indicator - icon-first badge with tooltip */}
-          {variance !== null && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Badge
-                    variant="outline"
-                    className={`${varianceBgClass} ${varianceTextClass} border-0 px-2 py-1 gap-1 cursor-help`}
-                  >
-                    <Clock className="h-3.5 w-3.5" />
-                    <span className="text-xs font-medium">
-                      {formatDayVarianceCompact(variance)}
-                    </span>
-                  </Badge>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-xs">
-                    {variance === 0
-                      ? 'Today'
-                      : variance > 0
-                      ? `${Math.abs(variance)} day${Math.abs(variance) !== 1 ? 's' : ''} ago`
-                      : `${Math.abs(variance)} day${Math.abs(variance) !== 1 ? 's' : ''} from now`}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
+          {/* Today-relative variance indicator - always visible */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge
+                  variant="outline"
+                  className={`${varianceBgClass} ${varianceTextClass} border-0 px-2 py-1 gap-1 cursor-help`}
+                >
+                  <Clock className="h-3.5 w-3.5" />
+                  <span className="text-xs font-medium">
+                    {formatDayOffsetFromToday(todayVariance)}
+                  </span>
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">
+                  {todayVariance === 0
+                    ? 'Today'
+                    : todayVariance < 0
+                    ? `${Math.abs(todayVariance)} day${Math.abs(todayVariance) !== 1 ? 's' : ''} ago`
+                    : `${Math.abs(todayVariance)} day${Math.abs(todayVariance) !== 1 ? 's' : ''} from now`}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {/* Right side: Change button inline */}

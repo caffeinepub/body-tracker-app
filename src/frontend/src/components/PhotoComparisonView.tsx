@@ -15,10 +15,10 @@ interface PhotoComparisonViewProps {
 type SlotIndex = 1 | 2 | 3;
 
 export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProps) {
-  // Initialize with 90/60/30 days back from now
-  const [slot1Date, setSlot1Date] = useState<Date>(getDaysBack(90));
-  const [slot2Date, setSlot2Date] = useState<Date>(getDaysBack(60));
-  const [slot3Date, setSlot3Date] = useState<Date>(getDaysBack(30));
+  // Initialize with 60 days back, 30 days back, and Today
+  const [slot1Date, setSlot1Date] = useState<Date>(getDaysBack(60));
+  const [slot2Date, setSlot2Date] = useState<Date>(getDaysBack(30));
+  const [slot3Date, setSlot3Date] = useState<Date>(getDaysBack(0));
   const [flipped, setFlipped] = useState(false);
   
   // Track which slot's calendar is open (null = none, showing comparison view)
@@ -154,7 +154,6 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                       slotNumber={1}
                       dayOffsetLabel={slot1DayOffsetLabel}
                       selectedDate={slot1Date}
-                      variance={slot1Variance}
                       onOpenCalendar={() => setActiveCalendarSlot(1)}
                     />
                     <div className="aspect-[3/4] bg-muted relative">
@@ -182,7 +181,6 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                       slotNumber={2}
                       dayOffsetLabel={slot2DayOffsetLabel}
                       selectedDate={slot2Date}
-                      variance={slot2Variance}
                       onOpenCalendar={() => setActiveCalendarSlot(2)}
                     />
                     <div className="aspect-[3/4] bg-muted relative">
@@ -210,7 +208,6 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                       slotNumber={3}
                       dayOffsetLabel={slot3DayOffsetLabel}
                       selectedDate={slot3Date}
-                      variance={slot3Variance}
                       onOpenCalendar={() => setActiveCalendarSlot(3)}
                     />
                     <div className="aspect-[3/4] bg-muted relative">

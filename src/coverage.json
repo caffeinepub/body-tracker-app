@@ -1,46 +1,24 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T10:14:03.786Z",
+  "generatedAt": "2026-02-04T12:42:55.553Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
-        "id": "REQ-1",
-        "summary": "Update the Progress Comparison slot header UI (the component used for each of the three compare slots) so the first element is a full-width top banner that reads “Option 1”, “Option 2”, or “Option 3” (matching the slot number), with each option having a harmonious but distinct outline color; keep the design aligned with the existing forced dark theme and design tokens.",
+        "id": "REQ-4",
+        "summary": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
+          "frontend/src/components/PhotoComparisonView.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
-        ]
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Redesign the second line of each compare slot header to show the selected date and an auto-calculated day-variance indicator inline next to the date; the day-variance indicator must be icon-first with a clock icon and presented primarily as an icon/badge (option b), with the variance value revealed via tooltip or secondary text styling rather than being the primary large label.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Place the “Change” button on the same row as the date + variance indicator within each compare slot header, aligned inline (not on a separate line).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
+          "frontend/src/components/PhotoComparisonView.tsx"
         ]
       }
     ]
@@ -50,7 +28,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/compare/CompareSlotHeader.tsx",
+    "frontend/src/components/PhotoComparisonView.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

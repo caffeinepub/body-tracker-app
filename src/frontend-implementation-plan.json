@@ -1,52 +1,20 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Progress Comparison slot header redesign (Option banner + inline date/variance + Change button)",
+  "title": "Update Compare Progress default slot 2 to 30 days back",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Redesign each compare slot header to start with a full-width top banner reading “Option 1/2/3”, using harmonious but distinct outline colors aligned to existing dark theme tokens.",
+      "id": "REQ-4",
+      "summary": "Change Progress Comparison modal default slot dates to 60 days back, 30 days back, and today (local start-of-day), while keeping user overrides via the calendar.",
       "acceptanceCriteria": [
-        "Each compare slot header displays a full-width banner at the top that says exactly “Option 1”, “Option 2”, or “Option 3”.",
-        "The banner uses an outline (not fill) and Option 1/2/3 each has a distinct, visually harmonious outline color.",
-        "The updated banner styling does not break readability/contrast in the app’s forced dark theme."
+        "Opening \"Compare Progress\" shows Slot 1 initialized to 60 days back, Slot 2 initialized to 30 days back, and Slot 3 initialized to Today.",
+        "The comparison query is executed with target dates corresponding to 60 days back, 30 days back, and today (local start-of-day), matching the UI selections unless the user overrides a slot via the calendar."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/compare/CompareSlotHeader.tsx",
+          "path": "frontend/src/components/PhotoComparisonView.tsx",
           "operation": "modify",
-          "description": "Update the header layout so the first element is a full-width top banner labeled exactly “Option {slotNumber}”. Use existing design tokens and Tailwind theme colors for outline-only styling (e.g., distinct border colors per slot using token-backed classes). Compose with existing shadcn-ui Button/Badge components (do not edit any files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Redesign the second line to show selected date with an inline, icon-first variance badge; variance value should be secondary and revealed via tooltip or secondary styling.",
-      "acceptanceCriteria": [
-        "The second line shows the formatted selected date and a compact clock-icon variance indicator inline next to it.",
-        "The variance indicator is styled as a badge/pill with its own background or contrasting styling consistent with existing tokens.",
-        "The variance value is not presented as the primary large text; it is revealed via a tooltip or clearly secondary text styling."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/compare/CompareSlotHeader.tsx",
-          "operation": "modify",
-          "description": "Change the date/variance presentation to a single inline row where the date is primary and the variance indicator is a compact pill/badge that is icon-first (Clock). Make the variance value visually secondary (e.g., smaller, muted) and reveal the full variance meaning via a tooltip mechanism (native title attribute or an existing shadcn tooltip component if already available—without modifying ui components). Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Place the “Change” button inline on the same row as the date and variance indicator within each compare slot header.",
-      "acceptanceCriteria": [
-        "The “Change” button is on the same row as the date and variance indicator in each slot header.",
-        "The layout remains stable and readable across common viewport sizes (no overlapping; sensible wrapping if needed)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/compare/CompareSlotHeader.tsx",
-          "operation": "modify",
-          "description": "Adjust the header’s flex layout so the “Change” button is inline on the same row as the date + variance indicator (not on a separate line), with responsive wrapping behavior that avoids overlap at narrow widths. Keep using composed shadcn-ui Button styles and avoid editing frontend/src/components/ui. Verify the component's usage instructions before implementing."
+          "description": "Update the default initialization for Slot 2 from 90 days back to 30 days back, and adjust any nearby in-file comments/labels describing the defaults to match (Slot 1 = 60 days back, Slot 2 = 30 days back, Slot 3 = today). Ensure the initial target dates remain normalized to local start-of-day via existing time utilities."
         }
       ]
     }

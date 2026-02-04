@@ -1,32 +1,38 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T10:14:03.749Z",
-  "summary": "CompareSlotHeader was redesigned with a top “Option {slotNumber}” outlined banner using distinct border colors per slot, and the second line now lays out date + clock-icon variance badge + inline “Change” button with wrapping support. Two non-requested metadata/state files were also modified.",
+  "generatedAt": "2026-02-04T12:42:55.517Z",
+  "summary": "PhotoComparisonView now initializes Slot 1 to 60 days back, Slot 2 to 30 days back, and Slot 3 to 0 days back (Today). However, the diff does not explicitly show initial dates being normalized to local start-of-day before being converted/executed in the comparison query. Two non-requested metadata/summary files were also modified.",
   "missing_requirements": [
     {
-      "id": "REQ-2",
-      "requirement": "Always show a compact clock-icon day-variance indicator inline next to the date (with the variance value secondary/tooltip), for each compare slot header.",
-      "reason": "In the updated header, the variance indicator only renders when `variance !== null`. If `variance` can be null for any slot state, the UI would omit the variance indicator entirely, which may violate the requirement/AC that the second line shows the variance indicator inline next to the date.",
+      "id": "REQ-4",
+      "requirement": "Ensure the comparison query is executed with target dates corresponding to 60 days back, 30 days back, and today using local start-of-day (unless user overrides via calendar).",
+      "reason": "The diff shows date normalization to local start-of-day only inside the calendar selection handler (resetToStartOfDay(date)), but the initial default state uses getDaysBack(60/30/0) without an explicit resetToStartOfDay on initialization. Without seeing getDaysBack implementation, it's not provable from the diff that initial query targets are local start-of-day.",
       "evidence": [
-        "frontend/src/components/compare/CompareSlotHeader.tsx (conditional render: `{variance !== null && ( ... )}`)"
+        "frontend/src/components/PhotoComparisonView.tsx"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Updated/maintained repository metadata/state summaries unrelated to the requested header UI change.",
-      "reason": "The BuildRequest only asks for a header presentation redesign; it does not request updates to project summary/state files.",
+      "description": "Updated frontend file summary documentation text.",
+      "reason": "Not requested by the BuildRequest; requirement only asks to change frontend defaults for Compare Progress slot 2 (and associated defaults).",
       "evidence": [
-        "frontend-file-summaries.txt",
+        "frontend-file-summaries.txt"
+      ]
+    },
+    {
+      "description": "Updated project_state.json metadata/summary.",
+      "reason": "Not requested by the BuildRequest; additionally, the truncated summary still mentions the old 90-days-back default, which is unrelated to implementing the required default change.",
+      "evidence": [
         "project_state.json"
       ]
     }
   ],
-  "confidence": 0.62,
+  "confidence": 0.63,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/compare/CompareSlotHeader.tsx",
+    "frontend/src/components/PhotoComparisonView.tsx",
     "project_state.json"
   ]
 }

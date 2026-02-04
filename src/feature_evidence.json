@@ -2,10 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-progress-comparison-slot-header-ui-the-component-used-for-each-of-the-three-compare-slots-so-the-first-element-is-a-full-width-top-banner-that-reads-option-1-option-2-or-option-3-matching-the-slot-number-with-each-option-having-a-harmonious-but-distinct-outline-color-keep-the-design-aligned-with-the-existing-forced-dark-theme-and-design-tokens",
-      "featureTitle": "Update the Progress Comparison slot header UI (the component used for each of the three compare slots) so the first element is a full-width top banner that reads “Option 1”, “Option 2”, or “Option 3” (matching the slot number), with each option having a harmonious but distinct outline color; keep the design aligned with the existing forced dark theme and design tokens.",
+      "featureId": "feature-update-the-default-compare-progress-slot-targets-so-that-when-the-progress-comparison-modal-opens-slot-1-defaults-to-60-days-back-slot-2-defaults-to-30-days-back-replacing-the-prior-90-days-back-default-and-slot-3-defaults-to-today",
+      "featureTitle": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
       "files": [
-        "frontend/src/components/compare/CompareSlotHeader.tsx"
+        "frontend/src/components/PhotoComparisonView.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -18,49 +18,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-redesign-the-second-line-of-each-compare-slot-header-to-show-the-selected-date-and-an-auto-calculated-day-variance-indicator-inline-next-to-the-date-the-day-variance-indicator-must-be-icon-first-with-a-clock-icon-and-presented-primarily-as-an-icon-badge-option-b-with-the-variance-value-revealed-via-tooltip-or-secondary-text-styling-rather-than-being-the-primary-large-label",
-      "featureTitle": "Redesign the second line of each compare slot header to show the selected date and an auto-calculated day-variance indicator inline next to the date; the day-variance indicator must be icon-first with a clock icon and presented primarily as an icon/badge (option b), with the variance value revealed via tooltip or secondary text styling rather than being the primary large label.",
-      "files": [
-        "frontend/src/components/compare/CompareSlotHeader.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "camera@1.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-place-the-change-button-on-the-same-row-as-the-date-variance-indicator-within-each-compare-slot-header-aligned-inline-not-on-a-separate-line",
-      "featureTitle": "Place the “Change” button on the same row as the date + variance indicator within each compare slot header, aligned inline (not on a separate line).",
-      "files": [
-        "frontend/src/components/compare/CompareSlotHeader.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "camera@1.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
+        "REQ-4"
       ],
       "confidence": "high"
     }

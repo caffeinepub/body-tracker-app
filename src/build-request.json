@@ -1,75 +1,34 @@
 {
   "kind": "build_request",
-  "title": "Redesign Progress Comparison slot headers (Option banner + inline date/variance + Change button)",
+  "title": "Update default Compare Progress slot 2 to 30 days back",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Update the Progress Comparison slot header UI (the component used for each of the three compare slots) so the first element is a full-width top banner that reads “Option 1”, “Option 2”, or “Option 3” (matching the slot number), with each option having a harmonious but distinct outline color; keep the design aligned with the existing forced dark theme and design tokens.",
+      "id": "REQ-4",
+      "text": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5",
-          "msg-7"
+          "msg-6",
+          "msg-8"
         ],
         "quotes": [
-          "The option number (1,2,3) should be first with words e.g. Option 1, Option 2, Option 3, it must be a banner at the top of the header each with a unique outline colour",
-          "1. Harmonious"
+          "Option 1: 60 days back\nOption 2: 30 days back\nOption 3: Today",
+          "proceed"
         ]
       },
       "acceptanceCriteria": [
-        "Each compare slot header displays a full-width banner at the top that says exactly “Option 1”, “Option 2”, or “Option 3”.",
-        "The banner uses an outline (not fill) and Option 1/2/3 each has a distinct, visually harmonious outline color.",
-        "The updated banner styling does not break readability/contrast in the app’s forced dark theme."
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Redesign the second line of each compare slot header to show the selected date and an auto-calculated day-variance indicator inline next to the date; the day-variance indicator must be icon-first with a clock icon and presented primarily as an icon/badge (option b), with the variance value revealed via tooltip or secondary text styling rather than being the primary large label.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-5",
-          "msg-7"
-        ],
-        "quotes": [
-          "next line should be the date, next to it should be the auto calc value in a different colour or maybe as an icon with a background and also include a clock icon infront of it.",
-          "2. b"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The second line shows the formatted selected date and a compact clock-icon variance indicator inline next to it.",
-        "The variance indicator is styled as a badge/pill with its own background or contrasting styling consistent with existing tokens.",
-        "The variance value is not presented as the primary large text; it is revealed via a tooltip or clearly secondary text styling."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Place the “Change” button on the same row as the date + variance indicator within each compare slot header, aligned inline (not on a separate line).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-5",
-          "msg-7"
-        ],
-        "quotes": [
-          "Inline then should be the Change Button",
-          "3. Same row"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The “Change” button is on the same row as the date and variance indicator in each slot header.",
-        "The layout remains stable and readable across common viewport sizes (no overlapping; sensible wrapping if needed)."
+        "Opening \"Compare Progress\" shows Slot 1 initialized to 60 days back, Slot 2 initialized to 30 days back, and Slot 3 initialized to Today.",
+        "The comparison query is executed with target dates corresponding to 60 days back, 30 days back, and today (local start-of-day), matching the UI selections unless the user overrides a slot via the calendar."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui (Shadcn components must be composed, not edited).",
-    "Do not modify files in frontend.immutablePaths as defined by SYSTEM_CONTEXT."
+    "Frontend files listed in SYSTEM_CONTEXT.frontend.immutablePaths must not be edited."
   ],
   "nonGoals": [
-    "No backend/canister API changes.",
-    "No changes to comparison slot selection logic or how variance is computed; only update the header presentation."
+    "Do not change backend comparison logic or endpoints (only update frontend defaults).",
+    "Do not introduce new comparison slots or change the comparison UI layout beyond the default date change."
   ],
   "imageRequirements": {
     "required": [],
