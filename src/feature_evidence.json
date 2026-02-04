@@ -2,10 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-default-compare-progress-slot-targets-so-that-when-the-progress-comparison-modal-opens-slot-1-defaults-to-60-days-back-slot-2-defaults-to-30-days-back-replacing-the-prior-90-days-back-default-and-slot-3-defaults-to-today",
-      "featureTitle": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
+      "featureId": "feature-update-the-progress-comparison-photocomparisonview-side-by-side-slot-ui-so-there-is-no-awkward-visual-gap-above-the-option-boxes-the-option-1-2-3-banner-must-be-part-of-the-same-underlying-larger-card-container-and-start-at-the-very-top-edge-where-the-card-s-rounded-corners-are-forming-a-single-continuous-box",
+      "featureTitle": "Update the Progress Comparison (PhotoComparisonView) side-by-side slot UI so there is no awkward visual gap above the Option boxes: the “Option {1|2|3}” banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, forming a single continuous box.",
       "files": [
-        "frontend/src/components/PhotoComparisonView.tsx"
+        "frontend/src/components/compare/CompareSlotHeader.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -18,7 +18,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-4"
+        "REQ-5"
       ],
       "confidence": "high"
     }

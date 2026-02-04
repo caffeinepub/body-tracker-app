@@ -63,8 +63,8 @@ export default function CompareSlotHeader({
 
   return (
     <div className="bg-card">
-      {/* Top banner with Option label and harmonious outline */}
-      <div className={`border-2 ${borderClass} ${textClass} py-2 px-4 text-center font-bold text-sm tracking-wide`}>
+      {/* Top banner with Option label and harmonious outline - integrated with card top */}
+      <div className={`border-2 ${borderClass} ${textClass} py-2 px-4 text-center font-bold text-sm tracking-wide rounded-t-lg bg-card`}>
         Option {slotNumber}
       </div>
 

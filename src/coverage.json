@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T12:42:55.553Z",
+  "generatedAt": "2026-02-04T12:52:43.410Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,14 +11,14 @@
     "implemented": 1,
     "items": [
       {
-        "id": "REQ-4",
-        "summary": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
+        "id": "REQ-5",
+        "summary": "Update the Progress Comparison (PhotoComparisonView) side-by-side slot UI so there is no awkward visual gap above the Option boxes: the “Option {1|2|3}” banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, forming a single continuous box.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/PhotoComparisonView.tsx"
+          "frontend/src/components/compare/CompareSlotHeader.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/PhotoComparisonView.tsx"
+          "frontend/src/components/compare/CompareSlotHeader.tsx"
         ]
       }
     ]
@@ -28,7 +28,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/PhotoComparisonView.tsx",
+    "frontend/src/components/compare/CompareSlotHeader.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

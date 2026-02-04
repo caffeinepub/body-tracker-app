@@ -1,34 +1,36 @@
 {
   "kind": "build_request",
-  "title": "Update default Compare Progress slot 2 to 30 days back",
+  "title": "Unify Progress Comparison Option banner with its card container (remove top gap)",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-4",
-      "text": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
+      "id": "REQ-5",
+      "text": "Update the Progress Comparison (PhotoComparisonView) side-by-side slot UI so there is no awkward visual gap above the Option boxes: the “Option {1|2|3}” banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, forming a single continuous box.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6",
-          "msg-8"
+          "msg-5",
+          "msg-7"
         ],
         "quotes": [
-          "Option 1: 60 days back\nOption 2: 30 days back\nOption 3: Today",
-          "proceed"
+          "just above the \"Option\" boxeson the Progress Comparison page, is an awkward space where the onderlaying box ends, change it so that the Option banner will be part of the same underlaying bigger box so that it starts from the top of it (where the edges currently are rounded)"
         ]
       },
       "acceptanceCriteria": [
-        "Opening \"Compare Progress\" shows Slot 1 initialized to 60 days back, Slot 2 initialized to 30 days back, and Slot 3 initialized to Today.",
-        "The comparison query is executed with target dates corresponding to 60 days back, 30 days back, and today (local start-of-day), matching the UI selections unless the user overrides a slot via the calendar."
+        "In the Progress Comparison modal side-by-side view, each slot’s Option banner visually touches the top edge of its card (no empty band/gap above the banner).",
+        "The card’s top-left/top-right rounded corners are visually applied to the unified header/banner area (the banner appears integrated into the same rounded container).",
+        "No layout regressions to the slot header content (date line, Today-relative variance badge, Change button) and the image area below.",
+        "The change applies consistently to Option 1, Option 2, and Option 3."
       ]
     }
   ],
   "constraints": [
-    "Frontend files listed in SYSTEM_CONTEXT.frontend.immutablePaths must not be edited."
+    "Do not modify files under frontend/src/components/ui (read-only UI component sources must be composed, not edited).",
+    "Backend canister logic and data schemas must remain unchanged (UI-only fix)."
   ],
   "nonGoals": [
-    "Do not change backend comparison logic or endpoints (only update frontend defaults).",
-    "Do not introduce new comparison slots or change the comparison UI layout beyond the default date change."
+    "Do not change comparison logic, default dates, or calendar selection behavior.",
+    "Do not redesign the Progress Comparison modal beyond removing the specific visual gap and unifying the banner with the card container."
   ],
   "imageRequirements": {
     "required": [],

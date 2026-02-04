@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Update the default date targets in the Compare Progress modal so Slot 2 defaults to 30 days back (instead of 90 days back).
+**Goal:** Remove the visual gap above the “Option 1/2/3” banners in the Progress Comparison side-by-side view by unifying the banner with its card container.
 
 **Planned changes:**
-- Change Compare Progress modal initialization defaults to Slot 1 = 60 days back, Slot 2 = 30 days back, Slot 3 = Today.
-- Ensure the comparison query runs with target dates matching those defaults (using local start-of-day) unless the user changes a slot via the calendar.
+- Update the Progress Comparison (PhotoComparisonView) slot layout/styling so the Option banner sits at the very top of the same rounded card container (no separate/top gap area).
+- Ensure the card’s top-left/top-right rounded corners apply to the unified header/banner area for all three slots (Option 1, Option 2, Option 3).
+- Preserve existing slot header content layout (date line, Today-relative variance badge, Change button) and the image area below, avoiding regressions.
 
-**User-visible outcome:** Opening “Compare Progress” now pre-fills the three slots as 60 days back, 30 days back, and today, and the comparison runs against those dates by default.
+**User-visible outcome:** In the Progress Comparison modal side-by-side view, each Option banner is visually integrated into its card and touches the top rounded edge with no awkward empty band above it.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 11,
-  "summary": "physiq is a privacy-focused body transformation tracker built as a React + TypeScript single-page app backed by a Motoko canister on the Internet Computer (ICP). Users authenticate with Internet Identity, create and manage a personal profile (including unit preferences), and record per-day entries containing an optional progress photo (captured in-app or uploaded), optional weight and body measurements (chest/waist/hips), and optional workout logs (muscle groups + duration). The UI is calendar-driven with indicators for days that have saved content, includes an immersive full-screen day viewer/editor with swipe/keyboard navigation and Today-relative day variance, provides a three-slot progress photo comparison experience with per-slot date pickers and defaults (60 days back, 90 days back, today), and includes an analytics dashboard with weight trend charts (plus 7/30-day rolling averages) and a 90-day workout frequency heatmap. The backend enforces role-based access control bootstrapped via an admin token and includes Caffeine blob-storage maintenance/admin endpoints.",
+  "projectStateVersion": 16,
+  "summary": "physiq is a privacy-focused body transformation tracker built as a React + TypeScript single-page app backed by a Motoko canister on the Internet Computer (ICP). Users authenticate with Internet Identity, create/manage a personal profile (including unit preferences), and record per-day entries containing an optional progress photo (captured in-app or uploaded), optional weight and body measurements (chest/waist/hips), and optional workout logs (muscle groups + duration). The UI is calendar-driven with indicators for days that have saved content, includes an immersive full-screen day viewer/editor with swipe/keyboard navigation and Today-relative day variance, provides a three-slot progress photo comparison experience with per-slot date pickers and defaults (60 days back, 30 days back, today), and includes an analytics dashboard with weight trend charts (plus 7/30-day rolling averages) and a 90-day workout frequency heatmap. The backend enforces role-based access control bootstrapped via an admin token and includes Caffeine blob-storage maintenance/admin endpoints.",
   "existing_features": [
     {
       "id": "IF-1",
@@ -68,7 +68,7 @@
         "ThemeProvider dark",
         "Sonner toaster"
       ],
-      "description": "Forces dark mode via next-themes across all app states and configures Sonner toasts with OKLCH token-based styling.",
+      "description": "Forces dark mode across the app via next-themes and configures Sonner toasts with OKLCH token-based styling.",
       "reqIds": [],
       "version": 1
     },
@@ -198,14 +198,14 @@
     },
     {
       "id": "IF-18",
-      "title": "Default Compare Progress slot dates (60d back / 90d back / today) with per-slot overrides",
+      "title": "Default Compare Progress slot dates (60d back / 30d back / today) with per-slot overrides",
       "synonyms": [
         "Compare defaults",
         "Three-slot default targets"
       ],
-      "description": "On first opening the comparison view, initializes slot targets to 60 days back (Option 1), 90 days back (Option 2), and today (Option 3), while preserving the existing per-slot date override behavior via the date picker.",
+      "description": "On first opening the comparison view, initializes slot targets to 60 days back (Option 1), 30 days back (Option 2), and today (Option 3), while preserving per-slot overrides via the date picker.",
       "reqIds": [
-        "REQ-3"
+        "REQ-4"
       ],
       "version": 1
     },
@@ -316,10 +316,10 @@
       "version": 1
     },
     {
-      "id": "feature-update-the-default-compare-progress-slot-targets-so-that-when-the-progress-comparison-modal-opens-slot-1-defaults-to-60-days-back-slot-2-defaults-to-30-days-back-replacing-the-prior-90-days-back-default-and-slot-3-defaults-to-today",
-      "title": "Update the default Compare Progress slot targets so that when the Progress Comparison modal opens, Slot 1 defaults to 60 days back, Slot 2 defaults to 30 days back (replacing the prior 90-days-back default), and Slot 3 defaults to Today.",
+      "id": "feature-update-the-progress-comparison-photocomparisonview-side-by-side-slot-ui-so-there-is-no-awkward-visual-gap-above-the-option-boxes-the-option-1-2-3-banner-must-be-part-of-the-same-underlying-larger-card-container-and-start-at-the-very-top-edge-where-the-card-s-rounded-corners-are-forming-a-single-continuous-box",
+      "title": "Update the Progress Comparison (PhotoComparisonView) side-by-side slot UI so there is no awkward visual gap above the Option boxes: the “Option {1|2|3}” banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, forming a single continuous box.",
       "reqIds": [
-        "REQ-4"
+        "REQ-5"
       ],
       "version": 1
     }
@@ -327,7 +327,7 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Update default Compare Progress slot targets/labels to: Option 1 = 60 days back, Option 2 = 30 days back, Option 3 = Today (replace prior 90-days-back default).",
+      "summary": "Progress Comparison page: remove awkward gap above the Option boxes by making the Option banner part of the same underlying container so it starts at the top edge (aligned with rounded corners).",
       "reqIds": [],
       "status": "pending"
     }
@@ -335,11 +335,11 @@
   "architectural_notes": [
     "Frontend is a React SPA using @tanstack/react-query for server-state caching, mutations, and targeted query invalidation.",
     "Authentication is implemented as a React context provider wrapping @dfinity/auth-client, restoring persisted delegations and exposing granular login status flags.",
-    "Backend access is encapsulated in a typed canister actor created per identity (useActor); on actor creation it calls an access-control initialization endpoint and refreshes React Query caches.",
-    "UI styling is Tailwind CSS + shadcn/ui components with OKLCH design tokens; the app forces dark theme via next-themes.",
-    "Camera functionality is modularized via a reusable useCamera hook and a CameraCapture modal with zoom detection, lens preference heuristics, normalized error mapping, and Android Chrome PWA-specific recovery paths.",
+    "Backend access is encapsulated in a typed canister actor created per identity (useActor); on authenticated actor creation it initializes access control and then invalidates/refetches React Query caches.",
+    "UI styling is Tailwind CSS + shadcn/ui components with OKLCH design tokens; dark theme is enforced via next-themes (forcedTheme=dark).",
+    "Camera functionality is modularized via a reusable useCamera hook and a CameraCapture modal with zoom detection, lens preference heuristics, normalized error mapping, and Android Chrome PWA recovery flows.",
     "Motoko backend composes behavior via mixins (authorization + blob-storage) and stores caller-scoped domain data keyed by Principal.",
-    "Time is modeled as nanoseconds (Time.Time) in Motoko; the frontend uses BigInt-safe Date↔Time utilities with local start-of-day normalization and day offset/variance helpers.",
+    "Time is modeled as nanoseconds (Time.Time) in Motoko; the frontend uses BigInt-safe Date↔Time utilities with local start-of-day normalization and day variance/offset helpers.",
     "Analytics visualizations are rendered client-side using Recharts for line charts and a computed 90-day heatmap grid.",
     "Comparison flow fetches up to three entries in a single parameterized query keyed by the three target timestamps.",
     "Environment variables are used for admin bootstrap (CAFFEINE_ADMIN_TOKEN) and blob-storage cashier principal configuration."
@@ -347,16 +347,16 @@
   "known_issues": [
     "Motoko state (profiles, entries, roles, and blob-storage authorized principals) is not stored in stable variables and there are no preupgrade/postupgrade hooks; canister upgrades will lose data/roles.",
     "Weight unit modeling is inconsistent: backend Measurement.unit supports only #cm/#inches, but the profile also tracks weight units (#kg/#lbs). Frontend currently saves weight measurements using the measurements unit instead of the weight unit.",
-    "useGetCallerUserProfile runs even when logged out because an anonymous actor is still created; this can trigger backend traps/authorization errors in React Query while on the login screen.",
-    "AnalyticsView converts nanosecond timestamps using Number(bigint) arithmetic (e.g., Number(entry.date) / 1_000_000), risking precision loss/overflow; should convert via BigInt division first or reuse timeToDate().",
-    "ProfileView initializes form state from userProfile only on initial render; if the profile query resolves after mount, inputs may not reflect fetched values without synchronization.",
-    "frontend/src/components/compare/CompareDatePickerModal.tsx is empty/placeholder while other code uses an inline calendar; this may confuse maintainers or indicate an incomplete refactor.",
+    "useGetCallerUserProfile is enabled even when logged out because an anonymous actor is created; this can trigger backend traps/authorization errors in React Query while on the login screen.",
+    "ProfileView initializes local form state from userProfile only on initial render; when the profile query resolves after mount, inputs may not reflect fetched values without synchronization.",
+    "AnalyticsView converts nanosecond timestamps using Number(bigint) arithmetic (e.g., Number(entry.date) / 1_000_000), risking precision loss/overflow; should use BigInt division first or reuse timeToDate().",
     "CompareSlotHeader accepts a dayOffsetLabel prop but does not render it (unused prop / dead wiring).",
+    "frontend/src/components/compare/CompareDatePickerModal.tsx is empty/placeholder while the app uses an inline calendar flow in PhotoComparisonView; may indicate an incomplete refactor.",
     "backend/blob-storage/Storage.mo uses env var key \"CAFFFEINE_STORAGE_CASHIER_PRINCIPAL\" (triple 'F'); misconfiguration will trap at runtime.",
     "Storage.refillCashier computes Nat.sub(currentBalance, reservedCycles), which can trap on Nat underflow if canister balance is below the reserved threshold.",
-    "Two different global CSS files exist (frontend/index.css and frontend/src/index.css); only src/index.css is imported, but the duplicate file may cause confusion or divergence."
+    "AccessControl.getUserRole traps \"User is not registered\" for authenticated principals that have not been initialized (initialization is client-driven); non-app clients may hit this unexpectedly."
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "gameProjectType": "none",
   "projectName": "physiq",
   "clarification_mode": "pro",
