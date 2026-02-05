@@ -63,7 +63,7 @@ export default function ProfileSetupModal() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="setup-name">Name *</Label>
             <Input
               id="setup-name"
@@ -74,7 +74,7 @@ export default function ProfileSetupModal() {
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="setup-age">Age *</Label>
             <Input
               id="setup-age"
@@ -86,7 +86,7 @@ export default function ProfileSetupModal() {
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="setup-gender">Gender</Label>
             <Select value={gender} onValueChange={setGender}>
               <SelectTrigger id="setup-gender">
@@ -101,7 +101,7 @@ export default function ProfileSetupModal() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="setup-weight">Weight Unit</Label>
               <Select value={weightUnit} onValueChange={setWeightUnit}>
                 <SelectTrigger id="setup-weight">
@@ -114,7 +114,7 @@ export default function ProfileSetupModal() {
               </Select>
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="setup-measurement">Measurements</Label>
               <Select value={measurementUnit} onValueChange={setMeasurementUnit}>
                 <SelectTrigger id="setup-measurement">
@@ -122,7 +122,7 @@ export default function ProfileSetupModal() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="cm">cm</SelectItem>
-                  <SelectItem value="inches">inches</SelectItem>
+                  <SelectItem value="inches">in</SelectItem>
                 </SelectContent>
               </Select>
             </div>

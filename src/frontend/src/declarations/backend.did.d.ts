@@ -12,6 +12,7 @@ import type { Principal } from '@icp-sdk/core/principal';
 
 export interface DailyEntry {
   'weight' : [] | [Measurement],
+  'bodyFatPercent' : [] | [number],
   'workouts' : Array<Workout>,
   'date' : Time,
   'hips' : [] | [Measurement],
@@ -82,8 +83,13 @@ export interface _SERVICE {
   'createOrUpdateEntry' : ActorMethod<[DailyEntry], undefined>,
   'deleteEntry' : ActorMethod<[Time], undefined>,
   'getAllEntries' : ActorMethod<[], Array<DailyEntry>>,
+  'getBodyFatEntries' : ActorMethod<
+    [],
+    Array<{ 'bodyFatPercent' : number, 'date' : Time }>
+  >,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getChestEntries' : ActorMethod<[], Array<Measurement>>,
   'getComparisonEntries' : ActorMethod<
     [Time, Time, Time],
     {
@@ -93,8 +99,14 @@ export interface _SERVICE {
     }
   >,
   'getEntryByDate' : ActorMethod<[Time], [] | [DailyEntry]>,
+  'getHipsEntries' : ActorMethod<[], Array<Measurement>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'getWaistEntries' : ActorMethod<[], Array<Measurement>>,
   'getWeightEntries' : ActorMethod<[], Array<Measurement>>,
+  'getWorkoutDurationTimeSeries' : ActorMethod<
+    [],
+    Array<{ 'date' : Time, 'totalDuration' : bigint }>
+  >,
   'getWorkoutEntries' : ActorMethod<[], Array<Workout>>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,

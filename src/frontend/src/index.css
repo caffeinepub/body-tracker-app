@@ -37,6 +37,8 @@
         --sidebar-accent-foreground: 0.15 0.02 240;
         --sidebar-border: 0.90 0.01 240;
         --sidebar-ring: 0.55 0.18 260;
+        --variance-positive: 0.65 0.20 190;
+        --variance-negative: 0.62 0.22 290;
     }
 
     .dark {
@@ -72,6 +74,8 @@
         --sidebar-accent-foreground: 0.98 0.01 240;
         --sidebar-border: 0.25 0.02 240;
         --sidebar-ring: 0.65 0.20 260;
+        --variance-positive: 0.70 0.22 190;
+        --variance-negative: 0.68 0.24 290;
     }
 
     * {
@@ -162,6 +166,31 @@
 [data-sonner-toast][data-type="info"] {
     background-color: oklch(var(--card)) !important;
     border-color: oklch(var(--primary)) !important;
+}
+
+/* Variance indicator styling for Day Detail view */
+.variance-positive {
+    color: oklch(var(--variance-positive));
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-left: 0.375rem;
+    opacity: 0.95;
+}
+
+.variance-negative {
+    color: oklch(var(--variance-negative));
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-left: 0.375rem;
+    opacity: 0.95;
+}
+
+.variance-neutral {
+    color: oklch(var(--muted-foreground));
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-left: 0.375rem;
+    opacity: 0.8;
 }
 
 /* Compare Progress date picker calendar - expanded sizing */

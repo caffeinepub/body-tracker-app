@@ -1,8 +1,8 @@
 import Array "mo:core/Array";
 import List "mo:core/List";
+import Map "mo:core/Map";
 import Text "mo:core/Text";
 import Time "mo:core/Time";
-import Map "mo:core/Map";
 import Order "mo:core/Order";
 import Runtime "mo:core/Runtime";
 import Principal "mo:core/Principal";
@@ -90,6 +90,7 @@ actor {
     chest : ?Measurement;
     waist : ?Measurement;
     hips : ?Measurement;
+    bodyFatPercent : ?Float; // new field
     workouts : [Workout];
   };
 
@@ -100,7 +101,7 @@ actor {
   // User profile management
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access profiles");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
     userProfiles.get(caller);
   };
@@ -122,7 +123,7 @@ actor {
   // Daily entry CRUD operations
   public shared ({ caller }) func createOrUpdateEntry(entry : DailyEntry) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can create or update entries");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
 
     let existingEntries = switch (userEntries.get(caller)) {
@@ -142,7 +143,7 @@ actor {
 
   public query ({ caller }) func getEntryByDate(date : Time.Time) : async ?DailyEntry {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access entries");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
 
     switch (userEntries.get(caller)) {
@@ -158,9 +159,8 @@ actor {
 
   public shared ({ caller }) func deleteEntry(date : Time.Time) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can delete entries");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
-
     switch (userEntries.get(caller)) {
       case (null) { () };
       case (?entries) {
@@ -177,7 +177,7 @@ actor {
     entry3 : ?DailyEntry;
   } {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access comparison entries");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
 
     switch (userEntries.get(caller)) {
@@ -224,10 +224,10 @@ actor {
     };
   };
 
-  // Helper functions for analytics
+  // Analytics endpoints for weight and workouts
   public query ({ caller }) func getWeightEntries() : async [Measurement] {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access weight entries");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
 
     switch (userEntries.get(caller)) {
@@ -249,7 +249,7 @@ actor {
 
   public query ({ caller }) func getWorkoutEntries() : async [Workout] {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access workout entries");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
 
     switch (userEntries.get(caller)) {
@@ -266,15 +266,155 @@ actor {
     };
   };
 
+  public query ({ caller }) func getBodyFatEntries() : async [{ date : Time.Time; bodyFatPercent : Float }] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can perform this action");
+    };
+
+    switch (userEntries.get(caller)) {
+      case (null) { [] };
+      case (?entries) {
+        let bodyFatEntries = List.empty<{ date : Time.Time; bodyFatPercent : Float }>();
+        entries.forEach(
+          func(entry) {
+            switch (entry.bodyFatPercent) {
+              case (null) {};
+              case (?bodyFatPercent) {
+                bodyFatEntries.add({
+                  date = entry.date;
+                  bodyFatPercent;
+                });
+              };
+            };
+          }
+        );
+        bodyFatEntries.toArray().sort(
+          func(a, b) {
+            if (a.date < b.date) { #less } else if (a.date > b.date) {
+              #greater;
+            } else {
+              #equal;
+            };
+          }
+        );
+      };
+    };
+  };
+
   public query ({ caller }) func getAllEntries() : async [DailyEntry] {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access entries");
+      Runtime.trap("Unauthorized: Only users can perform this action");
     };
 
     switch (userEntries.get(caller)) {
       case (null) { [] };
       case (?entries) {
         entries.toArray().sort(DailyEntry.compareByDate);
+      };
+    };
+  };
+
+  // New Time Series Endpoints for Measurements and Workout Duration
+  public query ({ caller }) func getChestEntries() : async [Measurement] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can perform this action");
+    };
+
+    switch (userEntries.get(caller)) {
+      case (null) { [] };
+      case (?entries) {
+        let measurements = List.empty<Measurement>();
+        entries.toArray().sort(DailyEntry.compareByDate).forEach(
+          func(entry) {
+            switch (entry.chest) {
+              case (null) {};
+              case (?measurement) { measurements.add(measurement) };
+            };
+          }
+        );
+        measurements.toArray();
+      };
+    };
+  };
+
+  public query ({ caller }) func getWaistEntries() : async [Measurement] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can perform this action");
+    };
+
+    switch (userEntries.get(caller)) {
+      case (null) { [] };
+      case (?entries) {
+        let measurements = List.empty<Measurement>();
+        entries.toArray().sort(DailyEntry.compareByDate).forEach(
+          func(entry) {
+            switch (entry.waist) {
+              case (null) {};
+              case (?measurement) { measurements.add(measurement) };
+            };
+          }
+        );
+        measurements.toArray();
+      };
+    };
+  };
+
+  public query ({ caller }) func getHipsEntries() : async [Measurement] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can perform this action");
+    };
+
+    switch (userEntries.get(caller)) {
+      case (null) { [] };
+      case (?entries) {
+        let measurements = List.empty<Measurement>();
+        entries.toArray().sort(DailyEntry.compareByDate).forEach(
+          func(entry) {
+            switch (entry.hips) {
+              case (null) {};
+              case (?measurement) { measurements.add(measurement) };
+            };
+          }
+        );
+        measurements.toArray();
+      };
+    };
+  };
+
+  public query ({ caller }) func getWorkoutDurationTimeSeries() : async [{ date : Time.Time; totalDuration : Nat }] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can perform this action");
+    };
+
+    switch (userEntries.get(caller)) {
+      case (null) { [] };
+      case (?entries) {
+        let filteredEntries = List.empty<(Time.Time, Nat)>();
+        entries.forEach(
+          func(entry) {
+            let totalDuration = entry.workouts.foldLeft(
+              0,
+              func(acc, w) { acc + w.duration },
+            );
+            filteredEntries.add((entry.date, totalDuration));
+          }
+        );
+
+        // Convert to array and sort by date
+        let sortedEntries = filteredEntries.toArray().sort(
+          func((dateA, _), (dateB, _)) {
+            if (dateA < dateB) { #less } else if (dateA > dateB) { #greater } else {
+              #equal;
+            };
+          }
+        );
+
+        // Map sorted entries to desired output
+        sortedEntries.map(
+          func((date, totalDuration)) {
+            { date; totalDuration };
+          }
+        );
       };
     };
   };

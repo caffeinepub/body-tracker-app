@@ -1,24 +1,31 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T12:52:43.371Z",
-  "summary": "The diff modifies CompareSlotHeader to render an Option banner with rounded top corners and card background, but there is no visible change in PhotoComparisonView (or the slot card/container layout) in the provided diff summary to confirm the top-gap removal and full unification of the banner with the overall slot card container.",
+  "generatedAt": "2026-02-05T11:36:08.209Z",
+  "summary": "REQ-14 is largely implemented: the CalendarView h2 now renders a primary heading line with a smaller, muted one-sentence English description beneath it. However, the diff summary indicates changes beyond the selected h2 element, which conflicts with the constraint/AC that only the selected h2 be modified.",
   "missing_requirements": [
     {
-      "id": "REQ-5",
-      "requirement": "In the Progress Comparison modal side-by-side view, each slot’s Option banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, eliminating any gap above the banner, consistently for Options 1–3 without layout regressions.",
-      "reason": "Only CompareSlotHeader.tsx is shown as modified; there is no evidence in the diff summary of changes to the parent slot/card container in PhotoComparisonView that would remove any existing outer padding/margin/band above the header or ensure the card’s rounded corners are applied to the unified banner+card container as a single continuous box.",
+      "id": "REQ-14",
+      "requirement": "Only the selected h2 element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1] is modified; no other layout/elements are changed in this build.",
+      "reason": "The CalendarView.tsx diff summary shows additional non-h2-related logic/commentary (e.g., expanded 'hasSavedContent' checks) implying modifications outside the selected h2 element, violating the 'ONLY to the selected element' constraint/AC.",
       "evidence": [
-        "frontend/src/components/compare/CompareSlotHeader.tsx (truncated)",
-        "frontend-file-summaries.txt (no concrete diff for frontend/src/components/PhotoComparisonView.tsx is shown)"
+        "frontend/src/components/CalendarView.tsx"
       ]
     }
   ],
-  "hallucinated_features": [],
-  "confidence": 0.55,
+  "hallucinated_features": [
+    {
+      "description": "Expanded/explicit 'hasSavedContent' logic to treat measurements/body fat/workouts as saved content (not just images), with detailed commentary.",
+      "reason": "BuildRequest only asked to add a short description under the CalendarView heading within the selected h2; it did not request changes to calendar day marker logic or saved-content detection.",
+      "evidence": [
+        "frontend/src/components/CalendarView.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.62,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/compare/CompareSlotHeader.tsx",
+    "frontend/src/components/CalendarView.tsx",
     "project_state.json"
   ]
 }

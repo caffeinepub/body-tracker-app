@@ -1,22 +1,21 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Unify Progress Comparison option banner with slot card container",
+  "title": "CalendarView heading: add one-sentence description under title",
   "requirements": [
     {
-      "id": "REQ-5",
-      "summary": "Make each Progress Comparison slot’s “Option {1|2|3}” banner visually integrated with its card so it starts at the card’s rounded top edge with no gap.",
+      "id": "REQ-14",
+      "summary": "Add a short, muted, single-sentence description directly beneath the CalendarView h2 heading text without changing any other elements.",
       "acceptanceCriteria": [
-        "In the Progress Comparison modal side-by-side view, each slot’s Option banner visually touches the top edge of its card (no empty band/gap above the banner).",
-        "The card’s top-left/top-right rounded corners are visually applied to the unified header/banner area (the banner appears integrated into the same rounded container).",
-        "No layout regressions to the slot header content (date line, Today-relative variance badge, Change button) and the image area below.",
-        "The change applies consistently to Option 1, Option 2, and Option 3."
+        "The selected h2 renders a primary heading line and a second line of smaller, muted description text immediately beneath it.",
+        "The description is a single short English sentence explaining what the calendar/journey page does.",
+        "Only the selected h2 element is modified; no other layout elements (e.g., button placement/size) are changed in this build."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/compare/CompareSlotHeader.tsx",
+          "path": "frontend/src/components/CalendarView.tsx",
           "operation": "modify",
-          "description": "Adjust the slot header/banner container styling so the Option banner extends to the card’s top edge and inherits the card’s rounded top corners (e.g., add top rounding to the banner area and remove any perceived inset by aligning the banner to the card border). Ensure the date/variance badge and Change button layout stays unchanged."
+          "description": "Modify only the existing <h2 className=\"text-3xl font-bold text-foreground\">…</h2> element to render the heading text plus a second line beneath it (e.g., a child <span> styled as smaller and muted). Ensure the description is one short English sentence explaining the purpose of the calendar/journey page, and do not alter surrounding layout or the Compare Progress button."
         }
       ]
     }

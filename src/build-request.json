@@ -1,39 +1,50 @@
 {
   "kind": "build_request",
-  "title": "Unify Progress Comparison Option banner with its card container (remove top gap)",
+  "title": "Add short calendar page description under CalendarView heading",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-5",
-      "text": "Update the Progress Comparison (PhotoComparisonView) side-by-side slot UI so there is no awkward visual gap above the Option boxes: the “Option {1|2|3}” banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, forming a single continuous box.",
+      "id": "REQ-14",
+      "text": "Update the CalendarView heading element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1] to include a short (one-sentence) description directly beneath the heading text, while keeping all changes confined to this selected h2 element.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5",
-          "msg-7"
+          "msg-user-build"
         ],
         "quotes": [
-          "just above the \"Option\" boxeson the Progress Comparison page, is an awkward space where the onderlaying box ends, change it so that the Option banner will be part of the same underlaying bigger box so that it starts from the top of it (where the edges currently are rounded)"
+          "add a brief description of what this calendar/page does just underneath this heading, keep it short",
+          "1. your choice, whatever you feel will be better.",
+          "2. you can choose",
+          "3. yes short"
         ]
       },
       "acceptanceCriteria": [
-        "In the Progress Comparison modal side-by-side view, each slot’s Option banner visually touches the top edge of its card (no empty band/gap above the banner).",
-        "The card’s top-left/top-right rounded corners are visually applied to the unified header/banner area (the banner appears integrated into the same rounded container).",
-        "No layout regressions to the slot header content (date line, Today-relative variance badge, Change button) and the image area below.",
-        "The change applies consistently to Option 1, Option 2, and Option 3."
+        "The selected h2 renders a primary heading line and a second line of smaller, muted description text immediately beneath it.",
+        "The description is a single short English sentence explaining what the calendar/journey page does.",
+        "Only the selected h2 element is modified; no other layout elements (e.g., button placement/size) are changed in this build."
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under frontend/src/components/ui (read-only UI component sources must be composed, not edited).",
-    "Backend canister logic and data schemas must remain unchanged (UI-only fix)."
+    "Apply changes ONLY to the selected element identified by XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1].",
+    "Use English for any user-facing text."
   ],
   "nonGoals": [
-    "Do not change comparison logic, default dates, or calendar selection behavior.",
-    "Do not redesign the Progress Comparison modal beyond removing the specific visual gap and unifying the banner with the card container."
+    "Do not implement the requested two-column header layout (left heading/description and right large Compare Progress button) in this build, since it would require editing elements outside the selected h2.",
+    "Do not change the Compare Progress button icon or sizing in this build."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

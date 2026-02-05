@@ -38,6 +38,7 @@ export const Workout = IDL.Record({
 export const ExternalBlob = IDL.Vec(IDL.Nat8);
 export const DailyEntry = IDL.Record({
   'weight' : IDL.Opt(Measurement),
+  'bodyFatPercent' : IDL.Opt(IDL.Float64),
   'workouts' : IDL.Vec(Workout),
   'date' : Time,
   'hips' : IDL.Opt(Measurement),
@@ -93,8 +94,14 @@ export const idlService = IDL.Service({
   'createOrUpdateEntry' : IDL.Func([DailyEntry], [], []),
   'deleteEntry' : IDL.Func([Time], [], []),
   'getAllEntries' : IDL.Func([], [IDL.Vec(DailyEntry)], ['query']),
+  'getBodyFatEntries' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Record({ 'bodyFatPercent' : IDL.Float64, 'date' : Time }))],
+      ['query'],
+    ),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getChestEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
   'getComparisonEntries' : IDL.Func(
       [Time, Time, Time],
       [
@@ -107,12 +114,19 @@ export const idlService = IDL.Service({
       ['query'],
     ),
   'getEntryByDate' : IDL.Func([Time], [IDL.Opt(DailyEntry)], ['query']),
+  'getHipsEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
       [IDL.Opt(UserProfile)],
       ['query'],
     ),
+  'getWaistEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
   'getWeightEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
+  'getWorkoutDurationTimeSeries' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Record({ 'date' : Time, 'totalDuration' : IDL.Nat }))],
+      ['query'],
+    ),
   'getWorkoutEntries' : IDL.Func([], [IDL.Vec(Workout)], ['query']),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
@@ -151,6 +165,7 @@ export const idlFactory = ({ IDL }) => {
   const ExternalBlob = IDL.Vec(IDL.Nat8);
   const DailyEntry = IDL.Record({
     'weight' : IDL.Opt(Measurement),
+    'bodyFatPercent' : IDL.Opt(IDL.Float64),
     'workouts' : IDL.Vec(Workout),
     'date' : Time,
     'hips' : IDL.Opt(Measurement),
@@ -206,8 +221,18 @@ export const idlFactory = ({ IDL }) => {
     'createOrUpdateEntry' : IDL.Func([DailyEntry], [], []),
     'deleteEntry' : IDL.Func([Time], [], []),
     'getAllEntries' : IDL.Func([], [IDL.Vec(DailyEntry)], ['query']),
+    'getBodyFatEntries' : IDL.Func(
+        [],
+        [
+          IDL.Vec(
+            IDL.Record({ 'bodyFatPercent' : IDL.Float64, 'date' : Time })
+          ),
+        ],
+        ['query'],
+      ),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getChestEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
     'getComparisonEntries' : IDL.Func(
         [Time, Time, Time],
         [
@@ -220,12 +245,19 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getEntryByDate' : IDL.Func([Time], [IDL.Opt(DailyEntry)], ['query']),
+    'getHipsEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(UserProfile)],
         ['query'],
       ),
+    'getWaistEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
     'getWeightEntries' : IDL.Func([], [IDL.Vec(Measurement)], ['query']),
+    'getWorkoutDurationTimeSeries' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Record({ 'date' : Time, 'totalDuration' : IDL.Nat }))],
+        ['query'],
+      ),
     'getWorkoutEntries' : IDL.Func([], [IDL.Vec(Workout)], ['query']),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),

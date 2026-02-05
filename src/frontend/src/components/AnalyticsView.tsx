@@ -1,15 +1,30 @@
 import { Card } from '@/components/ui/card';
-import { useGetWeightEntries, useGetWorkoutEntries, useGetCallerUserProfile } from '../hooks/useQueries';
+import {
+  useGetWeightEntries,
+  useGetWorkoutEntries,
+  useGetBodyFatEntries,
+  useGetCallerUserProfile,
+  useGetChestEntries,
+  useGetWaistEntries,
+  useGetHipsEntries,
+  useGetWorkoutDurationTimeSeries,
+} from '../hooks/useQueries';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { TrendingUp, Activity, Calendar } from 'lucide-react';
-import { Variant_kg_lbs } from '../backend';
+import { Variant_kg_lbs, Variant_cm_inches } from '../backend';
 
 export default function AnalyticsView() {
   const { data: weightEntries = [] } = useGetWeightEntries();
   const { data: workoutEntries = [] } = useGetWorkoutEntries();
+  const { data: bodyFatEntries = [] } = useGetBodyFatEntries();
+  const { data: chestEntries = [] } = useGetChestEntries();
+  const { data: waistEntries = [] } = useGetWaistEntries();
+  const { data: hipsEntries = [] } = useGetHipsEntries();
+  const { data: workoutDurationData = [] } = useGetWorkoutDurationTimeSeries();
   const { data: userProfile } = useGetCallerUserProfile();
 
   const weightUnit = userProfile?.units.weight === Variant_kg_lbs.kg ? 'kg' : 'lbs';
+  const measurementUnit = userProfile?.units.measurements === Variant_cm_inches.cm ? 'cm' : 'in';
 
   // Prepare weight chart data
   const weightChartData = weightEntries.map((entry) => ({
@@ -18,6 +33,51 @@ export default function AnalyticsView() {
       day: 'numeric',
     }),
     weight: entry.value,
+  }));
+
+  // Prepare body fat chart data
+  const bodyFatChartData = bodyFatEntries.map((entry) => ({
+    date: new Date(Number(entry.date) / 1000000).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    }),
+    bodyFat: entry.bodyFatPercent,
+  }));
+
+  // Prepare chest chart data
+  const chestChartData = chestEntries.map((entry) => ({
+    date: new Date(Number(entry.date) / 1000000).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    }),
+    chest: entry.value,
+  }));
+
+  // Prepare waist chart data
+  const waistChartData = waistEntries.map((entry) => ({
+    date: new Date(Number(entry.date) / 1000000).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    }),
+    waist: entry.value,
+  }));
+
+  // Prepare hips chart data
+  const hipsChartData = hipsEntries.map((entry) => ({
+    date: new Date(Number(entry.date) / 1000000).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    }),
+    hips: entry.value,
+  }));
+
+  // Prepare workout duration chart data
+  const workoutDurationChartData = workoutDurationData.map((entry) => ({
+    date: new Date(Number(entry.date) / 1000000).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    }),
+    duration: Number(entry.totalDuration),
   }));
 
   // Calculate rolling averages
@@ -146,6 +206,34 @@ export default function AnalyticsView() {
           )}
         </Card>
 
+        {/* Body Fat % Chart */}
+        <Card className="mb-6 p-6">
+          <h3 className="mb-4 text-xl font-semibold">Body Fat Percentage</h3>
+          {bodyFatChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={bodyFatChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis label={{ value: '%', angle: -90, position: 'insideLeft' }} />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="bodyFat"
+                  name="Body Fat %"
+                  stroke="oklch(var(--chart-5))"
+                  strokeWidth={2}
+                  dot={{ fill: 'oklch(var(--chart-5))' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+              No body fat data available yet
+            </div>
+          )}
+        </Card>
+
         {/* Rolling Averages Chart */}
         <Card className="mb-6 p-6">
           <h3 className="mb-4 text-xl font-semibold">Rolling Averages</h3>
@@ -184,6 +272,118 @@ export default function AnalyticsView() {
           ) : (
             <div className="flex h-[300px] items-center justify-center text-muted-foreground">
               No data available for rolling averages
+            </div>
+          )}
+        </Card>
+
+        {/* Workout Duration Chart */}
+        <Card className="mb-6 p-6">
+          <h3 className="mb-4 text-xl font-semibold">Workout Duration</h3>
+          {workoutDurationChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={workoutDurationChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis label={{ value: 'minutes', angle: -90, position: 'insideLeft' }} />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="duration"
+                  name="Duration (min)"
+                  stroke="oklch(var(--chart-2))"
+                  strokeWidth={2}
+                  dot={{ fill: 'oklch(var(--chart-2))' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+              No workout duration data available yet
+            </div>
+          )}
+        </Card>
+
+        {/* Chest Measurement Chart */}
+        <Card className="mb-6 p-6">
+          <h3 className="mb-4 text-xl font-semibold">Chest Measurement</h3>
+          {chestChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={chestChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis label={{ value: measurementUnit, angle: -90, position: 'insideLeft' }} />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="chest"
+                  name="Chest"
+                  stroke="oklch(var(--chart-3))"
+                  strokeWidth={2}
+                  dot={{ fill: 'oklch(var(--chart-3))' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+              No chest measurement data available yet
+            </div>
+          )}
+        </Card>
+
+        {/* Waist Measurement Chart */}
+        <Card className="mb-6 p-6">
+          <h3 className="mb-4 text-xl font-semibold">Waist Measurement</h3>
+          {waistChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={waistChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis label={{ value: measurementUnit, angle: -90, position: 'insideLeft' }} />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="waist"
+                  name="Waist"
+                  stroke="oklch(var(--chart-4))"
+                  strokeWidth={2}
+                  dot={{ fill: 'oklch(var(--chart-4))' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+              No waist measurement data available yet
+            </div>
+          )}
+        </Card>
+
+        {/* Hips Measurement Chart */}
+        <Card className="mb-6 p-6">
+          <h3 className="mb-4 text-xl font-semibold">Hips Measurement</h3>
+          {hipsChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={hipsChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis label={{ value: measurementUnit, angle: -90, position: 'insideLeft' }} />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="hips"
+                  name="Hips"
+                  stroke="oklch(var(--chart-5))"
+                  strokeWidth={2}
+                  dot={{ fill: 'oklch(var(--chart-5))' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+              No hips measurement data available yet
             </div>
           )}
         </Card>

@@ -149,7 +149,7 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                 /* Side by Side View */
                 <div className="grid gap-6 md:grid-cols-3">
                   {/* Slot 1 */}
-                  <Card className="overflow-hidden border-border">
+                  <Card className="overflow-hidden border-border rounded-lg">
                     <CompareSlotHeader
                       slotNumber={1}
                       dayOffsetLabel={slot1DayOffsetLabel}
@@ -176,7 +176,7 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                   </Card>
 
                   {/* Slot 2 */}
-                  <Card className="overflow-hidden border-border">
+                  <Card className="overflow-hidden border-border rounded-lg">
                     <CompareSlotHeader
                       slotNumber={2}
                       dayOffsetLabel={slot2DayOffsetLabel}
@@ -203,7 +203,7 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                   </Card>
 
                   {/* Slot 3 */}
-                  <Card className="overflow-hidden border-border">
+                  <Card className="overflow-hidden border-border rounded-lg">
                     <CompareSlotHeader
                       slotNumber={3}
                       dayOffsetLabel={slot3DayOffsetLabel}

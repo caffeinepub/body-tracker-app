@@ -2,10 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-progress-comparison-photocomparisonview-side-by-side-slot-ui-so-there-is-no-awkward-visual-gap-above-the-option-boxes-the-option-1-2-3-banner-must-be-part-of-the-same-underlying-larger-card-container-and-start-at-the-very-top-edge-where-the-card-s-rounded-corners-are-forming-a-single-continuous-box",
-      "featureTitle": "Update the Progress Comparison (PhotoComparisonView) side-by-side slot UI so there is no awkward visual gap above the Option boxes: the “Option {1|2|3}” banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, forming a single continuous box.",
+      "featureId": "feature-update-the-calendarview-heading-element-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-h2-1-to-include-a-short-one-sentence-description-directly-beneath-the-heading-text-while-keeping-all-changes-confined-to-this-selected-h2-element",
+      "featureTitle": "Update the CalendarView heading element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1] to include a short (one-sentence) description directly beneath the heading text, while keeping all changes confined to this selected h2 element.",
       "files": [
-        "frontend/src/components/compare/CompareSlotHeader.tsx"
+        "frontend/src/components/CalendarView.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -18,7 +18,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-5"
+        "REQ-14"
       ],
       "confidence": "high"
     }

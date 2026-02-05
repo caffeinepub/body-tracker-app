@@ -93,7 +93,7 @@ export default function ProfileView() {
 
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">Name *</Label>
+              <Label htmlFor="name" className="mb-1.5 block">Name *</Label>
               <Input
                 id="name"
                 value={name}
@@ -103,7 +103,7 @@ export default function ProfileView() {
             </div>
 
             <div>
-              <Label htmlFor="age">Age *</Label>
+              <Label htmlFor="age" className="mb-1.5 block">Age *</Label>
               <Input
                 id="age"
                 type="number"
@@ -114,7 +114,7 @@ export default function ProfileView() {
             </div>
 
             <div>
-              <Label htmlFor="gender">Gender</Label>
+              <Label htmlFor="gender" className="mb-1.5 block">Gender</Label>
               <Select value={gender} onValueChange={setGender}>
                 <SelectTrigger id="gender">
                   <SelectValue placeholder="Select gender" />
@@ -129,27 +129,27 @@ export default function ProfileView() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="weightUnit">Weight Unit</Label>
+                <Label htmlFor="weightUnit" className="mb-1.5 block">Weight Unit</Label>
                 <Select value={weightUnit} onValueChange={setWeightUnit}>
                   <SelectTrigger id="weightUnit">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="kg">Kilograms (kg)</SelectItem>
-                    <SelectItem value="lbs">Pounds (lbs)</SelectItem>
+                    <SelectItem value="kg">kg</SelectItem>
+                    <SelectItem value="lbs">lbs</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label htmlFor="measurementUnit">Measurement Unit</Label>
+                <Label htmlFor="measurementUnit" className="mb-1.5 block">Measurement Unit</Label>
                 <Select value={measurementUnit} onValueChange={setMeasurementUnit}>
                   <SelectTrigger id="measurementUnit">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="cm">Centimeters (cm)</SelectItem>
-                    <SelectItem value="inches">Inches (in)</SelectItem>
+                    <SelectItem value="cm">cm</SelectItem>
+                    <SelectItem value="inches">in</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

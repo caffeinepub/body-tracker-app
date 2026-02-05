@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T12:52:43.410Z",
+  "generatedAt": "2026-02-05T11:36:08.247Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,24 +11,25 @@
     "implemented": 1,
     "items": [
       {
-        "id": "REQ-5",
-        "summary": "Update the Progress Comparison (PhotoComparisonView) side-by-side slot UI so there is no awkward visual gap above the Option boxes: the “Option {1|2|3}” banner must be part of the same underlying larger card container and start at the very top edge where the card’s rounded corners are, forming a single continuous box.",
+        "id": "REQ-14",
+        "summary": "Update the CalendarView heading element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1] to include a short (one-sentence) description directly beneath the heading text, while keeping all changes confined to this selected h2 element.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
+          "frontend/src/components/CalendarView.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/compare/CompareSlotHeader.tsx"
+          "frontend/src/components/CalendarView.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
+    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/compare/CompareSlotHeader.tsx",
+    "frontend/src/components/CalendarView.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

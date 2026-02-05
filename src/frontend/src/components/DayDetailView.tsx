@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import { ChevronLeft, ChevronRight, Camera, Upload, Save, X, Pencil, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,6 +30,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
   const [chest, setChest] = useState('');
   const [waist, setWaist] = useState('');
   const [hips, setHips] = useState('');
+  const [bodyFatPercent, setBodyFatPercent] = useState('');
   const [muscleGroups, setMuscleGroups] = useState('');
   const [duration, setDuration] = useState('');
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -40,12 +41,19 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
   const dateTimestamp = dateToTime(normalizedDate);
   const existingEntry = entries.find((e) => e.date === dateTimestamp);
 
+  // Get today's entry for variance calculation
+  const todayNormalized = resetToStartOfDay(new Date());
+  const todayTimestamp = dateToTime(todayNormalized);
+  const todayEntry = entries.find((e) => e.date === todayTimestamp);
+  const isToday = dateTimestamp === todayTimestamp;
+
   useEffect(() => {
     if (existingEntry) {
       setWeight(existingEntry.weight?.value.toString() || '');
       setChest(existingEntry.chest?.value.toString() || '');
       setWaist(existingEntry.waist?.value.toString() || '');
       setHips(existingEntry.hips?.value.toString() || '');
+      setBodyFatPercent(existingEntry.bodyFatPercent?.toString() || '');
       
       if (existingEntry.workouts.length > 0) {
         setMuscleGroups(existingEntry.workouts[0].muscleGroups);
@@ -61,6 +69,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
       setChest('');
       setWaist('');
       setHips('');
+      setBodyFatPercent('');
       setMuscleGroups('');
       setDuration('');
       setImageBlob(null);
@@ -138,6 +147,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
               date: dateTimestamp,
             }
           : undefined,
+        bodyFatPercent: bodyFatPercent ? parseFloat(bodyFatPercent) : undefined,
         workouts,
       };
 
@@ -196,8 +206,8 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
   const weightUnit = userProfile?.units.weight === Variant_kg_lbs.kg ? 'kg' : 'lbs';
   const measurementUnit = userProfile?.units.measurements === Variant_cm_inches.cm ? 'cm' : 'inches';
 
-  // Check if there's any data to display
-  const hasData = weight || chest || waist || hips || muscleGroups || duration;
+  // Check if there's any data to display (including body fat %)
+  const hasData = weight || chest || waist || hips || bodyFatPercent || muscleGroups || duration;
 
   // Calculate day variance using local time
   const getDayVariance = (date: Date): { diffDays: number; label: string } => {
@@ -233,6 +243,41 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
       month: 'short',
       year: 'numeric',
     });
+  };
+
+  // Helper to render variance indicator
+  const renderVariance = (currentValue: number | undefined, todayValue: number | undefined): ReactElement | null => {
+    // Don't show variance if current value is missing
+    if (currentValue === undefined) {
+      return null;
+    }
+
+    // If viewing today, always show 0.0 with neutral styling
+    if (isToday) {
+      return <span className="variance-neutral">0.0</span>;
+    }
+
+    // For non-today dates, only show variance if today's value exists
+    if (todayValue === undefined) {
+      return null;
+    }
+
+    const delta = currentValue - todayValue;
+    
+    // Format delta with sign, avoiding -0.0
+    let formattedDelta: string;
+    if (delta === 0 || Object.is(delta, -0)) {
+      formattedDelta = '0.0';
+    } else if (delta > 0) {
+      formattedDelta = `+${delta.toFixed(1)}`;
+    } else {
+      formattedDelta = delta.toFixed(1);
+    }
+    
+    // Choose class based on sign
+    const varianceClass = delta > 0 ? 'variance-positive' : delta < 0 ? 'variance-negative' : 'variance-neutral';
+    
+    return <span className={varianceClass}>{formattedDelta}</span>;
   };
 
   return (
@@ -297,13 +342,28 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
         {/* Day Details overlay - bottom-left (always show when not editing) - COMPACTED */}
         {!showEditor && (
           <div className="absolute bottom-4 left-4 max-w-md rounded-lg bg-gradient-to-t from-black/80 to-black/60 px-3 py-2 text-white backdrop-blur-md">
-            <h3 className="mb-1.5 text-lg font-semibold leading-tight">Day Details</h3>
+            <div className="mb-1.5 flex items-baseline gap-2">
+              <h3 className="text-lg font-semibold leading-tight">Day Details</h3>
+              <span className="text-xs text-white/50">vs Today</span>
+            </div>
             {hasData ? (
               <div className="space-y-1 text-sm leading-snug">
                 {weight && (
                   <div className="grid grid-cols-[auto_1fr] gap-x-3">
                     <span className="text-white/80">Weight:</span>
-                    <span className="font-medium text-right">{weight} {weightUnit}</span>
+                    <span className="font-medium text-right">
+                      {weight} {weightUnit}
+                      {renderVariance(parseFloat(weight), todayEntry?.weight?.value)}
+                    </span>
+                  </div>
+                )}
+                {bodyFatPercent && (
+                  <div className="grid grid-cols-[auto_1fr] gap-x-3">
+                    <span className="text-white/80">Body Fat:</span>
+                    <span className="font-medium text-right">
+                      {bodyFatPercent}%
+                      {renderVariance(parseFloat(bodyFatPercent), todayEntry?.bodyFatPercent)}
+                    </span>
                   </div>
                 )}
                 {muscleGroups && (
@@ -325,19 +385,28 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
                       {chest && (
                         <div className="grid grid-cols-[auto_1fr] gap-x-3">
                           <span className="text-white/80">Chest:</span>
-                          <span className="font-medium text-right">{chest} {measurementUnit}</span>
+                          <span className="font-medium text-right">
+                            {chest} {measurementUnit}
+                            {renderVariance(parseFloat(chest), todayEntry?.chest?.value)}
+                          </span>
                         </div>
                       )}
                       {waist && (
                         <div className="grid grid-cols-[auto_1fr] gap-x-3">
                           <span className="text-white/80">Waist:</span>
-                          <span className="font-medium text-right">{waist} {measurementUnit}</span>
+                          <span className="font-medium text-right">
+                            {waist} {measurementUnit}
+                            {renderVariance(parseFloat(waist), todayEntry?.waist?.value)}
+                          </span>
                         </div>
                       )}
                       {hips && (
                         <div className="grid grid-cols-[auto_1fr] gap-x-3">
                           <span className="text-white/80">Hips:</span>
-                          <span className="font-medium text-right">{hips} {measurementUnit}</span>
+                          <span className="font-medium text-right">
+                            {hips} {measurementUnit}
+                            {renderVariance(parseFloat(hips), todayEntry?.hips?.value)}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -386,7 +455,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
 
               {/* Photo actions */}
               <div className="space-y-2">
-                <Label className="text-white">Photo</Label>
+                <Label className="mb-1.5 block text-white">Photo</Label>
                 <div className="flex gap-2">
                   <Button
                     onClick={() => setShowCamera(true)}
@@ -419,7 +488,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
 
               {/* Weight */}
               <div>
-                <Label htmlFor="weight" className="text-white">
+                <Label htmlFor="weight" className="mb-1.5 block text-white">
                   Weight ({weightUnit})
                 </Label>
                 <Input
@@ -433,10 +502,26 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
                 />
               </div>
 
+              {/* Body Fat % */}
+              <div>
+                <Label htmlFor="bodyFatPercent" className="mb-1.5 block text-white">
+                  Body Fat (%)
+                </Label>
+                <Input
+                  id="bodyFatPercent"
+                  type="number"
+                  step="0.1"
+                  value={bodyFatPercent}
+                  onChange={(e) => setBodyFatPercent(e.target.value)}
+                  placeholder="Enter body fat percentage"
+                  className="border-white/20 bg-white/10 text-white placeholder:text-white/50"
+                />
+              </div>
+
               {/* Body measurements */}
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <Label htmlFor="chest" className="text-white">
+                  <Label htmlFor="chest" className="mb-1.5 block text-white">
                     Chest ({measurementUnit})
                   </Label>
                   <Input
@@ -450,7 +535,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
                   />
                 </div>
                 <div>
-                  <Label htmlFor="waist" className="text-white">
+                  <Label htmlFor="waist" className="mb-1.5 block text-white">
                     Waist ({measurementUnit})
                   </Label>
                   <Input
@@ -464,7 +549,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
                   />
                 </div>
                 <div>
-                  <Label htmlFor="hips" className="text-white">
+                  <Label htmlFor="hips" className="mb-1.5 block text-white">
                     Hips ({measurementUnit})
                   </Label>
                   <Input
@@ -481,7 +566,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
 
               {/* Muscle groups */}
               <div>
-                <Label htmlFor="muscleGroups" className="text-white">
+                <Label htmlFor="muscleGroups" className="mb-1.5 block text-white">
                   Muscle Groups Trained
                 </Label>
                 <Textarea
@@ -496,7 +581,7 @@ export default function DayDetailView({ date, onClose, onNavigate }: DayDetailVi
 
               {/* Workout duration */}
               <div>
-                <Label htmlFor="duration" className="text-white">
+                <Label htmlFor="duration" className="mb-1.5 block text-white">
                   Workout Duration (minutes)
                 </Label>
                 <Input

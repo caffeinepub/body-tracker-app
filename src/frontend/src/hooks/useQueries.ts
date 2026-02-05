@@ -74,6 +74,11 @@ export function useCreateOrUpdateEntry() {
       queryClient.invalidateQueries({ queryKey: ['allEntries'] });
       queryClient.invalidateQueries({ queryKey: ['weightEntries'] });
       queryClient.invalidateQueries({ queryKey: ['workoutEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['bodyFatEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['chestEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['waistEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['hipsEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['workoutDurationTimeSeries'] });
       queryClient.invalidateQueries({ queryKey: ['comparisonImages'] });
     },
   });
@@ -92,6 +97,11 @@ export function useDeleteEntry() {
       queryClient.invalidateQueries({ queryKey: ['allEntries'] });
       queryClient.invalidateQueries({ queryKey: ['weightEntries'] });
       queryClient.invalidateQueries({ queryKey: ['workoutEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['bodyFatEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['chestEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['waistEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['hipsEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['workoutDurationTimeSeries'] });
       queryClient.invalidateQueries({ queryKey: ['comparisonImages'] });
     },
   });
@@ -118,6 +128,71 @@ export function useGetWorkoutEntries() {
     queryFn: async () => {
       if (!actor) return [];
       return actor.getWorkoutEntries();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useGetBodyFatEntries() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<Array<{ date: Time; bodyFatPercent: number }>>({
+    queryKey: ['bodyFatEntries'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getBodyFatEntries();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useGetChestEntries() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<Measurement[]>({
+    queryKey: ['chestEntries'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getChestEntries();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useGetWaistEntries() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<Measurement[]>({
+    queryKey: ['waistEntries'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getWaistEntries();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useGetHipsEntries() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<Measurement[]>({
+    queryKey: ['hipsEntries'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getHipsEntries();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useGetWorkoutDurationTimeSeries() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<Array<{ date: Time; totalDuration: bigint }>>({
+    queryKey: ['workoutDurationTimeSeries'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getWorkoutDurationTimeSeries();
     },
     enabled: !!actor && !isFetching,
   });

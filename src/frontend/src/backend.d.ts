@@ -32,6 +32,7 @@ export interface Measurement {
 }
 export interface DailyEntry {
     weight?: Measurement;
+    bodyFatPercent?: number;
     workouts: Array<Workout>;
     date: Time;
     hips?: Measurement;
@@ -72,16 +73,27 @@ export interface backendInterface {
     createOrUpdateEntry(entry: DailyEntry): Promise<void>;
     deleteEntry(date: Time): Promise<void>;
     getAllEntries(): Promise<Array<DailyEntry>>;
+    getBodyFatEntries(): Promise<Array<{
+        bodyFatPercent: number;
+        date: Time;
+    }>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
+    getChestEntries(): Promise<Array<Measurement>>;
     getComparisonEntries(target1: Time, target2: Time, target3: Time): Promise<{
         entry1?: DailyEntry;
         entry2?: DailyEntry;
         entry3?: DailyEntry;
     }>;
     getEntryByDate(date: Time): Promise<DailyEntry | null>;
+    getHipsEntries(): Promise<Array<Measurement>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    getWaistEntries(): Promise<Array<Measurement>>;
     getWeightEntries(): Promise<Array<Measurement>>;
+    getWorkoutDurationTimeSeries(): Promise<Array<{
+        date: Time;
+        totalDuration: bigint;
+    }>>;
     getWorkoutEntries(): Promise<Array<Workout>>;
     isCallerAdmin(): Promise<boolean>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;

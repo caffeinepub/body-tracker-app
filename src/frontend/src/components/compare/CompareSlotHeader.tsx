@@ -21,14 +21,14 @@ export default function CompareSlotHeader({
   const todayVariance = calculateDayOffsetFromToday(selectedDate);
   
   // Harmonious outline colors for each option
-  const getOptionBorderClass = (slot: 1 | 2 | 3): string => {
+  const getOptionBgClass = (slot: 1 | 2 | 3): string => {
     switch (slot) {
       case 1:
-        return 'border-primary';
+        return 'bg-primary/10';
       case 2:
-        return 'border-accent';
+        return 'bg-accent/10';
       case 3:
-        return 'border-chart-3';
+        return 'bg-chart-3/10';
     }
   };
 
@@ -56,20 +56,20 @@ export default function CompareSlotHeader({
     return 'text-accent-foreground';
   };
 
-  const borderClass = getOptionBorderClass(slotNumber);
+  const bgClass = getOptionBgClass(slotNumber);
   const textClass = getOptionTextClass(slotNumber);
   const varianceBgClass = getVarianceBgClass(todayVariance);
   const varianceTextClass = getVarianceTextClass(todayVariance);
 
   return (
-    <div className="bg-card">
-      {/* Top banner with Option label and harmonious outline - integrated with card top */}
-      <div className={`border-2 ${borderClass} ${textClass} py-2 px-4 text-center font-bold text-sm tracking-wide rounded-t-lg bg-card`}>
+    <>
+      {/* Top banner with Option label - flush with card top using negative margin */}
+      <div className={`${bgClass} ${textClass} -mt-[1px] py-2.5 px-4 text-center font-bold text-sm tracking-wide`}>
         Option {slotNumber}
       </div>
 
       {/* Second line: date + variance badge + Change button inline */}
-      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border flex-wrap">
+      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border flex-wrap bg-card">
         {/* Left side: date + variance indicator */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Date text */}
@@ -115,6 +115,6 @@ export default function CompareSlotHeader({
           <span className="text-xs font-medium">Change</span>
         </Button>
       </div>
-    </div>
+    </>
   );
 }

@@ -27,12 +27,14 @@ export default function CalendarView() {
     // Check if entry has any saved content:
     // - image present
     // - any measurement present (weight, chest, waist, hips)
+    // - body fat percentage present
     // - any workouts
     const hasImage = !!entry.image;
     const hasMeasurements = !!(entry.weight || entry.chest || entry.waist || entry.hips);
+    const hasBodyFat = entry.bodyFatPercent !== undefined;
     const hasWorkouts = entry.workouts.length > 0;
 
-    return hasImage || hasMeasurements || hasWorkouts;
+    return hasImage || hasMeasurements || hasBodyFat || hasWorkouts;
   };
 
   const handleDateSelect = (date: Date | undefined) => {
@@ -46,7 +48,12 @@ export default function CalendarView() {
     <div className="flex h-full flex-col overflow-auto">
       <div className="container mx-auto flex h-full flex-col px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-3xl font-bold text-foreground">Your Journey</h2>
+          <h2 className="text-3xl font-bold text-foreground">
+            Your Journey
+            <span className="mt-1 block text-sm font-normal text-muted-foreground">
+              Track your progress day by day
+            </span>
+          </h2>
           <Button
             onClick={() => setShowComparison(true)}
             variant="outline"
