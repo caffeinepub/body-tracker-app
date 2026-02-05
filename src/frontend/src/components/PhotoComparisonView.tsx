@@ -4,9 +4,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
-import { useGetComparisonEntries } from '../hooks/useQueries';
+import { useGetComparisonEntries, useGetAllEntries } from '../hooks/useQueries';
 import { getDaysBack, dateToTime, formatDateShort, resetToStartOfDay, timeToDate, calculateDayVariance, formatDayVariance, calculateDayOffsetFromToday, formatDayOffsetFromToday } from '../utils/time';
 import CompareSlotHeader from './compare/CompareSlotHeader';
+import DayDetailsInline from './DayDetailsInline';
 
 interface PhotoComparisonViewProps {
   onClose: () => void;
@@ -32,6 +33,9 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
   // Fetch comparison entries with the three target dates
   const { data, isLoading } = useGetComparisonEntries(target1, target2, target3);
 
+  // Fetch all entries for calendar dot indicators
+  const { data: entries = [] } = useGetAllEntries();
+
   const entry1Url = data?.entry1?.image?.getDirectURL();
   const entry2Url = data?.entry2?.image?.getDirectURL();
   const entry3Url = data?.entry3?.image?.getDirectURL();
@@ -49,6 +53,33 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
   const slot1DayOffsetLabel = useMemo(() => formatDayOffsetFromToday(slot1DayOffset), [slot1DayOffset]);
   const slot2DayOffsetLabel = useMemo(() => formatDayOffsetFromToday(slot2DayOffset), [slot2DayOffset]);
   const slot3DayOffsetLabel = useMemo(() => formatDayOffsetFromToday(slot3DayOffset), [slot3DayOffset]);
+
+  // Create entries map for calendar dot indicators (same logic as main calendar)
+  const entriesMap = useMemo(() => {
+    return new Map(
+      entries.map((entry) => [
+        timeToDate(entry.date).toDateString(),
+        entry,
+      ])
+    );
+  }, [entries]);
+
+  const hasSavedContent = (date: Date) => {
+    const entry = entriesMap.get(date.toDateString());
+    if (!entry) return false;
+
+    // Check if entry has any saved content:
+    // - image present
+    // - any measurement present (weight, chest, waist, hips)
+    // - body fat percentage present
+    // - any workouts
+    const hasImage = !!entry.image;
+    const hasMeasurements = !!(entry.weight || entry.chest || entry.waist || entry.hips);
+    const hasBodyFat = entry.bodyFatPercent !== undefined;
+    const hasWorkouts = entry.workouts.length > 0;
+
+    return hasImage || hasMeasurements || hasBodyFat || hasWorkouts;
+  };
 
   const handleDateSelect = (date: Date | undefined) => {
     if (!date || !activeCalendarSlot) return;
@@ -127,6 +158,12 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                 onSelect={handleDateSelect}
                 initialFocus
                 className="rounded-md border border-border"
+                modifiers={{
+                  hasSavedContent: (date) => hasSavedContent(date),
+                }}
+                modifiersClassNames={{
+                  hasSavedContent: 'has-saved-content',
+                }}
               />
             </div>
           </div>
@@ -175,6 +212,7 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                       </div>
                     )}
                   </div>
+                  <DayDetailsInline selectedDate={slot1Date} />
                 </Card>
 
                 {/* Slot 2 - Purple border */}
@@ -205,6 +243,7 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                       </div>
                     )}
                   </div>
+                  <DayDetailsInline selectedDate={slot2Date} />
                 </Card>
 
                 {/* Slot 3 - Cyan border */}
@@ -235,6 +274,7 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
                       </div>
                     )}
                   </div>
+                  <DayDetailsInline selectedDate={slot3Date} />
                 </Card>
               </div>
             ) : (

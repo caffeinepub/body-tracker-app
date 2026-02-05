@@ -7,18 +7,10 @@
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-increase-the-border-prominence-slightly-thicker-and-more-visually-distinct-while-staying-consistent-with-the-existing-theme-for-only-the-selected-compare-progress-outline-button-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-div-2-button-1-implemented-in-calendarview",
-      "title": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected 'Compare Progress' outline button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1] (implemented in CalendarView).",
+      "id": "feature-apply-a-subtle-animated-glowing-border-that-continuously-rotates-around-the-border-of-the-button-located-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-div-2-button-1-creating-a-live-waiting-to-be-pressed-effect-while-preserving-the-button-s-existing-size-layout-and-click-behavior",
+      "title": "Apply a subtle animated glowing border that continuously rotates around the border of the button located at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1], creating a “live / waiting to be pressed” effect while preserving the button’s existing size, layout, and click behavior.",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-increase-the-border-prominence-slightly-thicker-and-more-visually-distinct-while-staying-consistent-with-the-existing-theme-for-only-the-selected-main-calendar-element-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-2-div-1-div-1-the-fullscreen-calendar-container-component-in-calendarview",
-      "title": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected main calendar element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1] (the fullscreen calendar container/component in CalendarView).",
-      "reqIds": [
-        "REQ-2"
       ],
       "version": 1
     }
@@ -26,12 +18,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Make the borders of the button and the calendar slightly more prominent",
+      "summary": "Add a subtle animated glowing border that rotates around the selected button (live/waiting-to-be-pressed effect).",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Make CalendarView button and calendar borders slightly more prominent",
+  "projectName": "Add rotating subtle animated glowing border to the selected button",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

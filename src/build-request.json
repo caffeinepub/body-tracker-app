@@ -1,53 +1,37 @@
 {
   "kind": "build_request",
-  "title": "Make CalendarView button and calendar borders slightly more prominent",
+  "title": "Add rotating subtle animated glowing border to the selected button",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected 'Compare Progress' outline button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1] (implemented in CalendarView).",
+      "text": "Apply a subtle animated glowing border that continuously rotates around the border of the button located at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1], creating a “live / waiting to be pressed” effect while preserving the button’s existing size, layout, and click behavior.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "make the borders of this button and the calendar slightly more prominent"
+          "can you give this button's border a subtle glowing colour that tourns around the border, like a live button waiting to be pressed"
         ]
       },
       "acceptanceCriteria": [
-        "On the Calendar page, the 'Compare Progress' button’s border is visibly more prominent than before (e.g., thicker than the default outline border).",
-        "Only the selected 'Compare Progress' button’s border styling is changed; other buttons across the app are unaffected.",
-        "The button remains an outline-style button and remains readable in both light and dark themes."
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected main calendar element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1] (the fullscreen calendar container/component in CalendarView).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "make the borders of this button and the calendar slightly more prominent"
-        ]
-      },
-      "acceptanceCriteria": [
-        "On the Calendar page, the calendar’s outer border is visibly more prominent than before (e.g., thicker than the default 1px border).",
-        "Only the selected calendar element’s border styling is changed; other calendar instances (e.g., comparison date picker calendar) are unaffected.",
-        "The calendar border remains consistent with the app’s existing border color tokens and looks correct in both light and dark themes."
+        "The selected button displays a subtle glowing border effect with a visibly rotating highlight moving around the perimeter.",
+        "The effect does not change the button’s dimensions or cause layout shift (no jittering or reflow).",
+        "The effect is visible in both light and dark themes and remains subtle (not overpowering surrounding UI).",
+        "Hover/active/disabled states continue to work; when disabled, the glow is either removed or significantly subdued so the disabled state is still clear.",
+        "If the user has reduced-motion enabled (prefers-reduced-motion), the border animation is disabled (static border/glow is acceptable).",
+        "The change is applied only to the selected button, not globally to all buttons."
       ]
     }
   ],
   "constraints": [
-    "Apply changes ONLY to the two elements identified by the provided XPaths; do not modify border styling globally (e.g., do not change shared Button/Calendar component defaults).",
-    "Do not edit any files under frontend/src/components/ui (read-only components)."
+    "Do not modify any files under frontend/src/components/ui (read-only shadcn UI components).",
+    "Keep the backend unchanged (no Motoko changes required)."
   ],
   "nonGoals": [
-    "No backend changes.",
-    "No layout, spacing, or typography redesign beyond what is necessary to make the two borders slightly more prominent.",
-    "No changes to comparison view card borders or other borders elsewhere in the app."
+    "Adding the same animated glow border to other buttons across the app.",
+    "Changing the button text, icon, routing/navigation behavior, or button placement/layout."
   ],
   "imageRequirements": {
     "required": [],

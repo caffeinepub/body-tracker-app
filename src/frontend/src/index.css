@@ -296,3 +296,60 @@
         height: 3rem;
     }
 }
+
+/* Live glowing border animation for login button */
+.live-glow-border {
+    position: relative;
+    isolation: isolate;
+}
+
+.live-glow-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+        from 0deg,
+        oklch(0.75 0.25 260),
+        oklch(0.80 0.28 280),
+        oklch(0.75 0.25 300),
+        oklch(0.70 0.22 260),
+        oklch(0.75 0.25 260)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.6;
+    animation: rotate-glow 3s linear infinite;
+}
+
+@keyframes rotate-glow {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Disable animation for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .live-glow-border::before {
+        animation: none;
+        background: linear-gradient(
+            135deg,
+            oklch(0.75 0.25 260),
+            oklch(0.80 0.28 280)
+        );
+    }
+}
+
+/* Subdue glow when button is disabled */
+.live-glow-border:disabled::before,
+.live-glow-border[disabled]::before {
+    opacity: 0.2;
+    animation: none;
+}

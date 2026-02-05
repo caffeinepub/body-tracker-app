@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Make the Calendar page’s “Compare Progress” outline button border and the main calendar container border slightly more prominent while staying consistent with the existing theme.
+**Goal:** Add a subtle animated glowing border that rotates around the selected button to make it feel “live / waiting to be pressed,” without changing its layout or behavior.
 
 **Planned changes:**
-- Update styling in `CalendarView` to increase border thickness/contrast for only the “Compare Progress” outline button instance (without affecting other buttons).
-- Update styling in `CalendarView` to increase the outer border prominence for only the main fullscreen calendar container/component (without affecting other calendar instances).
+- Add a button-specific styling hook (e.g., a dedicated class) to target only the specified button.
+- Implement a subtle rotating border/glow effect via CSS (e.g., pseudo-element + conic-gradient/mask) that preserves the button’s existing size and click behavior.
+- Ensure the effect respects hover/active/disabled states, is visible but subtle in light/dark themes, and is disabled when `prefers-reduced-motion` is enabled.
 
-**User-visible outcome:** On the Calendar page, the “Compare Progress” button and the main calendar’s outer border look slightly more prominent and easier to distinguish in both light and dark themes, with no other UI borders changed.
+**User-visible outcome:** The targeted button shows a subtle rotating glowing border highlight indicating it’s ready to be pressed, while all other buttons remain unchanged and the UI layout stays stable.

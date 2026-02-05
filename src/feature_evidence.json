@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-increase-the-border-prominence-slightly-thicker-and-more-visually-distinct-while-staying-consistent-with-the-existing-theme-for-only-the-selected-compare-progress-outline-button-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-div-2-button-1-implemented-in-calendarview",
-      "featureTitle": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected 'Compare Progress' outline button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1] (implemented in CalendarView).",
+      "featureId": "feature-apply-a-subtle-animated-glowing-border-that-continuously-rotates-around-the-border-of-the-button-located-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-div-2-button-1-creating-a-live-waiting-to-be-pressed-effect-while-preserving-the-button-s-existing-size-layout-and-click-behavior",
+      "featureTitle": "Apply a subtle animated glowing border that continuously rotates around the border of the button located at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1], creating a “live / waiting to be pressed” effect while preserving the button’s existing size, layout, and click behavior.",
       "files": [
-        "frontend/src/components/CalendarView.tsx"
+        "frontend/src/index.css",
+        "frontend/src/pages/LoginPage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -19,27 +20,6 @@
       ],
       "testIds": [
         "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-increase-the-border-prominence-slightly-thicker-and-more-visually-distinct-while-staying-consistent-with-the-existing-theme-for-only-the-selected-main-calendar-element-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-2-div-1-div-1-the-fullscreen-calendar-container-component-in-calendarview",
-      "featureTitle": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected main calendar element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1] (the fullscreen calendar container/component in CalendarView).",
-      "files": [
-        "frontend/src/components/CalendarView.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "camera@1.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
       ],
       "confidence": "high"
     }

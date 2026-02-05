@@ -1,37 +1,29 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Make CalendarView button and calendar borders slightly more prominent",
+  "title": "Rotating subtle glowing border on the LoginPage primary button",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Make only the CalendarView 'Compare Progress' outline button border slightly thicker/more distinct without affecting other buttons.",
+      "summary": "Add a subtle rotating glowing border animation to only the specified LoginPage button without affecting layout, behavior, or other buttons, including reduced-motion and disabled handling.",
       "acceptanceCriteria": [
-        "On the Calendar page, the 'Compare Progress' button’s border is visibly more prominent than before (e.g., thicker than the default outline border).",
-        "Only the selected 'Compare Progress' button’s border styling is changed; other buttons across the app are unaffected.",
-        "The button remains an outline-style button and remains readable in both light and dark themes."
+        "The selected button displays a subtle glowing border effect with a visibly rotating highlight moving around the perimeter.",
+        "The effect does not change the button’s dimensions or cause layout shift (no jittering or reflow).",
+        "The effect is visible in both light and dark themes and remains subtle (not overpowering surrounding UI).",
+        "Hover/active/disabled states continue to work; when disabled, the glow is either removed or significantly subdued so the disabled state is still clear.",
+        "If the user has reduced-motion enabled (prefers-reduced-motion), the border animation is disabled (static border/glow is acceptable).",
+        "The change is applied only to the selected button, not globally to all buttons."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/CalendarView.tsx",
+          "path": "frontend/src/pages/LoginPage.tsx",
           "operation": "modify",
-          "description": "Update ONLY the 'Compare Progress' <Button variant=\"outline\"> instance in CalendarView (the button at the provided XPath) to use a more prominent border (e.g., Tailwind border-2 and explicit border-border), while keeping outline styling and ensuring readability in light/dark themes. Do not change any shared Button defaults or files under frontend/src/components/ui."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Make only the main fullscreen calendar container in CalendarView have a slightly thicker/more distinct outer border without impacting other calendar instances.",
-      "acceptanceCriteria": [
-        "On the Calendar page, the calendar’s outer border is visibly more prominent than before (e.g., thicker than the default 1px border).",
-        "Only the selected calendar element’s border styling is changed; other calendar instances (e.g., comparison date picker calendar) are unaffected.",
-        "The calendar border remains consistent with the app’s existing border color tokens and looks correct in both light and dark themes."
-      ],
-      "file_operations": [
+          "description": "Apply a dedicated, single-use className (e.g., \"live-glow-border\") to the existing Shadcn Button used for Sign In, ensuring it targets only this button and does not alter existing sizing/layout/click behavior."
+        },
         {
-          "path": "frontend/src/components/CalendarView.tsx",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Update ONLY the main CalendarComponent in CalendarView (the fullscreen calendar at the provided XPath) to use a more prominent outer border (e.g., Tailwind border-2 with border-border), keeping existing theme tokens and appearance in light/dark. Ensure other calendars (e.g., PhotoComparisonView date picker) are not affected and do not edit any files under frontend/src/components/ui."
+          "description": "Implement the rotating subtle glow border styles scoped to the new button class using pseudo-elements (absolute-positioned, pointer-events:none, border-radius:inherit) and a conic-gradient highlight with a rotation animation; include a prefers-reduced-motion media query to disable animation (static glow allowed) and disabled-state styles to remove/subdue the glow so disabled remains clearly disabled, while keeping the effect subtle in both light and dark themes."
         }
       ]
     }
