@@ -19,7 +19,6 @@ export default function ProfileView() {
   const saveMutation = useSaveCallerUserProfile();
 
   const [name, setName] = useState(userProfile?.name || '');
-  const [age, setAge] = useState(userProfile?.age.toString() || '');
   const [gender, setGender] = useState<string>(
     userProfile?.gender.__kind__ === 'male'
       ? 'male'
@@ -35,8 +34,8 @@ export default function ProfileView() {
   );
 
   const handleSave = async () => {
-    if (!name || !age) {
-      toast.error('Please fill in all required fields');
+    if (!name) {
+      toast.error('Please enter your name');
       return;
     }
 
@@ -55,7 +54,7 @@ export default function ProfileView() {
 
       const profile: UserProfile = {
         name,
-        age: BigInt(age),
+        age: BigInt(0),
         gender: genderValue,
         units,
       };
@@ -99,17 +98,6 @@ export default function ProfileView() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="age" className="mb-1.5 block">Age *</Label>
-              <Input
-                id="age"
-                type="number"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                placeholder="Enter your age"
               />
             </div>
 

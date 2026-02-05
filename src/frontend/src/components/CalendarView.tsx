@@ -44,24 +44,37 @@ export default function CalendarView() {
     }
   };
 
+  // If showing comparison, render it as full-page view
+  if (showComparison) {
+    return <PhotoComparisonView onClose={() => setShowComparison(false)} />;
+  }
+
   return (
     <div className="flex h-full flex-col overflow-auto">
       <div className="container mx-auto flex h-full flex-col px-4 py-8">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-3xl font-bold text-foreground">
-            Your Journey
-            <span className="mt-1 block text-sm font-normal text-muted-foreground">
-              Track your progress day by day
-            </span>
-          </h2>
-          <Button
-            onClick={() => setShowComparison(true)}
-            variant="outline"
-            className="gap-2"
-          >
-            <ImageIcon className="h-4 w-4" />
-            Compare Progress
-          </Button>
+        {/* Header with huge Compare Progress button on the right */}
+        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 md:items-stretch md:gap-6">
+          {/* Left column: Heading */}
+          <div className="flex flex-col justify-center">
+            <h2 className="text-3xl font-bold text-foreground">
+              Your Journey
+              <span className="mt-1 block text-sm font-normal text-muted-foreground">
+                Track & compare your progress day by day
+              </span>
+            </h2>
+          </div>
+
+          {/* Right column: Huge Compare Progress button */}
+          <div className="flex items-stretch md:min-h-[120px]">
+            <Button
+              onClick={() => setShowComparison(true)}
+              variant="outline"
+              className="h-full w-full gap-3 border-2 border-border text-lg font-semibold md:text-xl"
+            >
+              <ImageIcon className="h-6 w-6 md:h-8 md:w-8" />
+              Compare Progress
+            </Button>
+          </div>
         </div>
 
         {/* Fullscreen Calendar */}
@@ -71,7 +84,7 @@ export default function CalendarView() {
               mode="single"
               selected={selectedDate}
               onSelect={handleDateSelect}
-              className="mx-auto w-full rounded-md border shadow-lg"
+              className="mx-auto w-full rounded-md border-2 border-border shadow-lg"
               modifiers={{
                 hasSavedContent: (date) => hasSavedContent(date),
               }}
@@ -101,11 +114,6 @@ export default function CalendarView() {
             setSelectedDate(newDate);
           }}
         />
-      )}
-
-      {/* Photo Comparison Modal */}
-      {showComparison && (
-        <PhotoComparisonView onClose={() => setShowComparison(false)} />
       )}
     </div>
   );

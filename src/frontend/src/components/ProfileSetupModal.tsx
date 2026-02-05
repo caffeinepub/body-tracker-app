@@ -12,7 +12,6 @@ import { Variant_kg_lbs, Variant_cm_inches } from '../backend';
 export default function ProfileSetupModal() {
   const saveMutation = useSaveCallerUserProfile();
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
   const [gender, setGender] = useState<string>('male');
   const [weightUnit, setWeightUnit] = useState<string>('kg');
   const [measurementUnit, setMeasurementUnit] = useState<string>('cm');
@@ -20,8 +19,8 @@ export default function ProfileSetupModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !age) {
-      toast.error('Please fill in all required fields');
+    if (!name) {
+      toast.error('Please enter your name');
       return;
     }
 
@@ -40,7 +39,7 @@ export default function ProfileSetupModal() {
 
       const profile: UserProfile = {
         name,
-        age: BigInt(age),
+        age: BigInt(0),
         gender: genderValue,
         units,
       };
@@ -70,18 +69,6 @@ export default function ProfileSetupModal() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="setup-age">Age *</Label>
-            <Input
-              id="setup-age"
-              type="number"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              placeholder="Enter your age"
               required
             />
           </div>

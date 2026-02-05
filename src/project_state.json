@@ -1,324 +1,24 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
-  "summary": "physiq is a privacy-focused body transformation tracker built as a React + TypeScript single-page app backed by a Motoko canister on the Internet Computer (ICP). Users authenticate via Internet Identity, bootstrap role-based access control (optionally becoming the first admin via a secret token validated against an on-canister environment variable), set up a personal profile (including preferred weight/measurement units), and record per-day entries containing an optional progress photo (captured in-app or uploaded), optional weight and body measurements (chest/waist/hips), optional body fat %, and optional workout logs (muscle groups + duration). The UI centers on a calendar journey view (with day markers for saved content), a full-screen day detail viewer/editor with Today-relative variance indicators, a three-slot progress photo comparison tool with per-slot date picking and side-by-side/overlay modes, and an analytics dashboard with charts (including rolling averages), measurement/duration time series, and a workout-frequency heatmap. User data is caller-scoped (per Principal) and access-controlled in the backend.",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "IF-1",
-      "title": "Internet Identity authentication with persisted delegation",
-      "synonyms": [
-        "InternetIdentityProvider",
-        "AuthClient login",
-        "delegation persistence"
-      ],
-      "description": "Provides an authentication context around @dfinity/auth-client that initializes on mount, restores stored identities when valid, supports login against the configured Internet Identity provider/derivation origin, and exposes logout/clear plus login status flags.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-2",
-      "title": "Landing/login page with Internet Identity sign-in CTA",
-      "synonyms": [
-        "LoginPage",
-        "Get Started screen"
-      ],
-      "description": "Renders the logged-out landing experience with physiq branding, feature highlights, and a sign-in button wired to the Internet Identity login flow.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-3",
-      "title": "Backend actor creation per identity with access-control initialization",
-      "synonyms": [
-        "useActor",
-        "actor recreation on identity change",
-        "access control bootstrap"
-      ],
-      "description": "Creates a typed ICP canister actor using the current identity (or an anonymous actor when logged out). When authenticated, initializes access control on the backend using a secret token and invalidates/refetches React Query caches when the actor changes.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-4",
-      "title": "Sensitive token extraction from URL hash with session persistence and URL cleanup",
-      "synonyms": [
-        "getSecretParameter",
-        "hash secret extraction",
-        "sessionStorage persistence"
-      ],
-      "description": "Extracts sensitive parameters from the URL hash fragment, persists them in sessionStorage for the session, and removes them from the address bar to reduce leakage via history/referrers.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-5",
-      "title": "Backend role-based access control with admin bootstrap token",
-      "synonyms": [
-        "AccessControl",
-        "Authorization mixin",
-        "admin bootstrap"
-      ],
-      "description": "Motoko access-control layer assigns roles per principal; a first admin can be bootstrapped by providing the correct secret token (validated against a canister environment variable). Exposes APIs to query caller role, check admin status, and assign roles (admin-only).",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-6",
-      "title": "Caller-scoped user profile storage with unit preferences",
-      "synonyms": [
-        "UserProfile CRUD",
-        "units preferences"
-      ],
-      "description": "Backend supports fetching and saving the caller’s profile (name, age, gender, units). Frontend uses this profile to label inputs and charts with preferred units.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-7",
-      "title": "First-login profile onboarding modal with improved label spacing",
-      "synonyms": [
-        "ProfileSetupModal",
-        "onboarding",
-        "profile setup form"
-      ],
-      "description": "When an authenticated user has no stored profile, displays a modal to collect name/age/gender and unit preferences; form uses consistent vertical spacing between labels and controls to avoid overlap, and saves the profile via a mutation with toast feedback.",
+      "id": "feature-increase-the-border-prominence-slightly-thicker-and-more-visually-distinct-while-staying-consistent-with-the-existing-theme-for-only-the-selected-compare-progress-outline-button-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-div-2-button-1-implemented-in-calendarview",
+      "title": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected 'Compare Progress' outline button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1] (implemented in CalendarView).",
       "reqIds": [
-        "REQ-13"
+        "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "IF-8",
-      "title": "Profile settings management and logout",
-      "synonyms": [
-        "ProfileView",
-        "account settings"
-      ],
-      "description": "Allows users to view/edit profile fields and unit preferences, save updates to the backend, and logout (clearing identity and React Query cache) with toast feedback and principal display.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-9",
-      "title": "Daily entry model and CRUD (photo, measurements, body fat %, workouts)",
-      "synonyms": [
-        "DailyEntry persistence",
-        "journal entries",
-        "entry CRUD"
-      ],
-      "description": "Backend stores per-day entries per caller and supports create/update by date, fetch by date, delete by date, and list all entries. Entries include optional image blob, optional weight/chest/waist/hips measurements, optional body fat %, and workouts.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-10",
-      "title": "In-app camera capture modal for progress photos",
-      "synonyms": [
-        "CameraCapture",
-        "photo capture",
-        "getUserMedia"
-      ],
-      "description": "Provides an in-app camera UI for capturing progress photos and converting them into backend ExternalBlob bytes. Includes zoom capability detection, lens preference heuristics, and hardened retry/switch behavior for Android Chrome installed PWAs.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-11",
-      "title": "Device photo upload for daily entries",
-      "synonyms": [
-        "photo upload",
-        "file picker"
-      ],
-      "description": "Allows selecting an image file from the device, converts it to an ExternalBlob, and attaches it to the daily entry with preview support.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-12",
-      "title": "Full-screen day viewer with Today-relative variance indicators",
-      "synonyms": [
-        "DayDetailView",
-        "immersive entry viewer",
-        "vs Today deltas"
-      ],
-      "description": "Shows a full-screen photo-first view for a selected date with overlays (formatted date and Today-relative day offset). Displays logged metrics and color-coded deltas vs today where applicable, with neutral variance display when viewing Today.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-13",
-      "title": "Day navigation via buttons, swipe gestures, and keyboard shortcuts",
-      "synonyms": [
-        "swipe navigation",
-        "arrow key navigation",
-        "Escape to close"
-      ],
-      "description": "Within the day detail view, users can navigate adjacent dates using chevrons, horizontal swipes, and keyboard shortcuts (ArrowLeft/ArrowRight/Escape).",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-14",
-      "title": "Inline day entry editor for photos, measurements, workouts, and body fat %",
-      "synonyms": [
-        "entry editor",
-        "bottom-sheet editor"
-      ],
-      "description": "Provides an editor overlay to capture/upload a photo and set optional weight, chest/waist/hips, body fat %, and a workout record (muscle groups + duration), saving via createOrUpdateEntry with toast feedback.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-15",
-      "title": "Calendar journey view with saved-content indicators and day selection",
-      "synonyms": [
-        "CalendarView",
-        "entry markers",
-        "day dot indicator"
-      ],
-      "description": "Displays a month calendar, marks days that contain any saved content (photo/measurements/body fat/workouts), opens a full-screen day detail view on selection, and launches the comparison modal.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-16",
-      "title": "Three-slot progress photo comparison with per-slot date picking and overlay mode",
-      "synonyms": [
-        "PhotoComparisonView",
-        "milestone comparison",
-        "side-by-side and overlay"
-      ],
-      "description": "Compares up to three dates (defaults: 60 days back, 30 days back, today) with side-by-side and overlay modes. Each slot supports opening an inline calendar picker to change the target date.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-17",
-      "title": "Comparison entry selection (closest entry on-or-before each target date)",
-      "synonyms": [
-        "getComparisonEntries",
-        "closest entry selection"
-      ],
-      "description": "Backend returns up to three entries by selecting, for each target timestamp, the closest available entry on or before the target date, enabling comparisons even when exact dates are missing.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-18",
-      "title": "Comparison slot headers with option banner and Today-offset badge",
-      "synonyms": [
-        "CompareSlotHeader",
-        "Option banner",
-        "Today variance badge"
-      ],
-      "description": "Renders each comparison slot with an “Option N” banner, selected date, an always-visible Today-relative offset badge with tooltip, and a Change button to open the slot calendar picker.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-19",
-      "title": "Analytics dashboard with charts, rolling averages, and workout heatmap",
-      "synonyms": [
-        "AnalyticsView",
-        "weight trends",
-        "rolling averages",
-        "workout frequency heatmap"
-      ],
-      "description": "Displays stats cards plus charts for weight, body fat %, rolling averages (7/30 day), workout duration time series, chest/waist/hips measurement trends, and a last-90-days workout frequency heatmap.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-20",
-      "title": "Backend analytics/time-series endpoints for measurements, workouts, and durations",
-      "synonyms": [
-        "getWeightEntries",
-        "getWorkoutEntries",
-        "getBodyFatEntries",
-        "getWorkoutDurationTimeSeries"
-      ],
-      "description": "Provides backend query endpoints that return time series for weight, workouts, body fat %, chest/waist/hips measurements, and per-day total workout duration, intended for trend visualization.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-21",
-      "title": "React Query data layer for profiles, entries, analytics, and comparison",
-      "synonyms": [
-        "useQueries hooks",
-        "client-side caching",
-        "query invalidation"
-      ],
-      "description": "Encapsulates backend calls in React Query hooks for profile fetch/save, daily entry CRUD/listing, analytics time series queries, and parameterized three-target comparison queries. Mutations invalidate relevant query keys to keep views consistent.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-22",
-      "title": "Time/date utilities for nanosecond timestamps and day variance/offset formatting",
-      "synonyms": [
-        "dateToTime",
-        "timeToDate",
-        "resetToStartOfDay",
-        "calculateDayVariance"
-      ],
-      "description": "Provides BigInt-safe Date↔Time (ns) conversion, local start-of-day normalization, date formatting helpers, and day variance/offset calculations used across calendar, day detail, and compare UIs.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-23",
-      "title": "Forced dark theme, global styling, and toast theming",
-      "synonyms": [
-        "ThemeProvider forcedTheme",
-        "Tailwind OKLCH tokens",
-        "Sonner toaster"
-      ],
-      "description": "Forces dark mode app-wide, defines theme tokens and variance indicator styles, provides calendar saved-content dot indicators, custom compare date-picker CSS sizing, and consistent dark-themed toast notifications.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-24",
-      "title": "Main authenticated layout with view navigation and About page back navigation",
-      "synonyms": [
-        "MainLayout",
-        "view switching",
-        "About back-stack behavior"
-      ],
-      "description": "Provides header navigation between Calendar, Analytics, Profile, and About views; entering About remembers the previous view so Back returns correctly.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-25",
-      "title": "In-app About page",
-      "synonyms": [
-        "AboutView",
-        "product explainer"
-      ],
-      "description": "Explains physiq’s purpose and key capabilities (variance tracking, comparisons, calendar navigation, analytics) and provides a Back action to return to the previous view.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "IF-26",
-      "title": "Caffeine blob-storage maintenance/admin endpoints",
-      "synonyms": [
-        "storage mixin",
-        "dead blob pruning",
-        "gateway principal refresh",
-        "cashier cycle refill"
-      ],
-      "description": "Exposes blob-storage operations to refresh authorized gateway principals, check blob liveness, list dead blobs for authorized callers, confirm deletion and trigger GC, create an upload certificate stub, and allow the cashier canister to top up cycles.",
-      "reqIds": [],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-calendarview-heading-element-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-h2-1-to-include-a-short-one-sentence-description-directly-beneath-the-heading-text-while-keeping-all-changes-confined-to-this-selected-h2-element",
-      "title": "Update the CalendarView heading element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1] to include a short (one-sentence) description directly beneath the heading text, while keeping all changes confined to this selected h2 element.",
+      "id": "feature-increase-the-border-prominence-slightly-thicker-and-more-visually-distinct-while-staying-consistent-with-the-existing-theme-for-only-the-selected-main-calendar-element-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-2-div-1-div-1-the-fullscreen-calendar-container-component-in-calendarview",
+      "title": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected main calendar element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1] (the fullscreen calendar container/component in CalendarView).",
       "reqIds": [
-        "REQ-14"
+        "REQ-2"
       ],
       "version": 1
     }
@@ -326,36 +26,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Update CalendarView header area: split into two columns with left heading + short descriptive blurb for the calendar/journey page, and right-side large full-width 'Compare Progress' button with a compare-style icon.",
+      "summary": "Make the borders of the button and the calendar slightly more prominent",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "architectural_notes": [
-    "Frontend uses React + TypeScript with @tanstack/react-query for server-state caching; mutations invalidate query keys to keep derived views (calendar/analytics/compare) consistent.",
-    "Authentication is implemented via a React context around @dfinity/auth-client (Internet Identity) with persisted delegation and explicit login/logout flows.",
-    "Backend access control is implemented in Motoko via an AccessControl module and an authorization mixin; admin bootstrap requires a secret token matched against an env var.",
-    "Backend canister composes concerns via Motoko mixins (authorization + Caffeine blob-storage maintenance endpoints) included into the main actor.",
-    "Time is modeled as nanoseconds (Motoko Time.Time / TS bigint) with shared BigInt-safe utilities for Date↔Time conversion and local start-of-day normalization.",
-    "Camera functionality is modularized (useCamera hook + CameraCapture modal) and includes defensive capability probing (zoom) and special handling for Android Chrome installed PWA permission/switch edge cases.",
-    "UI is built with Tailwind CSS + shadcn/ui components + lucide-react icons, with a forced dark theme and globally styled toast notifications.",
-    "Comparison and analytics views are built from dedicated backend query endpoints (weight/workouts/body-fat/measurements/duration) rather than deriving everything client-side."
-  ],
-  "known_issues": [
-    "Profile query can run while logged out: useGetCallerUserProfile is enabled whenever an actor exists, but useActor returns an anonymous actor when unauthenticated; backend then traps as unauthorized, producing React Query errors pre-login.",
-    "Unit modeling bug: backend Measurement.unit only supports cm/inches, but DailyEntry.weight is typed as Measurement; frontend also saves weight using the profile measurement unit (cm/in) instead of kg/lbs.",
-    "Measurement time-series endpoints (getChestEntries/getWaistEntries/getHipsEntries) build lists using List.add while iterating sorted entries and then return without sorting, likely reversing chronological order of returned measurements.",
-    "AnalyticsView converts nanosecond timestamps using Number(bigint) prior to scaling, risking precision loss because ns timestamps exceed JS safe integer range (should divide using BigInt first or reuse timeToDate).",
-    "ProfileView initializes controlled form state from userProfile only on first render; if the profile loads after mount, local state can remain out of sync (missing sync effect).",
-    "Backend state (profiles, entries, and roles) is not stored in stable variables and there are no preupgrade/postupgrade hooks, so canister upgrades will lose data.",
-    "blob-storage env var name appears misspelled (CAFFFEINE_STORAGE_CASHIER_PRINCIPAL), which can break deployments using the expected CAFFEINE_* naming.",
-    "Storage.refillCashier uses Nat.sub(currentBalance, reservedCycles) which can trap on Nat underflow if cycles balance is below the reserved threshold.",
-    "CompareSlotHeader accepts dayOffsetLabel but recomputes Today-relative offset internally; the prop is unused and can be removed or wired up.",
-    "frontend/src/components/compare/CompareDatePickerModal.tsx is empty/placeholder and appears unused, indicating dead or unfinished code."
-  ],
-  "isFixRequest": false,
-  "gameProjectType": "none",
-  "projectName": "physiq",
-  "clarification_mode": "pro",
+  "projectName": "Make CalendarView button and calendar borders slightly more prominent",
+  "clarification_mode": "instant",
   "clarification_rounds": 0
 }

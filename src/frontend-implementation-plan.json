@@ -1,21 +1,37 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "CalendarView heading: add one-sentence description under title",
+  "title": "Make CalendarView button and calendar borders slightly more prominent",
   "requirements": [
     {
-      "id": "REQ-14",
-      "summary": "Add a short, muted, single-sentence description directly beneath the CalendarView h2 heading text without changing any other elements.",
+      "id": "REQ-1",
+      "summary": "Make only the CalendarView 'Compare Progress' outline button border slightly thicker/more distinct without affecting other buttons.",
       "acceptanceCriteria": [
-        "The selected h2 renders a primary heading line and a second line of smaller, muted description text immediately beneath it.",
-        "The description is a single short English sentence explaining what the calendar/journey page does.",
-        "Only the selected h2 element is modified; no other layout elements (e.g., button placement/size) are changed in this build."
+        "On the Calendar page, the 'Compare Progress' button’s border is visibly more prominent than before (e.g., thicker than the default outline border).",
+        "Only the selected 'Compare Progress' button’s border styling is changed; other buttons across the app are unaffected.",
+        "The button remains an outline-style button and remains readable in both light and dark themes."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/CalendarView.tsx",
           "operation": "modify",
-          "description": "Modify only the existing <h2 className=\"text-3xl font-bold text-foreground\">…</h2> element to render the heading text plus a second line beneath it (e.g., a child <span> styled as smaller and muted). Ensure the description is one short English sentence explaining the purpose of the calendar/journey page, and do not alter surrounding layout or the Compare Progress button."
+          "description": "Update ONLY the 'Compare Progress' <Button variant=\"outline\"> instance in CalendarView (the button at the provided XPath) to use a more prominent border (e.g., Tailwind border-2 and explicit border-border), while keeping outline styling and ensuring readability in light/dark themes. Do not change any shared Button defaults or files under frontend/src/components/ui."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Make only the main fullscreen calendar container in CalendarView have a slightly thicker/more distinct outer border without impacting other calendar instances.",
+      "acceptanceCriteria": [
+        "On the Calendar page, the calendar’s outer border is visibly more prominent than before (e.g., thicker than the default 1px border).",
+        "Only the selected calendar element’s border styling is changed; other calendar instances (e.g., comparison date picker calendar) are unaffected.",
+        "The calendar border remains consistent with the app’s existing border color tokens and looks correct in both light and dark themes."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/CalendarView.tsx",
+          "operation": "modify",
+          "description": "Update ONLY the main CalendarComponent in CalendarView (the fullscreen calendar at the provided XPath) to use a more prominent outer border (e.g., Tailwind border-2 with border-border), keeping existing theme tokens and appearance in light/dark. Ensure other calendars (e.g., PhotoComparisonView date picker) are not affected and do not edit any files under frontend/src/components/ui."
         }
       ]
     }

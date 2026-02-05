@@ -77,231 +77,238 @@ export default function PhotoComparisonView({ onClose }: PhotoComparisonViewProp
 
   // Get the slot label for the active calendar
   const getActiveSlotLabel = (): string => {
-    if (activeCalendarSlot === 1) return 'Slot 1';
-    if (activeCalendarSlot === 2) return 'Slot 2';
-    return 'Slot 3';
+    if (activeCalendarSlot === 1) return 'Compare 1';
+    if (activeCalendarSlot === 2) return 'Compare 2';
+    return 'Compare 3';
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
-      <div className="relative h-full w-full max-w-6xl overflow-hidden rounded-lg bg-card border border-border shadow-2xl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-border bg-card px-6 py-4">
-          {activeCalendarSlot !== null ? (
-            <>
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setActiveCalendarSlot(null)}
-                  className="text-foreground hover:bg-muted"
-                >
-                  <ArrowLeft className="h-5 w-5" />
-                </Button>
-                <h2 className="text-xl font-semibold text-foreground">
-                  Select Date for {getActiveSlotLabel()}
-                </h2>
-              </div>
-            </>
-          ) : (
-            <h2 className="text-xl font-semibold text-foreground">Progress Comparison</h2>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="text-foreground hover:bg-muted"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
-        {/* Content */}
-        <div className="h-[calc(100%-5rem)] overflow-auto p-6">
-          {activeCalendarSlot !== null ? (
-            /* Calendar Picker View */
-            <div className="flex items-center justify-center h-full">
-              <div className="compare-date-picker-calendar w-full h-full flex items-center justify-center">
-                <Calendar
-                  mode="single"
-                  selected={getActiveSlotDate()}
-                  onSelect={handleDateSelect}
-                  initialFocus
-                  className="rounded-md border border-border"
-                />
-              </div>
+    <div className="flex h-full flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-border bg-card px-3 py-4 sm:px-4 md:px-6">
+        {activeCalendarSlot !== null ? (
+          <>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setActiveCalendarSlot(null)}
+                className="text-foreground hover:bg-muted"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <h2 className="text-xl font-semibold text-foreground">
+                Select Date for {getActiveSlotLabel()}
+              </h2>
             </div>
-          ) : (
-            /* Comparison View */
-            <>
-              <div className="mb-6 flex justify-center">
-                <Button
-                  onClick={() => setFlipped(!flipped)}
-                  variant="outline"
-                  className="gap-2"
-                >
-                  <FlipHorizontal className="h-4 w-4" />
-                  {flipped ? 'Show Side by Side' : 'Show Overlay'}
-                </Button>
+          </>
+        ) : (
+          <h2 className="text-xl font-semibold text-foreground">Progress Comparison</h2>
+        )}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          className="text-foreground hover:bg-muted"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-auto px-3 py-4 sm:px-4 md:px-6 lg:px-8">
+        {activeCalendarSlot !== null ? (
+          /* Calendar Picker View */
+          <div className="flex items-center justify-center h-full">
+            <div className="compare-date-picker-calendar w-full h-full flex items-center justify-center">
+              <Calendar
+                mode="single"
+                selected={getActiveSlotDate()}
+                onSelect={handleDateSelect}
+                initialFocus
+                className="rounded-md border border-border"
+              />
+            </div>
+          </div>
+        ) : (
+          /* Comparison View */
+          <>
+            <div className="mb-6 flex justify-center">
+              <Button
+                onClick={() => setFlipped(!flipped)}
+                variant="outline"
+                className="gap-2"
+              >
+                <FlipHorizontal className="h-4 w-4" />
+                {flipped ? 'Show Side by Side' : 'Show Overlay'}
+              </Button>
+            </div>
+
+            {!flipped ? (
+              /* Side by Side View */
+              <div className="grid gap-4 md:grid-cols-3 md:gap-6">
+                {/* Slot 1 - Blue border */}
+                <Card className="overflow-hidden rounded-lg border-[3px] border-[oklch(0.65_0.20_240)] p-0">
+                  <div className="bg-[oklch(0.65_0.20_240)] text-white py-3 px-4 text-center">
+                    <h3 className="text-lg font-bold">Compare 1</h3>
+                  </div>
+                  <CompareSlotHeader
+                    slotNumber={1}
+                    dayOffsetLabel={slot1DayOffsetLabel}
+                    selectedDate={slot1Date}
+                    onOpenCalendar={() => setActiveCalendarSlot(1)}
+                  />
+                  <div className="aspect-[3/4] bg-muted relative">
+                    {isLoading ? (
+                      <div className="flex h-full items-center justify-center text-muted-foreground">
+                        Loading...
+                      </div>
+                    ) : entry1Url ? (
+                      <img
+                        src={entry1Url}
+                        alt="Comparison slot 1"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-muted-foreground">
+                        No photo available
+                      </div>
+                    )}
+                  </div>
+                </Card>
+
+                {/* Slot 2 - Purple border */}
+                <Card className="overflow-hidden rounded-lg border-[3px] border-[oklch(0.60_0.22_300)] p-0">
+                  <div className="bg-[oklch(0.60_0.22_300)] text-white py-3 px-4 text-center">
+                    <h3 className="text-lg font-bold">Compare 2</h3>
+                  </div>
+                  <CompareSlotHeader
+                    slotNumber={2}
+                    dayOffsetLabel={slot2DayOffsetLabel}
+                    selectedDate={slot2Date}
+                    onOpenCalendar={() => setActiveCalendarSlot(2)}
+                  />
+                  <div className="aspect-[3/4] bg-muted relative">
+                    {isLoading ? (
+                      <div className="flex h-full items-center justify-center text-muted-foreground">
+                        Loading...
+                      </div>
+                    ) : entry2Url ? (
+                      <img
+                        src={entry2Url}
+                        alt="Comparison slot 2"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-muted-foreground">
+                        No photo available
+                      </div>
+                    )}
+                  </div>
+                </Card>
+
+                {/* Slot 3 - Cyan border */}
+                <Card className="overflow-hidden rounded-lg border-[3px] border-[oklch(0.65_0.18_200)] p-0">
+                  <div className="bg-[oklch(0.65_0.18_200)] text-white py-3 px-4 text-center">
+                    <h3 className="text-lg font-bold">Compare 3</h3>
+                  </div>
+                  <CompareSlotHeader
+                    slotNumber={3}
+                    dayOffsetLabel={slot3DayOffsetLabel}
+                    selectedDate={slot3Date}
+                    onOpenCalendar={() => setActiveCalendarSlot(3)}
+                  />
+                  <div className="aspect-[3/4] bg-muted relative">
+                    {isLoading ? (
+                      <div className="flex h-full items-center justify-center text-muted-foreground">
+                        Loading...
+                      </div>
+                    ) : entry3Url ? (
+                      <img
+                        src={entry3Url}
+                        alt="Comparison slot 3"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-muted-foreground">
+                        No photo available
+                      </div>
+                    )}
+                  </div>
+                </Card>
               </div>
-
-              {!flipped ? (
-                /* Side by Side View */
-                <div className="grid gap-6 md:grid-cols-3">
-                  {/* Slot 1 */}
-                  <Card className="overflow-hidden border-border rounded-lg">
-                    <CompareSlotHeader
-                      slotNumber={1}
-                      dayOffsetLabel={slot1DayOffsetLabel}
-                      selectedDate={slot1Date}
-                      onOpenCalendar={() => setActiveCalendarSlot(1)}
-                    />
-                    <div className="aspect-[3/4] bg-muted relative">
-                      {isLoading ? (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                          Loading...
-                        </div>
-                      ) : entry1Url ? (
-                        <img
-                          src={entry1Url}
-                          alt="Comparison slot 1"
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                          No photo available
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-
-                  {/* Slot 2 */}
-                  <Card className="overflow-hidden border-border rounded-lg">
-                    <CompareSlotHeader
-                      slotNumber={2}
-                      dayOffsetLabel={slot2DayOffsetLabel}
-                      selectedDate={slot2Date}
-                      onOpenCalendar={() => setActiveCalendarSlot(2)}
-                    />
-                    <div className="aspect-[3/4] bg-muted relative">
-                      {isLoading ? (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                          Loading...
-                        </div>
-                      ) : entry2Url ? (
-                        <img
-                          src={entry2Url}
-                          alt="Comparison slot 2"
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                          No photo available
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-
-                  {/* Slot 3 */}
-                  <Card className="overflow-hidden border-border rounded-lg">
-                    <CompareSlotHeader
-                      slotNumber={3}
-                      dayOffsetLabel={slot3DayOffsetLabel}
-                      selectedDate={slot3Date}
-                      onOpenCalendar={() => setActiveCalendarSlot(3)}
-                    />
-                    <div className="aspect-[3/4] bg-muted relative">
-                      {isLoading ? (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                          Loading...
-                        </div>
-                      ) : entry3Url ? (
-                        <img
-                          src={entry3Url}
-                          alt="Comparison slot 3"
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                          No photo available
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-                </div>
-              ) : (
-                /* Overlay View */
-                <div className="mx-auto max-w-md">
-                  <Card className="overflow-hidden border-border">
-                    <div className="relative aspect-[3/4] bg-muted">
-                      {isLoading ? (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                          Loading...
-                        </div>
-                      ) : (
-                        <>
-                          {entry1Url && (
-                            <img
-                              src={entry1Url}
-                              alt="Comparison slot 1"
-                              className="absolute inset-0 h-full w-full object-cover opacity-50"
-                            />
-                          )}
-                          {entry3Url && (
-                            <img
-                              src={entry3Url}
-                              alt="Comparison slot 3"
-                              className="absolute inset-0 h-full w-full object-cover opacity-50"
-                            />
-                          )}
-                          {!entry1Url && !entry3Url && (
-                            <div className="flex h-full items-center justify-center text-muted-foreground">
-                              No photos available for comparison
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                    <div className="flex justify-around bg-muted p-4">
-                      <div className="text-center">
-                        <div className="flex items-center justify-center gap-1.5 mb-1">
-                          <div className="h-4 w-4 rounded-full bg-destructive" />
-                          <Badge variant="outline" className="text-xs font-bold px-1.5 py-0">
-                            1
-                          </Badge>
-                        </div>
-                        <p className="text-sm font-medium text-foreground">{slot1DayOffsetLabel}</p>
-                        <p className="text-xs text-muted-foreground">{formatDateShort(slot1Date)}</p>
-                        {slot1Variance !== null && (
-                          <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-0.5">
-                            <Clock className="h-3 w-3" />
-                            <span>{formatDayVariance(slot1Variance)}</span>
+            ) : (
+              /* Overlay View */
+              <div className="mx-auto max-w-md">
+                <Card className="overflow-hidden border-border">
+                  <div className="relative aspect-[3/4] bg-muted">
+                    {isLoading ? (
+                      <div className="flex h-full items-center justify-center text-muted-foreground">
+                        Loading...
+                      </div>
+                    ) : (
+                      <>
+                        {entry1Url && (
+                          <img
+                            src={entry1Url}
+                            alt="Comparison slot 1"
+                            className="absolute inset-0 h-full w-full object-cover opacity-50"
+                          />
+                        )}
+                        {entry3Url && (
+                          <img
+                            src={entry3Url}
+                            alt="Comparison slot 3"
+                            className="absolute inset-0 h-full w-full object-cover opacity-50"
+                          />
+                        )}
+                        {!entry1Url && !entry3Url && (
+                          <div className="flex h-full items-center justify-center text-muted-foreground">
+                            No photos available for comparison
                           </div>
                         )}
+                      </>
+                    )}
+                  </div>
+                  <div className="flex justify-around bg-muted p-4">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-1.5 mb-1">
+                        <div className="h-4 w-4 rounded-full bg-destructive" />
+                        <Badge variant="outline" className="text-xs font-bold px-1.5 py-0">
+                          1
+                        </Badge>
                       </div>
-                      <div className="text-center">
-                        <div className="flex items-center justify-center gap-1.5 mb-1">
-                          <div className="h-4 w-4 rounded-full bg-primary" />
-                          <Badge variant="outline" className="text-xs font-bold px-1.5 py-0">
-                            3
-                          </Badge>
+                      <p className="text-sm font-medium text-foreground">{slot1DayOffsetLabel}</p>
+                      <p className="text-xs text-muted-foreground">{formatDateShort(slot1Date)}</p>
+                      {slot1Variance !== null && (
+                        <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-0.5">
+                          <Clock className="h-3 w-3" />
+                          <span>{formatDayVariance(slot1Variance)}</span>
                         </div>
-                        <p className="text-sm font-medium text-foreground">{slot3DayOffsetLabel}</p>
-                        <p className="text-xs text-muted-foreground">{formatDateShort(slot3Date)}</p>
-                        {slot3Variance !== null && (
-                          <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-0.5">
-                            <Clock className="h-3 w-3" />
-                            <span>{formatDayVariance(slot3Variance)}</span>
-                          </div>
-                        )}
-                      </div>
+                      )}
                     </div>
-                  </Card>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-1.5 mb-1">
+                        <div className="h-4 w-4 rounded-full bg-primary" />
+                        <Badge variant="outline" className="text-xs font-bold px-1.5 py-0">
+                          3
+                        </Badge>
+                      </div>
+                      <p className="text-sm font-medium text-foreground">{slot3DayOffsetLabel}</p>
+                      <p className="text-xs text-muted-foreground">{formatDateShort(slot3Date)}</p>
+                      {slot3Variance !== null && (
+                        <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-0.5">
+                          <Clock className="h-3 w-3" />
+                          <span>{formatDayVariance(slot3Variance)}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

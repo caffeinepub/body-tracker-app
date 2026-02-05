@@ -1,50 +1,56 @@
 {
   "kind": "build_request",
-  "title": "Add short calendar page description under CalendarView heading",
+  "title": "Make CalendarView button and calendar borders slightly more prominent",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-14",
-      "text": "Update the CalendarView heading element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1] to include a short (one-sentence) description directly beneath the heading text, while keeping all changes confined to this selected h2 element.",
+      "id": "REQ-1",
+      "text": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected 'Compare Progress' outline button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1] (implemented in CalendarView).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-build"
+          "msg-1"
         ],
         "quotes": [
-          "add a brief description of what this calendar/page does just underneath this heading, keep it short",
-          "1. your choice, whatever you feel will be better.",
-          "2. you can choose",
-          "3. yes short"
+          "make the borders of this button and the calendar slightly more prominent"
         ]
       },
       "acceptanceCriteria": [
-        "The selected h2 renders a primary heading line and a second line of smaller, muted description text immediately beneath it.",
-        "The description is a single short English sentence explaining what the calendar/journey page does.",
-        "Only the selected h2 element is modified; no other layout elements (e.g., button placement/size) are changed in this build."
+        "On the Calendar page, the 'Compare Progress' button’s border is visibly more prominent than before (e.g., thicker than the default outline border).",
+        "Only the selected 'Compare Progress' button’s border styling is changed; other buttons across the app are unaffected.",
+        "The button remains an outline-style button and remains readable in both light and dark themes."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Increase the border prominence (slightly thicker and more visually distinct, while staying consistent with the existing theme) for ONLY the selected main calendar element at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[2]/div[1]/div[1] (the fullscreen calendar container/component in CalendarView).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "make the borders of this button and the calendar slightly more prominent"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On the Calendar page, the calendar’s outer border is visibly more prominent than before (e.g., thicker than the default 1px border).",
+        "Only the selected calendar element’s border styling is changed; other calendar instances (e.g., comparison date picker calendar) are unaffected.",
+        "The calendar border remains consistent with the app’s existing border color tokens and looks correct in both light and dark themes."
       ]
     }
   ],
   "constraints": [
-    "Apply changes ONLY to the selected element identified by XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/h2[1].",
-    "Use English for any user-facing text."
+    "Apply changes ONLY to the two elements identified by the provided XPaths; do not modify border styling globally (e.g., do not change shared Button/Calendar component defaults).",
+    "Do not edit any files under frontend/src/components/ui (read-only components)."
   ],
   "nonGoals": [
-    "Do not implement the requested two-column header layout (left heading/description and right large Compare Progress button) in this build, since it would require editing elements outside the selected h2.",
-    "Do not change the Compare Progress button icon or sizing in this build."
+    "No backend changes.",
+    "No layout, spacing, or typography redesign beyond what is necessary to make the two borders slightly more prominent.",
+    "No changes to comparison view card borders or other borders elsewhere in the app."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }
