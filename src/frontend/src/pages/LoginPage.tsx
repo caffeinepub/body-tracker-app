@@ -84,7 +84,8 @@ export default function LoginPage() {
                   onClick={login}
                   disabled={isLoggingIn}
                   size="lg"
-                  className="live-glow-border w-full gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  className="rainbow-glow-border w-full gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  data-rainbow-glow="true"
                 >
                   {isLoggingIn ? (
                     <>

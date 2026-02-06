@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-apply-a-subtle-animated-glowing-border-that-continuously-rotates-around-the-border-of-the-button-located-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-div-2-button-1-creating-a-live-waiting-to-be-pressed-effect-while-preserving-the-button-s-existing-size-layout-and-click-behavior",
-      "featureTitle": "Apply a subtle animated glowing border that continuously rotates around the border of the button located at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1], creating a “live / waiting to be pressed” effect while preserving the button’s existing size, layout, and click behavior.",
+      "featureId": "feature-update-only-the-button-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-2-div-1-button-1-so-its-border-is-more-prominent-by-making-the-glowing-border-effect-thicker-and-brighter-changing-the-glow-to-a-rainbow-spectrum-and-ensuring-the-glow-is-visibly-animated-while-preserving-the-button-s-existing-size-layout-and-click-behavior",
+      "featureTitle": "Update only the button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] so its border is more prominent by making the glowing border effect thicker and brighter, changing the glow to a rainbow spectrum, and ensuring the glow is visibly animated while preserving the button’s existing size, layout, and click behavior.",
       "files": [
         "frontend/src/index.css",
         "frontend/src/pages/LoginPage.tsx"

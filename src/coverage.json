@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-05T21:01:25.240Z",
+  "generatedAt": "2026-02-06T05:59:43.526Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -12,7 +12,7 @@
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Apply a subtle animated glowing border that continuously rotates around the border of the button located at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1], creating a “live / waiting to be pressed” effect while preserving the button’s existing size, layout, and click behavior.",
+        "summary": "Update only the button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] so its border is more prominent by making the glowing border effect thicker and brighter, changing the glow to a rainbow spectrum, and ensuring the glow is visibly animated while preserving the button’s existing size, layout, and click behavior.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/pages/LoginPage.tsx",

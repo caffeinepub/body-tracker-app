@@ -7,8 +7,8 @@
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-apply-a-subtle-animated-glowing-border-that-continuously-rotates-around-the-border-of-the-button-located-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-1-div-1-div-2-button-1-creating-a-live-waiting-to-be-pressed-effect-while-preserving-the-button-s-existing-size-layout-and-click-behavior",
-      "title": "Apply a subtle animated glowing border that continuously rotates around the border of the button located at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1], creating a “live / waiting to be pressed” effect while preserving the button’s existing size, layout, and click behavior.",
+      "id": "feature-update-only-the-button-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-2-div-1-button-1-so-its-border-is-more-prominent-by-making-the-glowing-border-effect-thicker-and-brighter-changing-the-glow-to-a-rainbow-spectrum-and-ensuring-the-glow-is-visibly-animated-while-preserving-the-button-s-existing-size-layout-and-click-behavior",
+      "title": "Update only the button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] so its border is more prominent by making the glowing border effect thicker and brighter, changing the glow to a rainbow spectrum, and ensuring the glow is visibly animated while preserving the button’s existing size, layout, and click behavior.",
       "reqIds": [
         "REQ-1"
       ],
@@ -18,12 +18,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Add a subtle animated glowing border that rotates around the selected button (live/waiting-to-be-pressed effect).",
+      "summary": "Make the button border more prominent: thicker + brighter with an animated rainbow/glow effect",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Add rotating subtle animated glowing border to the selected button",
+  "projectName": "Make selected button border thicker, brighter, and animated rainbow glow",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

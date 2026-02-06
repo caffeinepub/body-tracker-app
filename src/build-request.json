@@ -1,37 +1,43 @@
 {
   "kind": "build_request",
-  "title": "Add rotating subtle animated glowing border to the selected button",
+  "title": "Make selected button border thicker, brighter, and animated rainbow glow",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Apply a subtle animated glowing border that continuously rotates around the border of the button located at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[2]/button[1], creating a “live / waiting to be pressed” effect while preserving the button’s existing size, layout, and click behavior.",
+      "text": "Update only the button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] so its border is more prominent by making the glowing border effect thicker and brighter, changing the glow to a rainbow spectrum, and ensuring the glow is visibly animated while preserving the button’s existing size, layout, and click behavior.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "can you give this button's border a subtle glowing colour that tourns around the border, like a live button waiting to be pressed"
+          "make this button's border more prominent",
+          "1. both",
+          "2. can you make it a rainbow/glow colour",
+          "3. currently there is no animation the button is very basic"
         ]
       },
       "acceptanceCriteria": [
-        "The selected button displays a subtle glowing border effect with a visibly rotating highlight moving around the perimeter.",
-        "The effect does not change the button’s dimensions or cause layout shift (no jittering or reflow).",
-        "The effect is visible in both light and dark themes and remains subtle (not overpowering surrounding UI).",
-        "Hover/active/disabled states continue to work; when disabled, the glow is either removed or significantly subdued so the disabled state is still clear.",
-        "If the user has reduced-motion enabled (prefers-reduced-motion), the border animation is disabled (static border/glow is acceptable).",
-        "The change is applied only to the selected button, not globally to all buttons."
+        "The selected button displays a clearly thicker border effect than before (more than the current subtle outline).",
+        "The border/glow uses a rainbow gradient (multiple distinct hues across the spectrum), not just a blue/purple gradient.",
+        "The glow is visibly animated (e.g., continuous rotation/pulse) under normal motion settings.",
+        "The button’s dimensions and layout do not change (no content shift or resize due to the glow).",
+        "The button remains fully clickable and behaves exactly as before (same onClick, disabled behavior preserved).",
+        "When the button is disabled, the glow effect is subdued and does not animate.",
+        "When the user has prefers-reduced-motion enabled, the animation is disabled while keeping a static rainbow glow."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui (read-only shadcn UI components).",
-    "Keep the backend unchanged (no Motoko changes required)."
+    "Apply the styling change ONLY to the selected button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] (do not change other buttons).",
+    "Do not edit files under frontend/src/components/ui (compose via classes/CSS instead).",
+    "Frontend changes only; no backend changes are required."
   ],
   "nonGoals": [
-    "Adding the same animated glow border to other buttons across the app.",
-    "Changing the button text, icon, routing/navigation behavior, or button placement/layout."
+    "Redesigning the login page layout or changing any button text/copy.",
+    "Changing authentication flow or login behavior.",
+    "Adding new pages, navigation, or features unrelated to the selected button styling."
   ],
   "imageRequirements": {
     "required": [],
