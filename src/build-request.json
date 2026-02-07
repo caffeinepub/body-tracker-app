@@ -1,43 +1,54 @@
 {
   "kind": "build_request",
-  "title": "Make selected button border thicker, brighter, and animated rainbow glow",
+  "title": "Replace 2nd image in initial signup (login) page gallery with uploaded cal.png",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Update only the button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] so its border is more prominent by making the glowing border effect thicker and brighter, changing the glow to a rainbow spectrum, and ensuring the glow is visibly animated while preserving the button’s existing size, layout, and click behavior.",
+      "text": "Add the uploaded image file `cal.png` as a static frontend asset under `frontend/public/assets/` so it can be referenced at runtime without any resizing/cropping/styling changes.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "make this button's border more prominent",
-          "1. both",
-          "2. can you make it a rainbow/glow colour",
-          "3. currently there is no animation the button is very basic"
+          "on the Track Your Fitness Journey initial signup page there is an image gallery, please replace the 2nd image in the order with the attached",
+          "four in total and yes it should replace only the 2nd image",
+          "as is"
         ]
       },
       "acceptanceCriteria": [
-        "The selected button displays a clearly thicker border effect than before (more than the current subtle outline).",
-        "The border/glow uses a rainbow gradient (multiple distinct hues across the spectrum), not just a blue/purple gradient.",
-        "The glow is visibly animated (e.g., continuous rotation/pulse) under normal motion settings.",
-        "The button’s dimensions and layout do not change (no content shift or resize due to the glow).",
-        "The button remains fully clickable and behaves exactly as before (same onClick, disabled behavior preserved).",
-        "When the button is disabled, the glow effect is subdued and does not animate.",
-        "When the user has prefers-reduced-motion enabled, the animation is disabled while keeping a static rainbow glow."
+        "`frontend/public/assets/cal.png` exists and is served by the app at `/assets/cal.png`."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Update the initial signup page image gallery on `frontend/src/pages/LoginPage.tsx` by replacing only the 2nd image in the `PREVIEW_IMAGES` array (currently `'/assets/main2a.png'`) to use the uploaded image at `'/assets/cal.png'`, keeping the gallery at 4 images and leaving the other 3 entries unchanged.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "four in total and yes it should replace only the 2nd image",
+          "as is"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The `PREVIEW_IMAGES` array still contains exactly 4 images.",
+        "Only the second image’s `src` is changed to `'/assets/cal.png'`; the other three `src` values remain unchanged.",
+        "When navigating the carousel to image #2 (via arrows, swipe, or the 2nd dot), the displayed screenshot is the uploaded `cal.png`."
       ]
     }
   ],
   "constraints": [
-    "Apply the styling change ONLY to the selected button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] (do not change other buttons).",
-    "Do not edit files under frontend/src/components/ui (compose via classes/CSS instead).",
-    "Frontend changes only; no backend changes are required."
+    "Do not modify files under `frontend/src/components/ui` (read-only UI component sources).",
+    "Do not edit any paths listed in `frontend.immutablePaths` within SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Redesigning the login page layout or changing any button text/copy.",
-    "Changing authentication flow or login behavior.",
-    "Adding new pages, navigation, or features unrelated to the selected button styling."
+    "No backend/canister changes.",
+    "No changes to carousel behavior, layout, or styling beyond swapping the referenced image file.",
+    "No cropping, resizing, or additional image processing of the uploaded image."
   ],
   "imageRequirements": {
     "required": [],

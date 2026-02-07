@@ -2,10 +2,9 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-only-the-button-at-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-2-div-1-button-1-so-its-border-is-more-prominent-by-making-the-glowing-border-effect-thicker-and-brighter-changing-the-glow-to-a-rainbow-spectrum-and-ensuring-the-glow-is-visibly-animated-while-preserving-the-button-s-existing-size-layout-and-click-behavior",
-      "featureTitle": "Update only the button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] so its border is more prominent by making the glowing border effect thicker and brighter, changing the glow to a rainbow spectrum, and ensuring the glow is visibly animated while preserving the button’s existing size, layout, and click behavior.",
+      "featureId": "feature-update-the-initial-signup-page-image-gallery-on-frontend-src-pages-loginpage-tsx-by-replacing-only-the-2nd-image-in-the-preview-images-array-currently-assets-main2a-png-to-use-the-uploaded-image-at-assets-cal-png-keeping-the-gallery-at-4-images-and-leaving-the-other-3-entries-unchanged",
+      "featureTitle": "Update the initial signup page image gallery on `frontend/src/pages/LoginPage.tsx` by replacing only the 2nd image in the `PREVIEW_IMAGES` array (currently `'/assets/main2a.png'`) to use the uploaded image at `'/assets/cal.png'`, keeping the gallery at 4 images and leaving the other 3 entries unchanged.",
       "files": [
-        "frontend/src/index.css",
         "frontend/src/pages/LoginPage.tsx"
       ],
       "components": [
@@ -19,7 +18,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-1"
+        "REQ-2"
       ],
       "confidence": "high"
     }

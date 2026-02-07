@@ -87,38 +87,47 @@
     }
 }
 
-/* Calendar day dot indicator for saved content */
-.has-saved-content {
+/* Calendar day dot indicator for saved content - scoped to main calendar view */
+.main-calendar-view .has-saved-content {
     position: relative;
 }
 
-.has-saved-content::after {
+.main-calendar-view .has-saved-content::after {
     content: '';
     position: absolute;
-    bottom: 2px;
+    top: 65%;
     left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
+    transform: translate(-50%, -50%);
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background-color: oklch(var(--primary));
     z-index: 10;
 }
 
+/* Mobile-specific dot positioning - use bottom-based placement */
+@media (max-width: 640px) {
+    .main-calendar-view .has-saved-content::after {
+        top: auto;
+        bottom: 20%;
+        transform: translate(-50%, 0);
+    }
+}
+
 /* Ensure dot remains visible when day is selected */
-.has-saved-content[data-selected]::after,
-.has-saved-content[aria-selected="true"]::after {
+.main-calendar-view .has-saved-content[data-selected]::after,
+.main-calendar-view .has-saved-content[aria-selected="true"]::after {
     background-color: oklch(var(--primary-foreground));
 }
 
 /* Ensure dot remains visible on today */
-.has-saved-content[data-today]::after {
+.main-calendar-view .has-saved-content[data-today]::after {
     background-color: oklch(var(--primary));
 }
 
 /* Ensure dot remains visible when both selected and today */
-.has-saved-content[data-selected][data-today]::after,
-.has-saved-content[aria-selected="true"][data-today]::after {
+.main-calendar-view .has-saved-content[data-selected][data-today]::after,
+.main-calendar-view .has-saved-content[aria-selected="true"][data-today]::after {
     background-color: oklch(var(--primary-foreground));
 }
 

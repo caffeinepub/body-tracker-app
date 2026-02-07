@@ -1,26 +1,33 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T05:59:43.526Z",
+  "generatedAt": "2026-02-07T14:10:23.935Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
+    "total": 2,
     "implemented": 1,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Update only the button at XPath /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1] so its border is more prominent by making the glowing border effect thicker and brighter, changing the glow to a rainbow spectrum, and ensuring the glow is visibly animated while preserving the button’s existing size, layout, and click behavior.",
+        "summary": "Add the uploaded image file `cal.png` as a static frontend asset under `frontend/public/assets/` so it can be referenced at runtime without any resizing/cropping/styling changes.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/public/assets/cal.png"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Update the initial signup page image gallery on `frontend/src/pages/LoginPage.tsx` by replacing only the 2nd image in the `PREVIEW_IMAGES` array (currently `'/assets/main2a.png'`) to use the uploaded image at `'/assets/cal.png'`, keeping the gallery at 4 images and leaving the other 3 entries unchanged.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/LoginPage.tsx",
-          "frontend/src/index.css"
+          "frontend/src/pages/LoginPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/LoginPage.tsx",
-          "frontend/src/index.css"
+          "frontend/src/pages/LoginPage.tsx"
         ]
       }
     ]
@@ -30,7 +37,6 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/index.css",
     "frontend/src/pages/LoginPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",

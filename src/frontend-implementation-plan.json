@@ -1,30 +1,35 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Rainbow animated thicker glow border for the specific login button only",
+  "title": "Swap LoginPage carousel 2nd image to cal.png",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Enhance only the targeted login button’s glow border to be thicker, brighter, rainbow-spectrum, and visibly animated while preserving layout/click behavior and respecting disabled + reduced-motion states.",
+      "summary": "Add uploaded cal.png as a static asset under frontend/public/assets for runtime reference without modification.",
       "acceptanceCriteria": [
-        "The selected button displays a clearly thicker border effect than before (more than the current subtle outline).",
-        "The border/glow uses a rainbow gradient (multiple distinct hues across the spectrum), not just a blue/purple gradient.",
-        "The glow is visibly animated (e.g., continuous rotation/pulse) under normal motion settings.",
-        "The button’s dimensions and layout do not change (no content shift or resize due to the glow).",
-        "The button remains fully clickable and behaves exactly as before (same onClick, disabled behavior preserved).",
-        "When the button is disabled, the glow effect is subdued and does not animate.",
-        "When the user has prefers-reduced-motion enabled, the animation is disabled while keeping a static rainbow glow."
+        "`frontend/public/assets/cal.png` exists and is served by the app at `/assets/cal.png`."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/cal.png",
+          "operation": "create",
+          "description": "Add the uploaded image file cal.png exactly as provided (no resizing/cropping/styling changes) so it is served as a static asset at /assets/cal.png."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Replace only the 2nd LoginPage preview image src with /assets/cal.png while keeping the gallery at 4 images.",
+      "acceptanceCriteria": [
+        "The `PREVIEW_IMAGES` array still contains exactly 4 images.",
+        "Only the second image’s `src` is changed to `'/assets/cal.png'`; the other three `src` values remain unchanged.",
+        "When navigating the carousel to image #2 (via arrows, swipe, or the 2nd dot), the displayed screenshot is the uploaded `cal.png`."
       ],
       "file_operations": [
         {
           "path": "frontend/src/pages/LoginPage.tsx",
           "operation": "modify",
-          "description": "Mark only the specific Sign In <Button> (the one at the provided XPath) with a unique, dedicated selector (e.g., a data attribute and/or unique class) so the enhanced rainbow glow styling applies exclusively to that button and does not affect any other buttons; preserve existing props (onClick, disabled, size) and existing layout classes."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Replace/extend the current glow-border CSS to target only the dedicated selector from LoginPage and implement a thicker, brighter, animated rainbow-spectrum glow using pseudo-elements (no layout impact via absolute positioning and pointer-events:none). Ensure: (1) stronger thickness (larger inset/padding) and brighter glow (higher opacity/blur/shadow), (2) rainbow gradient across distinct hues, (3) visible animation under normal motion, (4) subdued + non-animated styling when disabled, and (5) prefers-reduced-motion disables animation while keeping a static rainbow glow."
+          "description": "Update the `PREVIEW_IMAGES` array so the 2nd entry’s `src` changes from `'/assets/main2a.png'` to `'/assets/cal.png'`, leaving entries 1, 3, and 4 unchanged and keeping the array length at 4."
         }
       ]
     }

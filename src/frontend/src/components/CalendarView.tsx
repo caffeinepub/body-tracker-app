@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { useGetAllEntries } from '../hooks/useQueries';
 import { Button } from '@/components/ui/button';
-import { ImageIcon } from 'lucide-react';
+import { ArrowLeftRight } from 'lucide-react';
 import DayDetailView from './DayDetailView';
 import PhotoComparisonView from './PhotoComparisonView';
 import { timeToDate } from '../utils/time';
@@ -69,9 +69,9 @@ export default function CalendarView() {
             <Button
               onClick={() => setShowComparison(true)}
               variant="outline"
-              className="h-full w-full gap-3 border-2 border-border text-lg font-semibold md:text-xl"
+              className="h-full w-full gap-3 border-4 border-cyan-500 text-lg font-semibold hover:border-cyan-400 md:text-xl"
             >
-              <ImageIcon className="h-6 w-6 md:h-8 md:w-8" />
+              <ArrowLeftRight className="h-8 w-8 md:h-10 md:w-10" />
               Compare Progress
             </Button>
           </div>
@@ -84,7 +84,7 @@ export default function CalendarView() {
               mode="single"
               selected={selectedDate}
               onSelect={handleDateSelect}
-              className="mx-auto w-full rounded-md border-2 border-border shadow-lg"
+              className="main-calendar-view mx-auto w-full rounded-md border-2 border-border shadow-lg"
               modifiers={{
                 hasSavedContent: (date) => hasSavedContent(date),
               }}

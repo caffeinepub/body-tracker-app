@@ -1,11 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Make the selected login button’s border/glow more prominent with a thicker, brighter, animated rainbow spectrum effect without changing its behavior or layout.
+**Goal:** Replace the 2nd image in the initial signup (login) page gallery with the uploaded `cal.png` screenshot.
 
 **Planned changes:**
-- Apply a thicker/brighter rainbow gradient glow styling only to the specific button at `/html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[1]/button[1]`, keeping its size/layout unchanged.
-- Add a visible glow animation for normal motion settings while preserving existing click/disabled behavior.
-- Ensure the glow becomes subdued and non-animated when the button is disabled, and disable animation (but keep a static rainbow glow) when `prefers-reduced-motion` is enabled.
+- Add `cal.png` to `frontend/public/assets/` so it is served at `/assets/cal.png` without any resizing/cropping/styling changes.
+- Update `frontend/src/pages/LoginPage.tsx` to replace only the 2nd entry in the `PREVIEW_IMAGES` array (currently `'/assets/main2a.png'`) with `'/assets/cal.png'`, keeping 4 images total and leaving the other 3 unchanged.
 
-**User-visible outcome:** The targeted button shows a clearly thicker, brighter rainbow glow that animates smoothly (unless reduced-motion is enabled), remains fully clickable, and appears subdued/non-animated when disabled.
+**User-visible outcome:** On the initial signup/login page carousel, navigating to the 2nd image shows the new calendar screenshot (`cal.png`) while the other three gallery images remain the same.
